@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-app.listen(2703);
+app.listen(process.env.PORT || 1234);
 
 //middleware
 app.use(express.static('public')); //say that all file in public is static, dont compile
