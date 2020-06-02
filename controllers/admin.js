@@ -45,11 +45,16 @@ router.post('/login', (req, resp) => {
 
 
 router.get('/home', (req, resp) => {
-    //if(req.session.admin) {
+    if(req.session.admin) {
         resp.render('../views/admin/home.ejs');
-    //} else {
-    //    resp.redirect('login');
-    //}
+    } else {
+       resp.redirect('login');
+    }
+});
+
+router.get('/logout', (req, resp) => {
+    delete req.session.admin;
+    resp.redirect('login');
 });
 
 module.exports = router;
