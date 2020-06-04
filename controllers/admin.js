@@ -3,21 +3,22 @@ var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
 var uri = 'mongodb+srv://admin:tYFofQJbk98w31OR@cluster0-baxfc.mongodb.net/project';
 
-//routes
-router.get('/', (req, resp) => {
-    if(req.session.admin) {
-        resp.redirect('home');
-    } else {
-        resp.redirect('login');
+router.use((req, res, next) => {
+    if (!req.session.admin && !req.originalUrl.endsWith('/login')) {
+        res.redirect('/admin/login');
+    }
+    else {
+        next();
     }
 });
 
+// //routes
+// router.get('/', (req, resp) => {
+//     resp.redirect('home');
+// });
+
 router.get('/login', (req, resp) => {
-    if(req.session.admin) {
-        resp.redirect('home');
-    } else {
-        resp.render('../views/admin/login.ejs');
-    }
+    resp.render('admin/login');
 });
 
 router.post('/login', (req, resp) => {
@@ -36,7 +37,7 @@ router.post('/login', (req, resp) => {
                 req.session.admin = result;
                 resp.redirect('home');
             } else {
-                resp.redirect('login');
+                resp.redirect('/');
             }
             conn.close();
         });
@@ -45,12 +46,14 @@ router.post('/login', (req, resp) => {
 
 
 router.get('/home', (req, resp) => {
-    //if(req.session.admin) {
-        resp.render('../views/admin/home.ejs');
-    //} else {
-    //    resp.redirect('login');
-    //}
+    resp.render('admin/home');
 });
+
+router.get('/logout', (req, resp) => {
+    delete req.session.admin;
+    resp.redirect('login');
+});
+
 router.get("/product", (req, resp) => { 
     MongoClient.connect(uri, (err, conn) => {
         if(err) throw err;
