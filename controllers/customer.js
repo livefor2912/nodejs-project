@@ -14,6 +14,9 @@ router.get('/', (req, resp) => {
     resp.render('../views/customer/home.ejs');
 });
 
+router.get('/register',(req,res) => {
+    res.render('../views/customer/register.ejs');
+});
 
 router.get('/login', (req, resp) => {
     if(req.session.cus) {
@@ -29,6 +32,7 @@ router.post('/login', async (req, resp) => {
     var pwdhashed = MyUtil.md5(password);
     //var cus = await CustomerDAO.sele
     var remember = req.body.remember;
+
     //CustomerDAO.selectByUsernameAndPassword(username, pwdhashed);
     if (cus) {
       req.session.cus = cus;
@@ -37,9 +41,6 @@ router.post('/login', async (req, resp) => {
       MyUtil.showAlertAndRedirect(resp, 'Invalid login!', './login');
     }
 });
-
-
-
 
 
 module.exports = router;
