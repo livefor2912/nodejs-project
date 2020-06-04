@@ -7,8 +7,9 @@ var router = express.Router();
 var MyUtil = require("../utils/MyUtil.js");
 var multer = require('multer');
 
-var CustomerDAO = require(pathDAO + "/CustomerDAO.js");
 var pathDAO = "../daos/mongodb";
+var CustomerDAO = require(pathDAO + "/CustomerDAO.js");
+
 
 router.get('/', (req, resp) => {
     resp.render('../views/customer/home.ejs');
