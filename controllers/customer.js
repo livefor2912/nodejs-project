@@ -7,4 +7,7 @@ router.get('/', (req, resp) => {
     resp.render('../views/customer/home.ejs');
 });
 
+
+
+
 module.exports = router;
