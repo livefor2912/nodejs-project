@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
-app.listen(process.env.PORT || 1234);
+// app.listen(process.env.PORT || 1234);
+app.listen(1234);
 
 //middleware
 app.use(express.static('public')); //say that all file in public is static, dont compile
@@ -19,5 +20,5 @@ app.use((req, resp, next) => {
 app.set('view engine', 'ejs');
 
 //controllers
-//app.use('/', require('./controllers/customer.js'));
 app.use('/admin', require('./controllers/admin.js'));
+app.use('/', require('./controllers/customer.js'));
