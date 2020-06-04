@@ -10,7 +10,14 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 
 var session = require('express-session');
-app.use(session({ secret: '123456' }));
+app.use(session({ 
+    secret: '123456',
+    name: cookie_name,
+    store: sessionStore,
+    proxy:true,
+    resave: true,
+    saveUninitialized: true 
+}));
 app.use((req, resp, next) => {
     resp.locals.session = req.session;
     next();
