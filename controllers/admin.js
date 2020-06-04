@@ -51,5 +51,20 @@ router.get('/home', (req, resp) => {
     //    resp.redirect('login');
     //}
 });
-
+router.get("/product", (req, resp) => { 
+    MongoClient.connect(uri, (err, conn) => {
+        if(err) throw err;
+        var db = conn.db('project');
+        var query = {};
+        db.collection('products').find(query).toArray((err, result) => {
+            if(err) throw err;
+            if(result) {
+                resp.render('admin/home', {listProduct: result})
+            } else {
+                resp.render('admin/home');
+            }
+            conn.close();
+        });
+    });
+});
 module.exports = router;
