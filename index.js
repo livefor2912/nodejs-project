@@ -11,14 +11,14 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //init some var to provide cookie and session storage
-// MemoryStore = express.session.MemoryStore
-// var sessionStore = new MemoryStore();
+//MemoryStore = express.session.MemoryStore
+//var sessionStore = new MemoryStore();
 
 var session = require('express-session');
 app.use(session({ 
     secret: '123456',
     //name: cookie_name,
-    // store: sessionStore,
+    //store: sessionStore,
     proxy:true,
     resave: true,
     saveUninitialized: true 
