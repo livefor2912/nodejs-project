@@ -79,4 +79,28 @@ router.get("/listproducts", async (req, resp) => {
     resp.render('admin/listproducts', { listProduct: list });
 
 });
+
+router.get("/addproduct", async (req, resp) => {
+    var list = await CategoryDAO.selectAll2();
+    resp.render('admin/addproduct', { categories: list });
+});
+router.post("/addproduct", upload.single('image'), async (req, resp) => {
+    var name = req.body.name;
+    var price = req.body.price;
+    var amount = req.body.amount;
+    var category = req.body.category;
+    var time = new Date().getTime();
+    // var image = req.body.image;
+    var image = req.file.buffer.toString('base64');
+    var products = { name: name, price: price, amount: amount, category: category, image: 'data:image/png;base64,' + image, creationDate: time };
+    var result = await ProductDAO.insert(products);
+    if (result) {
+        resp.redirect('/admin/listproducts');
+    }else {
+        resp.redirect('/admin/addproduct');
+    }
+});
+
+
+
 module.exports = router;
