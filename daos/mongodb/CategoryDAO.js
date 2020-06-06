@@ -10,7 +10,7 @@ var CategoryDAO = {
   async selectAll2() {
     var query = {};
     var db = await client.getDB();
-    var categories = await db.collection("category").find(query).toArray();
+    var categories = await db.collection("categories").find(query).toArray();
     return categories;
   },
   async selectByID(_id) {

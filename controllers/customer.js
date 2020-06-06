@@ -8,11 +8,18 @@ var MyUtil = require("../utils/MyUtil.js");
 var multer = require('multer');
 
 var pathDAO = "../daos/mongodb";
+// var pathDAO = "../daos/mongoose";
+var CategoryDAO = require(pathDAO + "/CategoryDAO.js");
+var ProductDAO = require(pathDAO + "/ProductDAO.js");
 var CustomerDAO = require(pathDAO + "/CustomerDAO.js");
+var OrderDAO = require(pathDAO + "/OrderDAO.js");
 
 
-router.get('/', (req, resp) => {
-    resp.render('../views/customer/home.ejs');
+router.get('/', async (req, resp) => {
+    var categories = await CategoryDAO.selectAll();
+    var newproducts = await ProductDAO.selectTopNew(3);
+    var hotproducts = await ProductDAO.selectTopHot(3);
+    resp.render('../views/customer/home.ejs', { cats: categories, newprods: newproducts, hotprods: hotproducts });
 });
 
 router.get('/register',(req,res) => {
@@ -20,8 +27,8 @@ router.get('/register',(req,res) => {
 });
 
 router.get('/login', (req, resp) => {
-    if(req.session.cus) {
-        resp.redirect('home');
+    if(req.session.customer) {
+        resp.redirect('/');
     } else {
         resp.render('../views/customer/login.ejs');
     }
@@ -33,11 +40,10 @@ router.post('/login', async (req, resp) => {
     var pwdhashed = MyUtil.md5(password);
     //var cus = await CustomerDAO.sele
     var remember = req.body.remember;
-
-    //CustomerDAO.selectByUsernameAndPassword(username, pwdhashed);
+    var cus = CustomerDAO.selectByUsernameAndPassword(username, pwdhashed);
     if (cus) {
-      req.session.cus = cus;
-      resp.redirect('home');
+      req.session.customer = cus;
+      resp.redirect('/');
     } else {
       MyUtil.showAlertAndRedirect(resp, 'Invalid login!', './login');
     }
