@@ -14,6 +14,7 @@ var EmailUtil = require("../utils/EmailUtil.js");
 // var pathDAO = "../daos/mongodb";
 var pathDAO = "../daos/mongodb";
 var AdminDAO = require(pathDAO + "/AdminDAO.js");
+var ZoneDAO = require(pathDAO + "/ZoneDAO.js");
 var OrderDAO = require(pathDAO + "/OrderDAO.js");
 var CategoryDAO = require(pathDAO + "/CategoryDAO.js");
 var ProductDAO = require(pathDAO + "/ProductDAO.js");
@@ -28,7 +29,7 @@ router.use((req, res, next) => {
     }
 });
 
-// //routes
+//routes
 // router.get('/', (req, resp) => {
 //     resp.redirect('home');
 // });
@@ -108,6 +109,8 @@ router.get('/editproduct', async (req, resp) => {
 router.get('/productdetail/:id', async (req, resp) => {
     var product = await ProductDAO.selectByID(req.params.id);
     resp.render('admin/productdetail', { product: product });
+router.get('/listzones', (req, resp) => {
+    
 });
 
 module.exports = router;
