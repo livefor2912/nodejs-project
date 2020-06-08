@@ -29,7 +29,7 @@ router.use((req, res, next) => {
     }
 });
 
-// //routes
+//routes
 // router.get('/', (req, resp) => {
 //     resp.redirect('home');
 // });
@@ -102,6 +102,8 @@ router.post("/addproduct", upload.single('image'), async (req, resp) => {
     }
 });
 
-
+router.get('/listzones', (req, resp) => {
+    
+});
 
 module.exports = router;
