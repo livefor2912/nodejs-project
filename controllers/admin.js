@@ -14,6 +14,7 @@ var EmailUtil = require("../utils/EmailUtil.js");
 //var pathDAO = "../daos/mongodb";
 var pathDAO = "../daos/mongodb";
 var AdminDAO = require(pathDAO + "/AdminDAO.js");
+var ZoneDAO = require(pathDAO + "/ZoneDAO.js");
 var OrderDAO = require(pathDAO + "/OrderDAO.js");
 var CategoryDAO = require(pathDAO + "/CategoryDAO.js");
 var ProductDAO = require(pathDAO + "/ProductDAO.js");
