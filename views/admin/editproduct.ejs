@@ -165,7 +165,7 @@
                                             <a class="nav-link" href="/admin/listproducts">List product</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/admin/addproduct">Add product</a>
+                                            <a class="nav-link" href="/admin/addproduct">Edit product</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -214,13 +214,13 @@
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="page-header">
-                                <h2 class="pageheader-title">Add Product </h2>
+                                <h2 class="pageheader-title">Edit product </h2>
                                 <p class="pageheader-text">Nulla euismod urna eros, sit amet scelerisque torton lectus vel mauris facilisis faucibus at enim quis massa lobortis rutrum.</p>
                                 <div class="page-breadcrumb">
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Home</a></li>
-                                            <li class="breadcrumb-item active" aria-current="page">Add Product</li>
+                                            <li class="breadcrumb-item active" aria-current="page">Edit product</li>
                                         </ol>
                                     </nav>
                                 </div>
@@ -236,7 +236,7 @@
                                 <div class="col-md-12">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h4 class="mb-0">Add Product</h4>
+                                            <h4 class="mb-0">Edit product</h4>
                                         </div>
                                         <div class="card-body">
                                             <form class="needs-validation" novalidate="" action="/admin/addproduct" method="POST" enctype="multipart/form-data">
@@ -275,18 +275,6 @@
                                                             <option value="">Choose...</option>
                                                             <% for (var item of categories) { %>
                                                                 <option value="<%= item.name %>"><%= item.name %></option>
-                                                            <% } %>
-                                                        </select>
-                                                        <div class="invalid-feedback">
-                                                            Please select a valid Category.
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 mb-12">
-                                                        <label for="country">Zones</label>
-                                                        <select class="custom-select d-block w-100" id="ca-ca-ca-te-goryyy" required="" name="category">
-                                                            <option value="">None</option>
-                                                            <% for (var item of categories) { %>
-                                                                <option value="<%= item. %>"><%= item.name %></option>
                                                             <% } %>
                                                         </select>
                                                         <div class="invalid-feedback">
