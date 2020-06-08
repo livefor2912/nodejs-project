@@ -103,7 +103,7 @@ router.post("/addproduct", upload.single('image'), async (req, resp) => {
 });
 
 router.get('/listzones', (req, resp) => {
-    
+    resp.render('./admin/listzones.ejs');
 });
 
 module.exports = router;
