@@ -40,76 +40,71 @@
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown_1" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="listproduct">
                                     product
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
                                     <%  if (typeof(cats) !== 'undefined') { for (var cat of cats) { %>
                                         <a class="dropdown-item" href="./listproduct?catID=<%=cat._id%>"><%=cat.name%></a>
                                     <%  } } %>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown_1" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="">
+                                    Zone
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
+                                    <% if(typeof(zones) !== 'undefined') { for (var zone of zones) { %>
+                                        <a class="dropdown-item" href=""><%= zone.name %></a>
+                                    <%  } } %>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Contact</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">About</a>
+                            </li>
+                        </ul>
                     </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown_3" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            pages
+                    <form class="hearer_icon d-flex align-items-center">
+                        <a id="search_1" href="javascript:void(0)"><i class="ti-search"></i></a>
+                        <a href="#">
+                            <i class="flaticon-shopping-cart-black-shape"></i>
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
-                            <a class="dropdown-item" href="checkout.html">product checkout</a>
-                            <a class="dropdown-item" href="cart.html">shopping cart</a>
-                            <a class="dropdown-item" href="confirmation.html">confirmation</a>
-                            <a class="dropdown-item" href="elements.html">elements</a>
-                        </div>
-                    </li>
+                    </form>
+                    <nav class="navbar navbar-expand-lg navbar-light">
+                        <div class="collapse navbar-collapse main-menu-item" id="navbarSupportedContent">
+                            <ul class="navbar-nav">
+                                <% if (session.customer) { %>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown_3" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <%= session.customer.username %> askhdkjasfjas
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
+                                        <a class="dropdown-item" href="#">Profile</a>
+                                        <a class="dropdown-item" href="#">My orders</a>
+                                        <a class="dropdown-item" href="#">Log out</a>
+                                    </div>
+                                </li>
+                                <% } else {  %>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="login">Log in</a>
+                                </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="blog.html" id="navbarDropdown_2" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            blog
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
-                            <a class="dropdown-item" href="blog.html"> blog</a>
-                            <a class="dropdown-item" href="single-blog.html">Single blog</a>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="register">Register</a>
+                                </li>
+                                <% } %>
+                            </ul>
                         </div>
-                    </li>
-                    </ul>
+                    </nav>
+                </nav>
             </div>
-            <div class="hearer_icon d-flex align-items-center">
-                <a id="search_1" href="javascript:void(0)"><i class="ti-search"></i></a>
-                <a href="cart.html">
-                    <i class="flaticon-shopping-cart-black-shape"></i>
-                </a>
-            </div>
-            <nav class="navbar navbar-expand-lg navbar-light">
-                <div class="collapse navbar-collapse main-menu-item" id="navbarSupportedContent">
-                    <ul class="navbar-nav">
-                        <% if (session.customer) { %>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown_3" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <%= session.customer.username %> askhdkjasfjas
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
-                                <a class="dropdown-item" href="#">Profile</a>
-                                <a class="dropdown-item" href="#">My orders</a>
-                                <a class="dropdown-item" href="#">Log out</a>
-                            </div>
-                        </li>
-                        <% } else {  %>
-                        <li class="nav-item">
-                            <a class="nav-link" href="login">Log in</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="register">Register</a>
-                        </li>
-                        <% } %>
-                    </ul>
-                </div>
-            </nav>
-            </nav>
         </div>
-    </div>
     </div>
     <div class="search_input" id="search_input_box">
         <div class="container ">

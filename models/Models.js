@@ -7,6 +7,11 @@ var AdminSchema = mongoose.Schema({
   password: String
 }, { versionKey: false });
 
+var ZoneSchema = mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
+  name: String
+}, { versionKey: false });
+
 var CategorySchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   name: String
@@ -48,8 +53,9 @@ var OrderSchema = mongoose.Schema({
 
 // models
 var Admin = mongoose.model('Admin', AdminSchema);
+var Zone = mongoose.model('Zone', ZoneSchema);
 var Category = mongoose.model('Category', CategorySchema);
 var Customer = mongoose.model('Customer', CustomerSchema);
 var Product = mongoose.model('Product', ProductSchema);
 var Order = mongoose.model('Order', OrderSchema);
-module.exports = { Admin, Category, Customer, Product, Order };
+module.exports = { Admin, Zone, Category, Customer, Product, Order };

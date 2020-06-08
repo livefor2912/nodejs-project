@@ -7,22 +7,23 @@ var router = express.Router();
 var MyUtil = require("../utils/MyUtil.js");
 var multer = require('multer');
 
-var pathDAO = "../daos/mongodb";
-// var pathDAO = "../daos/mongoose";
+// var pathDAO = "../daos/mongodb";
+var pathDAO = "../daos/mongoose";
 var CategoryDAO = require(pathDAO + "/CategoryDAO.js");
 var ProductDAO = require(pathDAO + "/ProductDAO.js");
 var CustomerDAO = require(pathDAO + "/CustomerDAO.js");
 var OrderDAO = require(pathDAO + "/OrderDAO.js");
-
+var ZoneDAO = require(pathDAO + "/ZoneDAO.js");
 
 router.get('/', async (req, resp) => {
     var categories = await CategoryDAO.selectAll();
     var newproducts = await ProductDAO.selectTopNew(3);
     var hotproducts = await ProductDAO.selectTopHot(3);
-    resp.render('../views/customer/home.ejs', { cats: categories, newprods: newproducts, hotprods: hotproducts });
+    var zones = await ZoneDAO.selectAll();
+    resp.render('../views/customer/home.ejs', { cats: categories, newprods: newproducts, hotprods: hotproducts, zones: zones });
 });
 
-router.get('/register',(req,res) => {
+router.get('/register',(req, res) => {
     res.render('../views/customer/register.ejs');
 });
 
