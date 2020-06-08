@@ -97,13 +97,13 @@ router.post("/addproduct", upload.single('image'), async (req, resp) => {
     var result = await ProductDAO.insert(products);
     if (result) {
         resp.redirect('/admin/listproducts');
-    }else {
+    } else {
         resp.redirect('/admin/addproduct');
     }
 });
 
 router.get('/listzones', (req, resp) => {
-    
+
 });
 
 module.exports = router;
