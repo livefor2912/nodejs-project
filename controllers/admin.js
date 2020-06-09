@@ -116,4 +116,15 @@ router.get('/listzones', async (req, resp) => {
     resp.render('../views/admin/listzones.ejs', { zones: list });
 });
 
+router.post('/addzone', async (req, resp) => {
+    var name = req.body.name;
+    var zone = { name: name };
+    var result = await ZoneDAO.insert(zone);
+    if (result) {
+        MyUtil.showAlertAndRedirect(resp, 'Adding zone successfully!', './listzones');
+      } else {
+        MyUtil.showAlertAndRedirect(resp, 'Adding zone failed', './listzones');
+      }
+});
+
 module.exports = router;

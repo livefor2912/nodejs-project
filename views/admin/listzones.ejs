@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Concept - Bootstrap 4 Admin Dashboard Template</title>
+    <title>Zone</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
     <link href="../assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
@@ -58,7 +58,7 @@
                     <!-- ============================================================== -->
                     <!-- striped table -->
                     <!-- ============================================================== -->
-                    <div class="col-xl-10 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <div class="col-xl-8 col-lg-6 col-md-12 col-sm-12 col-12">
                         <div class="card">
                             <h5 class="card-header">List zones</h5>
                             <div class="card-body">
@@ -78,6 +78,22 @@
                                             <%  } %>
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+                        <div class="card">
+                            <h5 class="card-header">Add zone</h5>
+                            <div class="card-body">
+                                <form class="form-group" action="addzone" method="POST">
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" name="name">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-primary">Add</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
