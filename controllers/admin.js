@@ -111,6 +111,7 @@ router.get('/productdetail/:id', async (req, resp) => {
     resp.render('admin/productdetail', { product: product });
 router.get('/listzones', (req, resp) => {
     
+    });
 });
 
 module.exports = router;
