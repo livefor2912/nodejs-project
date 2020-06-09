@@ -109,10 +109,11 @@ router.get('/editproduct', async (req, resp) => {
 router.get('/productdetail/:id', async (req, resp) => {
     var product = await ProductDAO.selectByID(req.params.id);
     resp.render('admin/productdetail', { product: product });
-router.get('/listzones', (req, resp) => {
-    resp.render('./admin/listzones.ejs');
-    
-    });
+});
+
+router.get('/listzones', async (req, resp) => {
+    var list = await ZoneDAO.selectAll();
+    resp.render('../views/admin/listzones.ejs', { zones: list });
 });
 
 module.exports = router;
