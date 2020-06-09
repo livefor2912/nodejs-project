@@ -109,9 +109,6 @@ router.get('/editproduct', async (req, resp) => {
 router.get('/productdetail/:id', async (req, resp) => {
     var product = await ProductDAO.selectByID(req.params.id);
     resp.render('admin/productdetail', { product: product });
-router.get('/listzones', (req, resp) => {
-    
-    });
 });
 
 module.exports = router;
