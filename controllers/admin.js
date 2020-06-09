@@ -11,7 +11,7 @@ var upload = multer({});
 var MyUtil = require("../utils/MyUtil.js");
 var EmailUtil = require("../utils/EmailUtil.js");
 // daos
-//var pathDAO = "../daos/mongodb";
+// var pathDAO = "../daos/mongodb";
 var pathDAO = "../daos/mongodb";
 var AdminDAO = require(pathDAO + "/AdminDAO.js");
 var ZoneDAO = require(pathDAO + "/ZoneDAO.js");
@@ -97,13 +97,22 @@ router.post("/addproduct", upload.single('image'), async (req, resp) => {
     var result = await ProductDAO.insert(products);
     if (result) {
         resp.redirect('/admin/listproducts');
-    }else {
+    } else {
         resp.redirect('/admin/addproduct');
     }
 });
+router.get('/editproduct', async (req, resp) => {
+    var list = await CategoryDAO.selectAll2();
+    resp.render('admin/editproduct', await { categories: list });
+});
 
+router.get('/productdetail/:id', async (req, resp) => {
+    var product = await ProductDAO.selectByID(req.params.id);
+    resp.render('admin/productdetail', { product: product });
 router.get('/listzones', (req, resp) => {
     resp.render('./admin/listzones.ejs');
+    
+    });
 });
 
 module.exports = router;
