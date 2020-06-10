@@ -139,4 +139,14 @@ router.post('/updatezone', async (req, resp) => {
     } 
 });
 
+router.post('/deletezone', async(req, resp) => {
+    var _id = req.body.txtID;
+    var result = await ZoneDAO.delete(_id);
+    if (result) {
+      MyUtil.showAlertAndRedirect(resp, 'Deleting zone successfully!', './listzones');
+    } else {
+      MyUtil.showAlertAndRedirect(resp, 'Deleting zone failed', './listzones');
+    }
+});
+
 module.exports = router;
