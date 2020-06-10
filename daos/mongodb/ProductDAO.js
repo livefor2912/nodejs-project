@@ -7,6 +7,25 @@ var ProductDAO = {
     var products = await db.collection("products").find(query).toArray();
     return products;
   },
+  async selectTest() {
+    var db = await client.getDB();
+    var products = await db.collection('products').aggregate([{
+      $lookup: {
+        from: 'categories',
+        localField: 'idcategory',
+        foreignField: '_id',
+        as: 'category'
+      }
+    }, {$unwind: '$category'}, {
+      $lookup: {
+        from: 'zones',
+        localField: 'idzone',
+        foreignField: '_id',
+        as: 'zone'
+      }
+    }, {$unwind: '$zone'}, {$project: {idcategory: 0, idzone: 0}}]).toArray();
+    return products;
+  },
   async selectByID(_id) {
     var query = { _id: ObjectId(_id) };
     var db = await client.getDB();

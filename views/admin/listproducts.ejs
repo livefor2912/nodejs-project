@@ -60,6 +60,7 @@
                                                     <th class="border-0">Quantity</th>
                                                     <th class="border-0">Amount</th>
                                                     <th class="border-0">Category</th>
+                                                    <th class="border-0">Zones</th>
                                                     <!-- <th class="border-0">IDCategory</th> -->
                                                     <!-- <th class="border-0">Status</th> -->
                                                 </tr>
@@ -67,7 +68,7 @@
                                             <tbody>
                                                 <% if (hasOwnProperty('listProduct')) { %>
                                                     <% for (var item of listProduct) { %>
-                                                        <tr>
+                                                        <tr onclick="javascript:location.href = '/'">
                                                             <td><%= item._id %></td>
                                                             <td>
                                                                 <div class="m-r-10"><img src="<%= item.image%>" alt="user" class="rounded" width="45"></div>
@@ -76,8 +77,8 @@
                                                             <td><%= item.price %></td>
                                                             <td><%= new Date(item.creationDate) %></td>
                                                             <td><%= item.amount %></td>
-                                                            <td><%= item.category %></td>
-                                                            <!-- <td><%= item.IDCategory %></td> -->
+                                                            <td><%= item.category.name %></td>
+                                                            <td><%= item.zone.name %></td>
                                                             <!-- <td><span class="badge-dot badge-brand mr-1"></span>InTransit </td> -->
                                                         </tr>
                                                         <!-- <tr>

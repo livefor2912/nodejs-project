@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var objectId = require('mongodb').ObjectID;
 
 // var MongoClient = require('mongodb').MongoClient;
 // var uri = 'mongodb+srv://admin:tYFofQJbk98w31OR@cluster0-baxfc.mongodb.net/project';
@@ -76,24 +77,25 @@ router.get("/listproducts", async (req, resp) => {
     //         conn.close();
     //     });
     // });
-    var list = await ProductDAO.selectAll();
+    var list = await ProductDAO.selectTest();
     resp.render('admin/listproducts', { listProduct: list });
-
 });
 
 router.get("/addproduct", async (req, resp) => {
     var list = await CategoryDAO.selectAll2();
-    resp.render('admin/addproduct', { categories: list });
+    var zones = await ZoneDAO.selectAll();
+    resp.render('admin/addproduct', { categories: list, Zones: zones });
 });
 router.post("/addproduct", upload.single('image'), async (req, resp) => {
     var name = req.body.name;
     var price = req.body.price;
     var amount = req.body.amount;
-    var category = req.body.category;
+    var idcategory = req.body.category;
+    var idzone = req.body.zone;
     var time = new Date().getTime();
     // var image = req.body.image;
     var image = req.file.buffer.toString('base64');
-    var products = { name: name, price: price, amount: amount, category: category, image: 'data:image/png;base64,' + image, creationDate: time };
+    var products = { name: name, price: price, amount: amount, idcategory: objectId(idcategory), image: 'data:image/png;base64,' + image, creationDate: time, idzone: objectId(idzone) };
     var result = await ProductDAO.insert(products);
     if (result) {
         resp.redirect('/admin/listproducts');
