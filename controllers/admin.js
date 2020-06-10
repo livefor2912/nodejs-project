@@ -111,4 +111,42 @@ router.get('/productdetail/:id', async (req, resp) => {
     resp.render('admin/productdetail', { product: product });
 });
 
+router.get('/listzones', async (req, resp) => {
+    var list = await ZoneDAO.selectAll();
+    resp.render('../views/admin/listzones.ejs', { zones: list });
+});
+
+router.post('/addzone', async (req, resp) => {
+    var name = req.body.name;
+    var zone = { name: name };
+    var result = await ZoneDAO.insert(zone);
+    if (result) {
+        MyUtil.showAlertAndRedirect(resp, 'Adding zone successfully!', './listzones');
+      } else {
+        MyUtil.showAlertAndRedirect(resp, 'Adding zone failed', './listzones');
+      }
+});
+
+router.post('/updatezone', async (req, resp) => {
+    var _id = req.body.id;
+    var name = req.body.nameZone;
+    var zone = { _id: _id, name: name };
+    var result = await ZoneDAO.update(zone);
+    if (result) {
+      MyUtil.showAlertAndRedirect(resp, 'Updating zone successfully!', './listzones');
+    } else {
+      MyUtil.showAlertAndRedirect(resp, 'Updating zone failed', './listzones');
+    } 
+});
+
+router.post('/deletezone', async(req, resp) => {
+    var _id = req.body.txtID;
+    var result = await ZoneDAO.delete(_id);
+    if (result) {
+      MyUtil.showAlertAndRedirect(resp, 'Deleting zone successfully!', './listzones');
+    } else {
+      MyUtil.showAlertAndRedirect(resp, 'Deleting zone failed', './listzones');
+    }
+});
+
 module.exports = router;
