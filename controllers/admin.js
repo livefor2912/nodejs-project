@@ -127,4 +127,16 @@ router.post('/addzone', async (req, resp) => {
       }
 });
 
+router.post('/updatezone', async (req, resp) => {
+    var _id = req.body.id;
+    var name = req.body.nameZone;
+    var zone = { _id: _id, name: name };
+    var result = await ZoneDAO.update(zone);
+    if (result) {
+      MyUtil.showAlertAndRedirect(resp, 'Updating zone successfully!', './listzones');
+    } else {
+      MyUtil.showAlertAndRedirect(resp, 'Updating zone failed', './listzones');
+    } 
+});
+
 module.exports = router;
