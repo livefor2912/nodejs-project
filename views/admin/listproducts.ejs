@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
- 
+
 <head>
     <title>List Product</title>
 </head>
@@ -28,11 +28,13 @@
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="page-header">
                                 <h2 class="pageheader-title">List Product</h2>
-                                <p class="pageheader-text">Nulla euismod urna eros, sit amet scelerisque torton lectus vel mauris facilisis faucibus at enim quis massa lobortis rutrum.</p>
+                                <p class="pageheader-text">Nulla euismod urna eros, sit amet scelerisque torton lectus
+                                    vel mauris facilisis faucibus at enim quis massa lobortis rutrum.</p>
                                 <div class="page-breadcrumb">
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
-                                            <li class="breadcrumb-item"><a href="/admin/Home" class="breadcrumb-link">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="/admin/Home"
+                                                    class="breadcrumb-link">Home</a></li>
                                             <li class="breadcrumb-item active" aria-current="page">List Product</li>
                                         </ol>
                                     </nav>
@@ -45,9 +47,11 @@
                     <!-- ============================================================== -->
                     <div class="row">
                         <!--  -->
-                        <div class="col-xl-9 col-lg-12 col-md-6 col-sm-12 col-12">
+                        <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
                             <div class="card">
                                 <h5 class="card-header">List Product</h5>
+                                <a href="/admin/addproduct" class="pull-right btn btn-primary">Add product</a>
+
                                 <div class="card-body p-0">
                                     <div class="table-responsive">
                                         <table class="table">
@@ -61,30 +65,32 @@
                                                     <th class="border-0">Amount</th>
                                                     <th class="border-0">Category</th>
                                                     <th class="border-0">Zones</th>
-                                                    <!-- <th class="border-0">IDCategory</th> -->
+                                                    <th class="border-0">Action</th>
                                                     <!-- <th class="border-0">Status</th> -->
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <% if (hasOwnProperty('listProduct')) { %>
-                                                    <% for (var item of listProduct) { %>
-                                                        <tr onclick="javascript:location.href = '/'">
-                                                            <td><%= item._id %></td>
-                                                            <td>
-                                                                <div class="m-r-10"><img src="<%= item.image%>" alt="user" class="rounded" width="45"></div>
-                                                            </td>
-                                                            <td><%= item.name %></td>
-                                                            <td><%= item.price %></td>
-                                                            <td><%= new Date(item.creationDate) %></td>
-                                                            <td><%= item.amount %></td>
-                                                            <td><%= item.category.name %></td>
-                                                            <td><%= item.zone.name %></td>
-                                                            <!-- <td><span class="badge-dot badge-brand mr-1"></span>InTransit </td> -->
-                                                        </tr>
-                                                        <!-- <tr>
+                                                <% for (var item of listProduct) { %>
+                                                <tr onclick="javascript:location.href = '/'">
+                                                    <td><%= item._id %></td>
+                                                    <td>
+                                                        <div class="m-r-10"><img src="<%= item.image%>" alt="user"
+                                                                class="rounded" width="45"></div>
+                                                    </td>
+                                                    <td><%= item.name %></td>
+                                                    <td><%= item.price %></td>
+                                                    <td><%= new Date(item.creationDate) %></td>
+                                                    <td><%= item.amount %></td>
+                                                    <td><%= item.category.name %></td>
+                                                    <td><%= item.zone.name %></td>
+                                                    <td><a class="btn btn-primary" style="color: white" href="/admin/productdetail/<%= item._id %>">Detail</a></td>
+                                                    <!-- <td><span class="badge-dot badge-brand mr-1"></span>InTransit </td> -->
+                                                </tr>
+                                                <!-- <tr>
                                                             <td colspan="9"><a href="#" class="btn btn-outline-light float-right">View Details</a></td>
                                                         </tr> -->
-                                                    <% } %>
+                                                <% } %>
                                                 <% } %>
                                             </tbody>
                                         </table>
@@ -92,35 +98,24 @@
                                 </div>
                             </div>
                         </div>
-                  
-                        <!--  -->
-                        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-12">
-                            <div class="product-sidebar">
-                                <div class="product-sidebar-widget" style="margin-bottom: 0px;">
-                                    <h4 class="mb-0">Fanwar</h4>
-                                </div>
-                             <!-- <button style="margin: auto;">Add Product</button> -->
-                            <a href="/admin/addproduct"><div style="width: 100%;"><button style="margin-left: 30%;">Add Product</button></div></a>
-                        </div>
                     </div>
+                    <!-- ============================================================== -->
+                    <!-- footer -->
+                    <!-- ============================================================== -->
+                    <%- include('./_footer.ejs') %>
+                    <!-- ============================================================== -->
+                    <!-- end footer -->
+                    <!-- ============================================================== -->
                 </div>
                 <!-- ============================================================== -->
-                <!-- footer -->
-                <!-- ============================================================== -->
-                <%- include('./_footer.ejs') %>
-                <!-- ============================================================== -->
-                <!-- end footer -->
+                <!-- end wrapper  -->
                 <!-- ============================================================== -->
             </div>
-            <!-- ============================================================== -->
-            <!-- end wrapper  -->
-            <!-- ============================================================== -->
         </div>
-    </div>
         <!-- ============================================================== -->
         <!-- end main wrapper  -->
         <!-- ============================================================== -->
-        
+
 </body>
- 
+
 </html>

@@ -103,14 +103,41 @@ router.post("/addproduct", upload.single('image'), async (req, resp) => {
         resp.redirect('/admin/addproduct');
     }
 });
-router.get('/editproduct', async (req, resp) => {
-    var list = await CategoryDAO.selectAll2();
-    resp.render('admin/editproduct', await { categories: list });
+router.post('/editproduct', upload.single('image'), async (req, resp) => {
+    var name = req.body.name;
+    var price = req.body.price;
+    var amount = req.body.amount;
+    var idcategory = req.body.category;
+    var idzone = req.body.zone;
+    var time = new Date().getTime();
+    var image = req.file.buffer.toString('base64');
+    var products = {_id: req.session.productId , name: name, price: price, amount: amount, idcategory: objectId(idcategory), image: 'data:image/png;base64,' + image, creationDate: time, idzone: objectId(idzone) };
+    var result = await ProductDAO.update(products);
+    if (result) {
+        resp.redirect('/admin/listproducts');
+        delete req.session.productId;
+    } else {
+        resp.redirect(`/admin/editproduct/${req.session.productId}`);
+    }
 });
 
 router.get('/productdetail/:id', async (req, resp) => {
+
     var product = await ProductDAO.selectByID(req.params.id);
+    product.zone = await ZoneDAO.selectByID(objectId(product.idzone).valueOf());
+    product.category = await CategoryDAO.selectByID(objectId(product.idcategory).valueOf());
     resp.render('admin/productdetail', { product: product });
+});
+
+router.get('/editproduct/:id', async (req, resp) => {
+    var list = await CategoryDAO.selectAll2();
+    var zones = await ZoneDAO.selectAll();
+    var _id = req.params.id;
+    req.session.productId = _id;
+    var product = await ProductDAO.selectByID(_id);
+    product.zone = await ZoneDAO.selectByID(objectId(product.idzone).valueOf());
+    product.category = await CategoryDAO.selectByID(objectId(product.idcategory).valueOf());
+    resp.render('admin/editproduct', { product: product ,categories: list, Zones: zones  });
 });
 
 router.get('/listzones', async (req, resp) => {
