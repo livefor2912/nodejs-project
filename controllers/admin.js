@@ -110,8 +110,12 @@ router.post('/editproduct', upload.single('image'), async (req, resp) => {
     var idcategory = req.body.category;
     var idzone = req.body.zone;
     var time = new Date().getTime();
-    var image = req.file.buffer.toString('base64');
-    var products = {_id: req.session.productId , name: name, price: price, amount: amount, idcategory: objectId(idcategory), image: 'data:image/png;base64,' + image, creationDate: time, idzone: objectId(idzone) };
+    var image = (await ProductDAO.selectByID(req.session.productId)).image;
+    if (req.file)
+        image = req.file.buffer.toString('base64');
+    if (!image.toString().startsWith('data:image/png;base64,'))
+        image = 'data:image/png;base64,' + image;
+    var products = {_id: req.session.productId , name: name, price: price, amount: amount, idcategory: objectId(idcategory), image: image, creationDate: time, idzone: objectId(idzone) };
     var result = await ProductDAO.update(products);
     if (result) {
         resp.redirect('/admin/listproducts');
