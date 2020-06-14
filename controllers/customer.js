@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var objectId = require('mongodb').ObjectID;
 
 //var MongoClient = require('mongodb').MongoClient;
 //var uri = 'mongodb+srv://admin:tYFofQJbk98w31OR@cluster0-baxfc.mongodb.net/project';
@@ -23,12 +24,12 @@ router.get('/', async (req, resp) => {
     resp.render('../views/customer/home.ejs', { cats: categories, newprods: newproducts, hotprods: hotproducts, zones: zones });
 });
 
-router.get('/register',(req, res) => {
+router.get('/register', (req, res) => {
     res.render('../views/customer/register.ejs');
 });
 
 router.get('/login', (req, resp) => {
-    if(req.session.customer) {
+    if (req.session.customer) {
         resp.redirect('/');
     } else {
         resp.render('../views/customer/login.ejs');
@@ -43,25 +44,39 @@ router.post('/login', async (req, resp) => {
     var remember = req.body.remember;
     var cus = CustomerDAO.selectByUsernameAndPassword(username, pwdhashed);
     if (cus) {
-      req.session.customer = cus;
-      resp.redirect('/');
+        req.session.customer = cus;
+        resp.redirect('/');
     } else {
-      MyUtil.showAlertAndRedirect(resp, 'Invalid login!', './login');
+        MyUtil.showAlertAndRedirect(resp, 'Invalid login!', './login');
     }
 });
 
-router.get("/listproductscus", async (req , resp) => {
+router.get("/listproductscus", async (req, resp) => {
     var categories = await CategoryDAO.selectAll();
     var newproducts = await ProductDAO.selectTopNew(3);
     var hotproducts = await ProductDAO.selectTopHot(3);
     var zones = await ZoneDAO.selectAll();
     var list = await ProductDAO.selectAll();
-    resp.render('../views/customer/listproductscus.ejs', { cats: categories, newprods: newproducts, hotprods: hotproducts, zones: zones 
-   , listProduct: list });
+    resp.render('../views/customer/listproductscus.ejs', {
+        cats: categories, newprods: newproducts, hotprods: hotproducts, zones: zones
+        , listProduct: list
+    });
 });
 
-router.get("/productdetailcus", (req, resp ) => {
-    resp.render('../views/customer/productdetailcus.ejs');
+router.get("/productdetailcus/:id", async (req, resp) => {
+    var categories = await CategoryDAO.selectAll();
+    var newproducts = await ProductDAO.selectTopNew(3);
+    var hotproducts = await ProductDAO.selectTopHot(3);
+    var zones = await ZoneDAO.selectAll();
+    var product = await ProductDAO.selectByID(req.params.id);
+    console.log(product.amount);
+    product.zone = await ZoneDAO.selectByID(objectId(product.idzone).valueOf());
+    product.category = await CategoryDAO.selectByID(objectId(product.idcategory).valueOf());
+    resp.render('../views/customer/productdetailcus.ejs', { product: product });
+});
+
+router.get("/search", async (req, resp) => {
+
 });
 
 module.exports = router;
