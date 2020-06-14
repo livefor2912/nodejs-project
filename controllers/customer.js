@@ -50,5 +50,18 @@ router.post('/login', async (req, resp) => {
     }
 });
 
+router.get("/listproductscus", async (req , resp) => {
+    var categories = await CategoryDAO.selectAll();
+    var newproducts = await ProductDAO.selectTopNew(3);
+    var hotproducts = await ProductDAO.selectTopHot(3);
+    var zones = await ZoneDAO.selectAll();
+    var list = await ProductDAO.selectAll();
+    resp.render('../views/customer/listproductscus.ejs', { cats: categories, newprods: newproducts, hotprods: hotproducts, zones: zones 
+   , listProduct: list });
+});
+
+router.get("/productdetailcus", (req, resp ) => {
+    resp.render('../views/customer/productdetailcus.ejs');
+});
 
 module.exports = router;
