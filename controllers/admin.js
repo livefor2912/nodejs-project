@@ -101,7 +101,24 @@ router.post("/addproduct", upload.single('image'), async (req, resp) => {
         resp.redirect('/admin/addproduct');
     }
 });
-
+router.get('/listorders', async function (req, resp) {
+    if(req.session.admin) {
+    var orders = await OrderDAO.selectAll();
+    var _id = req.query.id; // /listorder?id=XXX
+    if (_id) {
+      var order = await OrderDAO.selectByID(_id);
+    }
+    resp.render('../views/admin/listorders.ejs', { orders: orders});
+    }else {
+        resp.redirect('login');
+    }
+});
+router.get('/updatestatus', async function (req, res) {
+    var _id = req.query.id; // /updatestatus?status=XXX&id=XXX
+    var newStatus = req.query.status;
+    await OrderDAO.update(_id, newStatus);
+    res.redirect('./listorders?id=' + _id);
+  });
 router.get('/listzones', (req, resp) => {
     
 });
