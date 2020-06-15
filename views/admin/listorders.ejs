@@ -17,9 +17,13 @@
     <link rel="stylesheet" href="/assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
     <title>Fanwar - Admin Dashboard</title>
-    <style>h1{font-family: 'Acme', sans-serif;
-                color: teal; font-size: 40px;
-                }</style>
+    <style>
+        h1 {
+            font-family: 'Acme', sans-serif;
+            color: teal;
+            font-size: 40px;
+        }
+    </style>
 </head>
 
 <body>
@@ -153,7 +157,7 @@
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
                                     data-target="#submenu-4" aria-controls="submenu-4"><i
                                         class="fab fa-fw fa-wpforms"></i>Category</a>
-                                <div id="submenu-4" class="collapse submenu" >
+                                <div id="submenu-4" class="collapse submenu">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
                                             <a class="nav-link" href="">List category</a>
@@ -168,7 +172,7 @@
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
                                     data-target="#submenu-5" aria-controls="submenu-5"><i
                                         class="fas fa-fw fa-table"></i>Order</a>
-                                <div id="submenu-5" class="collapse submenu" >
+                                <div id="submenu-5" class="collapse submenu">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
                                             <a class="nav-link" href="">List order</a>
@@ -212,15 +216,15 @@
                                                 <tr class="border-0">
                                                     <th class="border-0">ID</th>
                                                     <th class="border-0">Creation date</th>
-                                                    <th class="border-0">Cust.name</th>
-                                                    <th class="border-0">Cust.phone</th>
+                                                    <th class="border-0">Cust_name</th>
+                                                    <th class="border-0">Cust_phone</th>
                                                     <th class="border-0">Total</th>
                                                     <th class="border-0">Status</th>
                                                     <th class="border-0">Action</th>
                                                 </tr>
                                                 <%  for (var item of orders) { %>
                                                 <tr class="datatable"
-                                                    onclick="window.location='./listorder?id=<%=item._id%>'">
+                                                    onclick="window.location='./listorders?id=<%=item._id%>'">
                                                     <th><%=item._id%></th>
                                                     <td><%=new Date(item.cdate).toLocaleString()%></td>
                                                     <td><%=item.customer_name%></td>
@@ -240,8 +244,6 @@
                                                 <%  } %>
                                             </thead>
                                             <tbody>
-                                                <td colspan="9"><a href="#"
-                                                        class="btn btn-outline-light float-right">View Details</a></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -249,6 +251,45 @@
                                 </div>
                             </div>
                             <%  } %>
+                        </div>
+                    </div>
+                   
+                    <div class="col-xl-9 col-lg-12 col-md-6 col-sm-12 col-12">
+                        <div class="card">
+                         <%  if (order) { %>
+                            <h5 class="card-header">Recent Orders</h5>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class="bg-light">
+                                            <tr class="border-0">
+                                                <th class="border-0">No.</th>
+                                                <th class="border-0">Prod.ID</th>
+                                                <th class="border-0">Product Name</th>
+                                                <th class="border-0">Image</th>
+                                                <th class="border-0">Price</th>
+                                                <th class="border-0">Quantity</th>
+                                                <th class="border-0">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%  for (var [i, item] of order.items.entries) {  %>
+                                            <tr class="datatable">
+                                                <td><%=(i+1)%></td>
+                                                <td><%=item.product._id%></td>
+                                                <td><%=item.product.name%></td>
+                                                <td><img src="data:img/product/png;base64,<%=item.product.image%>" width="70"
+                                                        height="70" /></td>
+                                                <td><%=item.product.price%></td>
+                                                <td><%=item.quantity%></td>
+                                                <td><%=item.product.price * item.quantity%></td>
+                                            </tr>
+                                            <%  } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                         <%  } %>
                         </div>
                     </div>
                 </div>

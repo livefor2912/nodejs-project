@@ -108,7 +108,7 @@ router.get('/listorders', async function (req, resp) {
     if (_id) {
       var order = await OrderDAO.selectByID(_id);
     }
-    resp.render('../views/admin/listorders.ejs', { orders: orders});
+    resp.render('../views/admin/listorders.ejs', { orders: orders, order: order });
     }else {
         resp.redirect('login');
     }
@@ -169,6 +169,6 @@ router.post('/deletezone', async(req, resp) => {
 });
 router.get('/listzones', (req, resp) => {
     
-});
+    });
 
 module.exports = router;
