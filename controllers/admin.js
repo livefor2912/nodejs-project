@@ -130,4 +130,13 @@ router.post('/updatecate', async function (req, res) {
       MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae', './listcate');
     }
   });
+  router.post('/deletecate', async function (req, res) {
+    var _id = req.body.id;
+    var result = await CategoryDAO.delete(_id);
+    if (result) {
+      MyUtil.showAlertAndRedirect(res, 'Successfully!!', './listcate');
+    } else {
+      MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae', './listcate');
+    }
+  });
 module.exports = router;
