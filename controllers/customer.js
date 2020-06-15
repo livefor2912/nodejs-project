@@ -50,5 +50,10 @@ router.post('/login', async (req, resp) => {
     }
 });
 
+router.get('/zone', async (req, resp) => {
+    
+    resp.render('../views/customer/zone.ejs');
+});
+
 
 module.exports = router;
