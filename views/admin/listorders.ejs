@@ -223,19 +223,18 @@
                                                     <th class="border-0">Action</th>
                                                 </tr>
                                                 <%  for (var item of orders) { %>
-                                                <tr class="datatable"
-                                                    onclick="window.location='./listorders?id=<%=item._id%>'">
+                                                <tr onclick="window.location='./listorders?id=<%=item._id%>'" style="cursor: pointer">
                                                     <th><%=item._id%></th>
                                                     <td><%=new Date(item.cdate).toLocaleString()%></td>
-                                                    <td><%=item.customer_name%></td>
-                                                    <td><%=item.customer_phone%></td>
-                                                    <td><%=item.total%></td>
+                                                    <td><%=item.customer.name%></td>
+                                                    <td><%=item.customer.phone%></td>
+                                                    <td><%=item.total%></std>
                                                     <td><%=item.status%></td>
                                                     <td>
                                                         <%  if (item.status == 'PENDING') {  %>
                                                         <a
                                                             href="./updatestatus?status=APPROVED&id=<%=item._id%>">APPROVE</a>
-                                                        ||
+                                                         ||
                                                         <a
                                                             href="./updatestatus?status=CANCELED&id=<%=item._id%>">CANCEL</a>
                                                         <%  } %>
@@ -254,10 +253,10 @@
                         </div>
                     </div>
                    
-                    <div class="col-xl-9 col-lg-12 col-md-6 col-sm-12 col-12">
-                        <div class="card">
+                    <div class="col-xl-11 col-lg-12 col-md-6 col-sm-12 col-12">
+                        <div class="card" style="margin-left: 100px ;">
                          <%  if (order) { %>
-                            <h5 class="card-header">Recent Orders</h5>
+                            <h4 class="card-header">Order Detail</h4>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
                                     <table class="table">
@@ -273,12 +272,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <%  for (var [i, item] of order.items.entries) {  %>
-                                            <tr class="datatable">
+                                            <%  for (var [i, item] of order.items.entries()) {  %>
+                                            <tr>
                                                 <td><%=(i+1)%></td>
                                                 <td><%=item.product._id%></td>
                                                 <td><%=item.product.name%></td>
-                                                <td><img src="data:img/product/png;base64,<%=item.product.image%>" width="70"
+                                                <td><img src="data:image/png;base64,<%=item.product.image%>" width="70"
                                                         height="70" /></td>
                                                 <td><%=item.product.price%></td>
                                                 <td><%=item.quantity%></td>
