@@ -125,7 +125,7 @@ router.post('/addzone', upload.single('fileImage'), async (req, resp) => {
         if (result)
             MyUtil.showAlertAndRedirect(resp, 'Adding zone successfully!', './listzones');
     }
-    MyUtil.showAlertAndRedirect(resp, 'Adding zone failed', './listzones');
+    else MyUtil.showAlertAndRedirect(resp, 'Adding zone failed', './listzones');
 });
 
 router.post('/updatezone', upload.single('fileImage'), async (req, resp) => {
@@ -133,12 +133,17 @@ router.post('/updatezone', upload.single('fileImage'), async (req, resp) => {
     var name = req.body.nameZone;
     if(req.file) {
         var image = req.file.buffer.toString('base64');
-        var zone = { _id: _id, name: name, image: image };
-        var result = await ZoneDAO.update(zone);
-        if (result)
-          MyUtil.showAlertAndRedirect(resp, 'Updating zone successfully!', './listzones');
+        console.log('yes');
+    } else {
+        var dbZone = await ZoneDAO.selectByID(_id);
+        var image = dbZone.image;
     }
-    MyUtil.showAlertAndRedirect(resp, 'Updating zone failed', './listzones');
+    var zone = { _id: _id, name: name, image: image };
+    var result = await ZoneDAO.update(zone);
+    if (result)
+        MyUtil.showAlertAndRedirect(resp, 'Updating zone successfully!', './listzones');
+    else
+        MyUtil.showAlertAndRedirect(resp, 'Updating zone failed', './listzones');
 });
 
 router.post('/deletezone', async(req, resp) => {

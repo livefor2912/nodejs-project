@@ -26,7 +26,7 @@ var ZoneDAO = {
   },
   async update(zone) {
     var query = { _id: ObjectId(zone._id) };
-    var newvalues = { $set: { name: zone.name } };
+    var newvalues = { $set: { name: zone.name, image: zone.image } };
     var db = await client.getDB();
     var result = await db.collection("zones").updateOne(query, newvalues);
     return result.result.nModified > 0 ? true : false;
