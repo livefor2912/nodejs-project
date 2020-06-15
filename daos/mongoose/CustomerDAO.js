@@ -12,6 +12,7 @@ var CustomerDAO = {
   },
   async selectByUsernameAndPassword(username, password) {
     var query = { username: username, password: password };
+    
     var customer = await Models.Customer.findOne(query);
     return customer;
   },

@@ -41,7 +41,8 @@ router.post('/login', async (req, resp) => {
     var pwdhashed = MyUtil.md5(password);
     //var cus = await CustomerDAO.sele
     var remember = req.body.remember;
-    var cus = CustomerDAO.selectByUsernameAndPassword(username, pwdhashed);
+    var cus = await CustomerDAO.selectByUsernameAndPassword(username, pwdhashed);
+    // var temp = CustomerDAO.test();
     if (cus) {
       req.session.customer = cus;
       resp.redirect('/');
@@ -49,6 +50,26 @@ router.post('/login', async (req, resp) => {
       MyUtil.showAlertAndRedirect(resp, 'Invalid login!', './login');
     }
 });
+router.get('/myprofile', function (req, resp) {
+    resp.render('../views/customer/myprofile.ejs');
+  });
 
+  router.post('/myprofile', async function (req, resp) {
+    var curCust = req.session.customer;
+    if (curCust) {
+      var username = req.body.txtUsername;
+      var password = req.body.txtPassword;
+      var name = req.body.txtName;
+      var phone = req.body.txtPhone;
+      var email = req.body.txtEmail;
+      var newCust = { _id: curCust._id, username: username, password: password, name: name, phone: phone, email: email, active: curCust.active, token: curCust.token };
+      var result = await CustomerDAO.update(newCust);
+      if (result) {
+        req.session.customer = newCust;
+        MyUtil.showAlertAndRedirect(resp, 'Update successful!', './home');
+      }
+    }
+    MyUtil.showAlertAndRedirect(resp, 'SORRY!', './myprofile');
+  });
 
 module.exports = router;
