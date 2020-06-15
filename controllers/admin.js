@@ -109,5 +109,14 @@ router.get('/listcate', async function (req, res) {
     var categories = await CategoryDAO.selectAll();
     res.render('../views/admin/listcate.ejs', { cats: categories });
 });
-
+router.post('/addcate', async function (req, res) {
+    var name = req.body.name;
+    var category = { name: name };
+    var result = await CategoryDAO.insert(category);
+    if (result) {
+        MyUtil.showAlertAndRedirect(res, 'Successfully!!', './listcate');
+    } else {
+        MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae', './listcate');
+    }
+});
 module.exports = router;

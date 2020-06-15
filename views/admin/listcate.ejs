@@ -3,6 +3,12 @@
 
 <head>
     <title>List Category</title>
+    <script>
+        function details(id, name) {
+            document.getElementById("txtID").value = id;
+            document.getElementById("txtName").value = name;
+        }
+    </script>
 </head>
 
 <body>
@@ -25,12 +31,6 @@
                                     <div class="table-responsive">
                                         <div id="example4_wrapper" class="dataTables_wrapper dt-bootstrap4">
                                             <div class="row">
-                                                <!-- <input type="submit" formaction="./addcategory" value="ADD NEW" /> -->
-                                                <!-- <li class="paginate_button page-item active"><a href="#"
-                                                    aria-controls="example4" data-dt-idx="1"
-                                                    tabindex="0" class="page-link">Add New</a></li>                                                -->
-                                            </div>
-                                            <div class="row">
                                                 <div class="col-sm-12">
                                                     <table id="example4"
                                                         class="table table-striped table-bordered dataTable"
@@ -38,21 +38,22 @@
                                                         aria-describedby="example4_info">
                                                         <thead>
                                                             <tr role="row">
-                                                                <th class="sorting_asc" tabindex="0"                                                                  
+                                                                <th class="sorting_asc" tabindex="0"
                                                                     style="width: 50px;">ID</th>
-                                                                <th class="sorting" tabindex="0"                                                                  
-                                                                    style="width: 54px;">Name</th>                                                  
+                                                                <th class="sorting" tabindex="0" style="width: 54px;">
+                                                                    Name</th>
                                                             </tr>
                                                         </thead>
 
                                                         <tbody>
                                                             <%  for (var item of cats) {  %>
-                                                                <tr>
-                                                                    <th role="row" class="odd"><%=item._id%></th>
-                                                                    <td onclick="details('<%=item._id%>', `<%=item.name%>`)" style="cursor: pointer;">
+                                                            <tr>
+                                                                <th role="row" class="odd"><%=item._id%></th>
+                                                                <td onclick="details('<%=item._id%>', `<%=item.name%>`)"
+                                                                    style="cursor: pointer;">
                                                                     <%=item.name%>
                                                                 </td>
-                                                                </tr>                                                                                            
+                                                            </tr>
                                                             <%  } %>
                                                     </table>
                                                 </div>
@@ -66,25 +67,27 @@
                             <div class="card">
                                 <h5 class="card-header">Category Detail</h5>
                                 <div class="card-body">
-                                    <form class="form-group"  method="POST">
+                                    <form class="form-group" action="addcate" method="POST">
+                                        <th>Name</th>
                                         <div class="input-group mb-3">
                                             <input type="text" class="form-control" name="name">
-                                            
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-primary">Add</button>
+                                            </div>
                                         </div>
-                                        <div class="input-group-append">
-                                            <button type="submit" action="addcate" class="btn btn-primary" style="padding-right: 105px">Add</button>
-                                            <button type="submit" action="updatecate" class="btn btn-primary" style="padding-left: 105px">Update</button>                                 
-                                        </div>
+                                        <!-- </div>                                           
+                                             <button type="submit" action="updatecate" class="btn btn-primary" style="padding-left: 105px">Update</button>
+                                        </div> -->
                                     </form>
                                 </div>
                             </div>
+                        </div>
+                        <!-- end list categories -->
                     </div>
-                    <!-- end list categories -->
+                    <%- include('./_footer.ejs') %>
                 </div>
-                <%- include('./_footer.ejs') %>
             </div>
         </div>
-    </div>
 </body>
 
 </html>
