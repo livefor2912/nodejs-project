@@ -116,15 +116,18 @@ router.get('/listzones', async (req, resp) => {
     resp.render('../views/admin/listzones.ejs', { zones: list });
 });
 
-router.post('/addzone', async (req, resp) => {
+router.post('/addzone', upload.single('fileImage'), async (req, resp) => {
     var name = req.body.name;
-    var zone = { name: name };
-    var result = await ZoneDAO.insert(zone);
-    if (result) {
-        MyUtil.showAlertAndRedirect(resp, 'Adding zone successfully!', './listzones');
-      } else {
-        MyUtil.showAlertAndRedirect(resp, 'Adding zone failed', './listzones');
-      }
+    if(req.file) {
+        var image = req.file.buffer.toString('base64');
+        var zone = { name: name, image: image };
+        var result = await ZoneDAO.insert(zone);
+        if (result)
+            MyUtil.showAlertAndRedirect(resp, 'Adding zone successfully!', './listzones');
+        else
+            MyUtil.showAlertAndRedirect(resp, 'Adding zone failed', './listzones');
+    }
+    MyUtil.showAlertAndRedirect(resp, 'Adding zone failed abc', './listzones');
 });
 
 router.post('/updatezone', async (req, resp) => {
