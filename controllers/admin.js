@@ -116,7 +116,7 @@ router.post('/addcate', async function (req, res) {
     if (result) {
         MyUtil.showAlertAndRedirect(res, 'Successfully!!', './listcate');
     } else {
-        MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae', './listcate');
+        MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae!', './listcate');
     }
 });
 router.post('/updatecate', async function (req, res) {
@@ -125,18 +125,18 @@ router.post('/updatecate', async function (req, res) {
     var category = { _id: _id, name: name };
     var result = await CategoryDAO.update(category);
     if (result) {
-      MyUtil.showAlertAndRedirect(res, 'Successfully!!', './listcate');
+        MyUtil.showAlertAndRedirect(res, 'Successfully!!', './listcate');
     } else {
-      MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae', './listcate');
+        MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae!', './listcate');
     }
-  });
-  router.post('/deletecate', async function (req, res) {
+});
+router.post('/deletecate', async function (req, res) {
     var _id = req.body.id;
     var result = await CategoryDAO.delete(_id);
     if (result) {
-      MyUtil.showAlertAndRedirect(res, 'Successfully!!', './listcate');
+        MyUtil.showAlertAndRedirect(res, 'Successfully!!', './listcate');
     } else {
-      MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae', './listcate');
+        MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae!', './listcate');
     }
-  });
+});
 module.exports = router;
