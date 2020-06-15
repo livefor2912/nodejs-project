@@ -105,5 +105,9 @@ router.post("/addproduct", upload.single('image'), async (req, resp) => {
 router.get('/listzones', (req, resp) => {
 
 });
+router.get('/listcate', async function (req, res) {
+    var categories = await CategoryDAO.selectAll();
+    res.render('../views/admin/listcate.ejs', { cats: categories });
+});
 
 module.exports = router;
