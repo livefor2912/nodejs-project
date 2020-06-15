@@ -77,7 +77,7 @@ router.get("/listproducts", async (req, resp) => {
     //         conn.close();
     //     });
     // });
-    var list = await ProductDAO.selectTest();
+    var list = await ProductDAO.selectAll();
     resp.render('admin/listproducts', { listProduct: list });
 });
 
@@ -90,12 +90,12 @@ router.post("/addproduct", upload.single('image'), async (req, resp) => {
     var name = req.body.name;
     var price = req.body.price;
     var amount = req.body.amount;
-    var idcategory = req.body.category;
-    var idzone = req.body.zone;
+    var category = await CategoryDAO.selectByID(req.body.category);
+    var zone = await ZoneDAO.selectByID(req.body.zone);
     var time = new Date().getTime();
     // var image = req.body.image;
     var image = req.file.buffer.toString('base64');
-    var products = { name: name, price: price, amount: amount, idcategory: objectId(idcategory), image: 'data:image/png;base64,' + image, creationDate: time, idzone: objectId(idzone) };
+    var products = { name: name, price: price, amount: amount, category: category, image: 'data:image/png;base64,' + image, creationDate: time, zone: zone };
     var result = await ProductDAO.insert(products);
     if (result) {
         resp.redirect('/admin/listproducts');
@@ -107,15 +107,15 @@ router.post('/editproduct', upload.single('image'), async (req, resp) => {
     var name = req.body.name;
     var price = req.body.price;
     var amount = req.body.amount;
-    var idcategory = req.body.category;
-    var idzone = req.body.zone;
+    var category = await CategoryDAO.selectByID(req.body.category);
+    var zone = await ZoneDAO.selectByID(req.body.zone);
     var time = new Date().getTime();
     var image = (await ProductDAO.selectByID(req.session.productId)).image;
     if (req.file)
         image = req.file.buffer.toString('base64');
     if (!image.toString().startsWith('data:image/png;base64,'))
         image = 'data:image/png;base64,' + image;
-    var products = {_id: req.session.productId , name: name, price: price, amount: amount, idcategory: objectId(idcategory), image: image, creationDate: time, idzone: objectId(idzone) };
+    var products = {_id: req.session.productId , name: name, price: price, amount: amount, category: category, image: image, creationDate: time, zone: zone };
     var result = await ProductDAO.update(products);
     if (result) {
         resp.redirect('/admin/listproducts');
@@ -128,8 +128,6 @@ router.post('/editproduct', upload.single('image'), async (req, resp) => {
 router.get('/productdetail/:id', async (req, resp) => {
 
     var product = await ProductDAO.selectByID(req.params.id);
-    product.zone = await ZoneDAO.selectByID(objectId(product.idzone).valueOf());
-    product.category = await CategoryDAO.selectByID(objectId(product.idcategory).valueOf());
     resp.render('admin/productdetail', { product: product });
 });
 
@@ -139,8 +137,6 @@ router.get('/editproduct/:id', async (req, resp) => {
     var _id = req.params.id;
     req.session.productId = _id;
     var product = await ProductDAO.selectByID(_id);
-    product.zone = await ZoneDAO.selectByID(objectId(product.idzone).valueOf());
-    product.category = await CategoryDAO.selectByID(objectId(product.idcategory).valueOf());
     resp.render('admin/editproduct', { product: product ,categories: list, Zones: zones  });
 });
 

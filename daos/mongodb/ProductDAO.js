@@ -7,25 +7,6 @@ var ProductDAO = {
     var products = await db.collection("products").find(query).toArray();
     return products;
   },
-  async selectTest() {
-    var db = await client.getDB();
-    var products = await db.collection('products').aggregate([{
-      $lookup: {
-        from: 'categories',
-        localField: 'idcategory',
-        foreignField: '_id',
-        as: 'category'
-      }
-    }, {$unwind: '$category'}, {
-      $lookup: {
-        from: 'zones',
-        localField: 'idzone',
-        foreignField: '_id',
-        as: 'zone'
-      }
-    }, {$unwind: '$zone'}, {$project: {idcategory: 0, idzone: 0}}]).toArray();
-    return products;
-  },
   async selectByID(_id) {
     var query = { _id: ObjectId(_id) };
     var db = await client.getDB();
@@ -37,26 +18,6 @@ var ProductDAO = {
     var db = await client.getDB();
     var products = await db.collection("products").find(query).toArray();
     return products;
-  },
-  async selectByID2(_id) {
-    var query = { _id: ObjectId(_id) };
-    var db = await client.getDB();
-    var product = await db.collection('products').aggregate([{
-      $lookup: {
-        from: 'categories',
-        localField: 'idcategory',
-        foreignField: '_id',
-        as: 'category'
-      }
-    }, {$unwind: '$category'}, {
-      $lookup: {
-        from: 'zones',
-        localField: 'idzone',
-        foreignField: '_id',
-        as: 'zone'
-      }
-    }, {$unwind: '$zone'}, {$project: {idcategory: 0, idzone: 0}}]).toArray().findOne(query);
-    return product;
   },
   async selectByKeyword(keyword) {
     var query = { name: { $regex: new RegExp(keyword, "i") } };
@@ -95,7 +56,7 @@ var ProductDAO = {
   },
   async update(product) {
     var query = { _id: ObjectId(product._id) };
-    var newvalues = { $set: { name: product.name, price: product.price, image: product.image, idcategory: product.idcategory, idzone: product.idzone } };
+    var newvalues = { $set: { name: product.name, price: product.price, image: product.image, category: product.category, zone: product.zone } };
     var db = await client.getDB();
     var result = await db.collection("products").updateOne(query, newvalues);
     return result.result.nModified > 0 ? true : false;
