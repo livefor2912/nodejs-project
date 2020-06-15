@@ -23,12 +23,12 @@ router.get('/', async (req, resp) => {
     resp.render('../views/customer/home.ejs', { cats: categories, newprods: newproducts, hotprods: hotproducts, zones: zones });
 });
 
-router.get('/register',(req, res) => {
+router.get('/register', (req, res) => {
     res.render('../views/customer/register.ejs');
 });
 
 router.get('/login', (req, resp) => {
-    if(req.session.customer) {
+    if (req.session.customer) {
         resp.redirect('/');
     } else {
         resp.render('../views/customer/login.ejs');
@@ -43,12 +43,11 @@ router.post('/login', async (req, resp) => {
     var remember = req.body.remember;
     var cus = CustomerDAO.selectByUsernameAndPassword(username, pwdhashed);
     if (cus) {
-      req.session.customer = cus;
-      resp.redirect('/');
+        req.session.customer = cus;
+        resp.redirect('/');
     } else {
-      MyUtil.showAlertAndRedirect(resp, 'Invalid login!', './login');
+        MyUtil.showAlertAndRedirect(resp, 'Invalid login!', './login');
     }
 });
-
 
 module.exports = router;
