@@ -133,7 +133,6 @@ router.post('/updatezone', upload.single('fileImage'), async (req, resp) => {
     var name = req.body.nameZone;
     if(req.file) {
         var image = req.file.buffer.toString('base64');
-        console.log('yes');
     } else {
         var dbZone = await ZoneDAO.selectByID(_id);
         var image = dbZone.image;
