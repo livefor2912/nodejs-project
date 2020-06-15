@@ -44,7 +44,7 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
                                     <%  if (typeof(cats) !== 'undefined') { for (var cat of cats) { %>
-                                        <a class="dropdown-item" href="./listproduct?catID=<%=cat._id%>"><%=cat.name%></a>
+                                        <a class="dropdown-item" href="./listproductscus?catID=<%=cat._id%>"><%=cat.name%></a>
                                     <%  } } %>
                                 </div>
                             </li>
@@ -81,7 +81,7 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown_3" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <%= session.customer.username %> askhdkjasfjas
+                                        <%= session.customer.username %> 
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
                                         <a class="dropdown-item" href="#">Profile</a>
@@ -107,8 +107,8 @@
     </div>
     <div class="search_input" id="search_input_box">
         <div class="container ">
-            <form class="d-flex justify-content-between search-inner">
-                <input type="text" class="form-control" id="search_input" placeholder="Search Here">
+            <form class="d-flex justify-content-between search-inner"  action="/searchproduct" method="get">
+                <input type="text" class="form-control" id="search_input" placeholder="Search Here" name="keyword">
                 <button type="submit" class="btn"></button>
                 <span class="ti-close" id="close_search" title="Close Search"></span>
             </form>

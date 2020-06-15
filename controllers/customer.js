@@ -56,7 +56,12 @@ router.get("/listproductscus", async (req, resp) => {
     var newproducts = await ProductDAO.selectTopNew(3);
     var hotproducts = await ProductDAO.selectTopHot(3);
     var zones = await ZoneDAO.selectAll();
-    var list = await ProductDAO.selectAll();
+    var list = null;
+    if (req.query.catID) {
+        list = await ProductDAO.selectByCatID(req.query.catID);
+    }else {
+        list = await ProductDAO.selectAll();
+    }
     resp.render('../views/customer/listproductscus.ejs', {
         cats: categories, newprods: newproducts, hotprods: hotproducts, zones: zones
         , listProduct: list
@@ -75,8 +80,17 @@ router.get("/productdetailcus/:id", async (req, resp) => {
     resp.render('../views/customer/productdetailcus.ejs', { product: product });
 });
 
-router.get("/search", async (req, resp) => {
-
+router.get("/searchproduct", async (req, resp) => {
+    var categories = await CategoryDAO.selectAll();
+    var newproducts = await ProductDAO.selectTopNew(3);
+    var hotproducts = await ProductDAO.selectTopHot(3);
+    var zones = await ZoneDAO.selectAll();
+    var keyword = req.query.keyword;
+    var result = await ProductDAO.selectByKeyword(keyword);
+   resp.render('../views/customer/listproductscus.ejs', {
+        cats: categories, newprods: newproducts, hotprods: hotproducts, zones: zones
+        , listProduct: result
+    });
 });
 
 module.exports = router;
