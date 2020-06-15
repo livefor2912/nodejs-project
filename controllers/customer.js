@@ -2,14 +2,11 @@ var express = require('express');
 var router = express.Router();
 var objectId = require('mongodb').ObjectID;
 
-//var MongoClient = require('mongodb').MongoClient;
-//var uri = 'mongodb+srv://admin:tYFofQJbk98w31OR@cluster0-baxfc.mongodb.net/project';
-
 var MyUtil = require("../utils/MyUtil.js");
 var multer = require('multer');
 
-// var pathDAO = "../daos/mongodb";
-var pathDAO = "../daos/mongoose";
+var pathDAO = "../daos/mongodb";
+// var pathDAO = "../daos/mongoose";
 var CategoryDAO = require(pathDAO + "/CategoryDAO.js");
 var ProductDAO = require(pathDAO + "/ProductDAO.js");
 var CustomerDAO = require(pathDAO + "/CustomerDAO.js");
@@ -28,21 +25,23 @@ router.get('/register', (req, res) => {
     res.render('../views/customer/register.ejs');
 });
 
-router.get('/login', (req, resp) => {
+router.get('/login', async (req, resp) => {
     if (req.session.customer) {
         resp.redirect('/');
     } else {
-        resp.render('../views/customer/login.ejs');
+        var categories = await CategoryDAO.selectAll();
+        var zones = await ZoneDAO.selectAll();
+        resp.render('../views/customer/login.ejs', { cats: categories, zones: zones });
     }
 });
 
 router.post('/login', async (req, resp) => {
     var username = req.body.username;
     var password = req.body.password;
-    var pwdhashed = MyUtil.md5(password);
+    // var pwdhashed = MyUtil.md5(password);
     //var cus = await CustomerDAO.sele
     var remember = req.body.remember;
-    var cus = await CustomerDAO.selectByUsernameAndPassword(username, pwdhashed);
+    var cus = await CustomerDAO.selectByUsernameAndPassword(username, password);
     // var temp = CustomerDAO.test();
     if (cus) {
         req.session.customer = cus;
@@ -52,66 +51,64 @@ router.post('/login', async (req, resp) => {
     }
 });
 
-router.get("/listproductscus", async (req, resp) => {
+router.get("/listproducts", async (req, resp) => {
     var categories = await CategoryDAO.selectAll();
+    var zones = await ZoneDAO.selectAll();
     var newproducts = await ProductDAO.selectTopNew(3);
     var hotproducts = await ProductDAO.selectTopHot(3);
-    var zones = await ZoneDAO.selectAll();
     var list = null;
     if (req.query.catID) {
         list = await ProductDAO.selectByCatID(req.query.catID);
-    }else {
+    } else {
         list = await ProductDAO.selectAll();
     }
-    resp.render('../views/customer/listproductscus.ejs', {
+    resp.render('../views/customer/listproducts.ejs', {
         cats: categories, newprods: newproducts, hotprods: hotproducts, zones: zones
         , listProduct: list
     });
 });
-router.get('/myprofile', function (req, resp) {
-    resp.render('../views/customer/myprofile.ejs');
-  });
 
-router.get("/productdetailcus/:id", async (req, resp) => {
+router.get('/myprofile', async function (req, resp) {
     var categories = await CategoryDAO.selectAll();
-    var newproducts = await ProductDAO.selectTopNew(3);
-    var hotproducts = await ProductDAO.selectTopHot(3);
     var zones = await ZoneDAO.selectAll();
-    var product = await ProductDAO.selectByID(req.params.id);
-    console.log(product.amount);
+    resp.render('../views/customer/myprofile.ejs', { cats: categories, zones: zones });
+});
+
+router.get("/details", async (req, resp) => {
+    var _id = req.query.id;
+    var product = await ProductDAO.selectByID(_id);
     product.zone = await ZoneDAO.selectByID(objectId(product.idzone).valueOf());
     product.category = await CategoryDAO.selectByID(objectId(product.idcategory).valueOf());
-    resp.render('../views/customer/productdetailcus.ejs', { product: product });
+    var categories = await CategoryDAO.selectAll();
+    var zones = await ZoneDAO.selectAll();
+    resp.render('../views/customer/details.ejs', { product: product, cats: categories, zones: zones });
 });
 
 router.get("/searchproduct", async (req, resp) => {
     var categories = await CategoryDAO.selectAll();
-    var newproducts = await ProductDAO.selectTopNew(3);
-    var hotproducts = await ProductDAO.selectTopHot(3);
     var zones = await ZoneDAO.selectAll();
     var keyword = req.query.keyword;
     var result = await ProductDAO.selectByKeyword(keyword);
-   resp.render('../views/customer/listproductscus.ejs', {
-        cats: categories, newprods: newproducts, hotprods: hotproducts, zones: zones
-        , listProduct: result
+    resp.render('../views/customer/listproducts.ejs', {
+        cats: categories, zones: zones, listProduct: result
     });
 });
-  router.post('/myprofile', async function (req, resp) {
+
+router.post('/myprofile', async function (req, resp) {
     var curCust = req.session.customer;
     if (curCust) {
-      var username = req.body.txtUsername;
-      var password = req.body.txtPassword;
-      var name = req.body.txtName;
-      var phone = req.body.txtPhone;
-      var email = req.body.txtEmail;
-      var newCust = { _id: curCust._id, username: username, password: password, name: name, phone: phone, email: email, active: curCust.active, token: curCust.token };
-      var result = await CustomerDAO.update(newCust);
-      if (result) {
-        req.session.customer = newCust;
-        MyUtil.showAlertAndRedirect(resp, 'Update successful!', './home');
-      }
-    }
-    MyUtil.showAlertAndRedirect(resp, 'SORRY!', './myprofile');
-  });
+        var username = req.body.txtUsername;
+        var password = req.body.txtPassword;
+        var name = req.body.txtName;
+        var phone = req.body.txtPhone;
+        var email = req.body.txtEmail;
+        var newCust = { _id: curCust._id, username: username, password: password, name: name, phone: phone, email: email, active: curCust.active, token: curCust.token };
+        var result = await CustomerDAO.update(newCust);
+        if (result) {
+            req.session.customer = newCust;
+            MyUtil.showAlertAndRedirect(resp, 'Update successful!', './');
+        }
+    } else MyUtil.showAlertAndRedirect(resp, 'SORRY!', './myprofile');
+});
 
 module.exports = router;
