@@ -5,6 +5,8 @@
     <title>List Category</title>
     <script>
         function details(id, name) {
+            var cateDetails = document.getElementById('cate-detail');
+            cateDetails.style.display = "block";
             document.getElementById("txtID").value = id;
             document.getElementById("txtName").value = name;
         }
@@ -49,7 +51,7 @@
                                                             <%  for (var item of cats) {  %>
                                                             <tr>
                                                                 <th role="row" class="odd"><%=item._id%></th>
-                                                                <td onclick="details('<%=item._id%>', `<%=item.name%>`)"
+                                                                <td onclick="details('<%=item._id%>', '<%=item.name%>')"
                                                                     style="cursor: pointer;">
                                                                     <%=item.name%>
                                                                 </td>
@@ -65,19 +67,37 @@
                         </div>
                         <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
                             <div class="card">
-                                <h5 class="card-header">Category Detail</h5>
+                                <h5 class="card-header">Add Category</h5>
                                 <div class="card-body">
-                                    <form class="form-group" action="addcate" method="POST">
+                                    <form class="form-group" method="POST">
                                         <th>Name</th>
                                         <div class="input-group mb-3">
-                                            <input type="text" class="form-control" name="name">
+                                            <input type="text" class="form-control" name="name" required />
                                             <div class="input-group-append">
-                                                <button type="submit" class="btn btn-primary">Add</button>
+                                                <button type="submit" formaction="addcate" class="btn btn-primary">Add</button>
+                                                <!-- <button type="submit" formaction="updatecate" class="btn btn-primary" style="display: none; padding-left: 105px">Update</button> -->
                                             </div>
                                         </div>
                                         <!-- </div>                                           
                                              <button type="submit" action="updatecate" class="btn btn-primary" style="padding-left: 105px">Update</button>
                                         </div> -->
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="card" id="cate-detail" style="display: none;">
+                                <h5 class="card-header">Category Details</h5>
+                                <div class="card-body">
+                                    <form class="form-group" action="updatecate" method="POST">
+                                        <div class="input-group mb-3">
+                                            <input id="txtID" type="text" class="form-control" name="id" readonly>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <input id="txtName" type="text" class="form-control" name="name" required>
+                                        </div>
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-primary">Update</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>

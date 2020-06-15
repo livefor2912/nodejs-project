@@ -119,4 +119,15 @@ router.post('/addcate', async function (req, res) {
         MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae', './listcate');
     }
 });
+router.post('/updatecate', async function (req, res) {
+    var _id = req.body.id;
+    var name = req.body.name;
+    var category = { _id: _id, name: name };
+    var result = await CategoryDAO.update(category);
+    if (result) {
+      MyUtil.showAlertAndRedirect(res, 'Successfully!!', './listcate');
+    } else {
+      MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae', './listcate');
+    }
+  });
 module.exports = router;
