@@ -45,19 +45,15 @@
                                 <td>
                                     <h5><%=item.product.price%></h5>
                                 </td>
-                                <td><h5><%=item.quantity%></h5>
-                                </td>                             
+                                <td>
+                                    <h5><%=item.quantity%></h5>
+                                </td>
                                 <td>
                                     <h5><%=item.product.price * item.quantity%></h5>
                                 </td>
                                 <td>
-                                    <a href="./remove2cart?id=<%=item.product._id%>" class="fas fa-trash" style="cursor: pointer;background-color: transparent; border: transparent;"></a>
-                                        <!-- <button
-                                            onclick="return confirm('Are you sure you want to delete this?')"
-                                            style="background-color: transparent; border: transparent;">
-                                            <i class="fas fa-trash" style="cursor: pointer;"></i>
-                                        </button>
-                                    </form> -->
+                                    <a href="remove2cart?id=<%=item.product._id%>" class="fas fa-trash"
+                                       ></a>
                                 </td>
                             </tr>
                             <%  } %>
@@ -66,10 +62,10 @@
                                 <td></td>
                                 <td></td>
                                 <td>
-                                    <h5>Total</h5>
+                                    <h4>Total</h4>
                                 </td>
                                 <td>
-                                    <h5><%=total%></h5>
+                                    <h4><%=total%></h4>
                                 </td>
                             </tr>
                         </tbody>
