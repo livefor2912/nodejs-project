@@ -19,6 +19,12 @@ var ProductDAO = {
     var products = await db.collection("products").find(query).toArray();
     return products;
   },
+  async selectByZoneID(_cid) {
+    var query = { 'zone._id': ObjectId(_cid) };
+    var db = await client.getDB();
+    var products = await db.collection("products").find(query).toArray();
+    return products;
+  },
   async selectByKeyword(keyword) {
     var query = { name: { $regex: new RegExp(keyword, "i") } };
     var db = await client.getDB();
