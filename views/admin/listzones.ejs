@@ -103,7 +103,7 @@
                                         <tr>
                                             <th scope="row"><%=item._id%></th>
                                             <td>
-                                                <img id="prod-img" src="data:image/jpg;base64,<%=item.image%>" width="100" height="50" />
+                                                <img id="prod-img" src="data:image/jpg;base64,<%=item.image%>" width="150" />
                                             </td>
                                             <td onclick="details('<%=item._id%>', `<%=item.name%>`, `<%=item.image%>`)"
                                                 style="cursor: pointer;">
@@ -139,7 +139,7 @@
                                         </div>
                                     </div>
                                     <div class="input-group mb-3">
-                                        <input class="form-control" type="file" name="fileImage" accept="image/jpeg, image/png"
+                                        <input class="form-control" type="file" name="fileImage" accept="image/jpeg, image/png, image/gif"
                                             onchange="previewImage(this)" />
                                     </div>
                                 </form>
@@ -159,7 +159,7 @@
                                     </div>
 
                                     <div class="input-group mb-3">
-                                        <input id="img-file" class="form-control" type="file" name="fileImage" accept="image/jpeg, image/png"
+                                        <input id="img-file" class="form-control" type="file" name="fileImage" accept="image/jpeg, image/png, image/gif"
                                             onchange="previewImage1(this)" />
                                     </div>
 
