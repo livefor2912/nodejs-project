@@ -115,7 +115,7 @@ router.post('/editproduct', upload.single('image'), async (req, resp) => {
         image = req.file.buffer.toString('base64');
     if (!image.toString().startsWith('data:image/png;base64,'))
         image = 'data:image/png;base64,' + image;
-    var products = {_id: req.session.productId , name: name, price: price, amount: amount, category: category, image: image, creationDate: time, zone: zone };
+    var products = { _id: req.session.productId, name: name, price: price, amount: amount, category: category, image: image, creationDate: time, zone: zone };
     var result = await ProductDAO.update(products);
     if (result) {
         resp.redirect('/admin/listproducts');
@@ -128,7 +128,8 @@ router.post('/editproduct', upload.single('image'), async (req, resp) => {
 router.get('/productdetail/:id', async (req, resp) => {
 
     var product = await ProductDAO.selectByID(req.params.id);
-    resp.render('admin/productdetail', { product: product });
+    var isExisted = await isExistedInOrders(req.params.id);
+    resp.render('admin/productdetail', { product: product, canBeDelete: !isExisted });
 });
 
 router.get('/editproduct/:id', async (req, resp) => {
@@ -137,7 +138,7 @@ router.get('/editproduct/:id', async (req, resp) => {
     var _id = req.params.id;
     req.session.productId = _id;
     var product = await ProductDAO.selectByID(_id);
-    resp.render('admin/editproduct', { product: product ,categories: list, Zones: zones  });
+    resp.render('admin/editproduct', { product: product, categories: list, Zones: zones });
 });
 
 router.get('/listzones', async (req, resp) => {
@@ -151,9 +152,9 @@ router.post('/addzone', async (req, resp) => {
     var result = await ZoneDAO.insert(zone);
     if (result) {
         MyUtil.showAlertAndRedirect(resp, 'Adding zone successfully!', './listzones');
-      } else {
+    } else {
         MyUtil.showAlertAndRedirect(resp, 'Adding zone failed', './listzones');
-      }
+    }
 });
 
 router.post('/updatezone', async (req, resp) => {
@@ -162,20 +163,26 @@ router.post('/updatezone', async (req, resp) => {
     var zone = { _id: _id, name: name };
     var result = await ZoneDAO.update(zone);
     if (result) {
-      MyUtil.showAlertAndRedirect(resp, 'Updating zone successfully!', './listzones');
+        MyUtil.showAlertAndRedirect(resp, 'Updating zone successfully!', './listzones');
     } else {
-      MyUtil.showAlertAndRedirect(resp, 'Updating zone failed', './listzones');
-    } 
+        MyUtil.showAlertAndRedirect(resp, 'Updating zone failed', './listzones');
+    }
 });
 
-router.post('/deletezone', async(req, resp) => {
+router.post('/deletezone', async (req, resp) => {
     var _id = req.body.txtID;
     var result = await ZoneDAO.delete(_id);
     if (result) {
-      MyUtil.showAlertAndRedirect(resp, 'Deleting zone successfully!', './listzones');
+        MyUtil.showAlertAndRedirect(resp, 'Deleting zone successfully!', './listzones');
     } else {
-      MyUtil.showAlertAndRedirect(resp, 'Deleting zone failed', './listzones');
+        MyUtil.showAlertAndRedirect(resp, 'Deleting zone failed', './listzones');
     }
 });
+
+async function isExistedInOrders(id) {
+    var result = await OrderDAO.selectByProdID(id);
+
+    return result.length !== 0;
+}
 
 module.exports = router;

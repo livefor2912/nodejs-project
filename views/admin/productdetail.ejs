@@ -232,6 +232,9 @@
                                           </div>
                                         <div class="product-description">
                                             <a href="/admin/editproduct/<%= product._id %>" class="btn btn-primary btn-block btn-lg">Update</a>
+                                            <% if (canBeDelete) { %>
+                                                <a class="btn btn-primary btn-block btn-lg" style="color: white;" href="/" id="btnDel">Delete</a>
+                                            <% } %>
                                             <a class="btn btn-primary btn-block btn-lg" style="color: white;" href="/">Detail in customer</a>
                                         </div>
                                     </div>
