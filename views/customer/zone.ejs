@@ -10,24 +10,22 @@
 </head>
 
 <body>
-    
+
     <%- include('./_menu.ejs') %>
 
     <!-- breadcrumb part start-->
-    <section>
+
+    <section class="breadcrumb_part" style="height: 500px; background: linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0, 0.3)),url(data:image/png;base64,<%=zone.image%>); background-size: cover; background-repeat: no-repeat;
+    background-position: center center;">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb_iner">
-                        <!-- <h2>product list</h2> -->
-                        <img src="data:image/png;base64,<%=zone.image%>" />
-                    </div>
+            <div class="col-lg-12">
+                <div class="breadcrumb_iner">
+                    <h2 style="color: white; text-transform: uppercase;"><%=zone.name%> zone</h2>
                 </div>
             </div>
         </div>
     </section>
     <!-- breadcrumb part end-->
-    
 
     <!-- product list part start-->
     <section class="product_list section_padding">
@@ -117,7 +115,7 @@
         </div>
     </section>
     <!-- product list part end-->
-    
+
 
     <!--::footer_part start::-->
     <%- include('./_footer.ejs') %>
