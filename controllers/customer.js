@@ -151,4 +151,24 @@ router.get('/mycart', function (req, res) {
     res.redirect('./mycart');
   });
 
+  router.get('/checkoutconfirm', async function (req, res){
+    res.render('../views/customer/checkout.ejs');
+  });
+  router.get('/checkout', async function (req, res) {
+    if (req.session.customer) {
+      var now = new Date().getTime(); // milliseconds
+      var total = MyUtil.getTotal(req.session.mycart);
+      var order = { cdate: now, total: total, status: 'PENDING', customer: req.session.customer, items: req.session.mycart };
+      var result = await OrderDAO.insert(order);
+      if (result) {
+        delete req.session.mycart;
+        // MyUtil.showAlertAndRedirect(res, 'Place Order Successfully!', './');
+      } else {
+        MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae!', './mycart');
+      }
+    } else {
+      res.redirect('./login');
+    }
+  });
+
 module.exports = router;

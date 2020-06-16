@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zxx">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>My Cart</title>
+    <%- include('./_link.ejs') %>
+    <!-- <script>
+        var x = document.getElementById("myCheck").required;
+    </script> -->
+</head>
+
+<body>
+    <!--::header part start::-->
+    <%- include('./_menu.ejs') %>
+    <!-- Header part end-->
+    <div class="align-center">
+        <div class="col-lg-12">
+            <div class="order_box">
+                <h2>Your Order</h2>
+                <ul class="list">
+                    <li>
+                        <a href="#">Product
+                            <span>Total</span>
+                        </a>
+                    </li>
+                    <%  for (var [i, item] of session.mycart.entries()) { %>
+                    <li>
+                        <a href="#"><%=item.product.name%>
+                            <span class="middle">x <%=item.quantity%></span><br/>
+                            <span class="last"><%=item.product.price * item.quantity%></span>
+                        </a>
+                    </li>
+                    <%  } %>
+                </ul>
+                <ul class="list list_2">
+                    <li>
+                        <a href="#">Subtotal
+                            <span>500</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">Shipping
+                            <span>Free Shipping</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">Total
+                            <span>500</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="creat_account" >
+                    <input type="checkbox" id="myCheck" name="selector" required>
+                    <label for="f-option4">I’ve read and accept the </label>
+                    <a href="#">terms &amp; conditions*</a>
+                </div>
+                <a class="btn_3" href="checkout">Place Order</a>
+            </div>
+        </div>
+    </div>
+    <%- include('./_footer.ejs') %>
+</body>
+
+</html>
