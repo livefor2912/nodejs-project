@@ -111,4 +111,44 @@ router.post('/myprofile', async function (req, resp) {
     } else MyUtil.showAlertAndRedirect(resp, 'SORRY!', './myprofile');
 });
 
+router.get('/mycart', function (req, res) {
+    if (req.session.mycart && req.session.mycart.length > 0) {
+      var total = MyUtil.getTotal(req.session.mycart);
+      res.render('../views/customer/mycart.ejs', { total: total });
+    } else {
+      res.redirect('./');
+    }
+  });
+
+  router.post('/add2cart', async function (req, res) {
+    var _id = req.body.txtID;
+    var quantity = parseInt(req.body.txtQuantity);
+    var product = await ProductDAO.selectByID(_id);
+    // create empty cart if not exists in the session, otherwise get out mycart from the session
+    var mycart = [];
+    if (req.session.mycart) mycart = req.session.mycart;
+    var index = mycart.findIndex(x => x.product._id == _id); // check if the _id exists in mycart
+    if (index == -1) { // not found, push newItem
+      var newItem = { product: product, quantity: quantity };
+      mycart.push(newItem);
+    } else { // increasing the quantity
+      mycart[index].quantity += quantity;
+    }
+    req.session.mycart = mycart; // put mycart back into the session
+    res.redirect('./');
+  });
+
+  router.get('/remove2cart', function (req, res) {
+    if (req.session.mycart) {
+      var mycart = req.session.mycart;
+      var _id = req.query.id; // /remove2cart?id=XXX
+      var index = mycart.findIndex(x => x.product._id == _id);
+      if (index != -1) { // found, remove item
+        mycart.splice(index, 1);
+        req.session.mycart = mycart;
+      }
+    }
+    res.redirect('./mycart');
+  });
+
 module.exports = router;

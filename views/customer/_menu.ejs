@@ -49,8 +49,10 @@
                     </div>
                     <form class="hearer_icon d-flex align-items-center">
                         <a id="search_1" href="javascript:void(0)"><i class="ti-search"></i></a>
-                        <a href="#">
+                        <a href="./mycart" class="notification">                      
                             <i class="flaticon-shopping-cart-black-shape"></i>
+                            <span class="badge"><%= (session.mycart) ? session.mycart.length : 0 %></span>
+                            
                         </a>
                     </form>
                     <nav class="navbar navbar-expand-lg navbar-light">
