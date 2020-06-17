@@ -179,6 +179,10 @@ router.post('/deletezone', async (req, resp) => {
     }
 });
 
+router.get('/deleteproduct', async (req, res) => {
+    res.send(req.query.id);
+});
+
 async function isExistedInOrders(id) {
     var result = await OrderDAO.selectByProdID(id);
 
