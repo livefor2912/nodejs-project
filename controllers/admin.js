@@ -169,7 +169,9 @@ router.post('/deletezone', async (req, resp) => {
 });
 
 router.get('/deleteproduct', async (req, res) => {
-    res.send(req.query.id);
+    var id = req.query.id;
+    var result = await ProductDAO.delete(id);
+    res.send({ success: result.toString() });
 });
 
 async function isExistedInOrders(id) {

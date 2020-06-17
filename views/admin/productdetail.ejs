@@ -251,7 +251,9 @@
                                         <div class="product-size border-bottom">
                                             <h4>Zones</h4>
                                             <div class="btn-group" role="group" aria-label="First group">
-                                                <p><%= product.zone.name %></p>
+                                                <% if (product.zone) { %>
+                                                    <p><%= product.zone.name %></p>
+                                                <% } %>
                                             </div>
                                             <div class="product-qty">
                                                 <h4>Quantity</h4>
@@ -549,15 +551,18 @@
                 const startIndex = url.toString().lastIndexOf('/productdetail/') + '/productdetail/'.length;
                 const endIndex = url.toString().length - 1;
                 const id = url.toString().substring(startIndex, endIndex);
-                var data = {};
-                data.id = id;
                 if (confirm('bạn có chắc muốn xóa sản phẩm này không')) {
                     $.ajax({
                         url: '/admin/deleteproduct',
                         type: 'get',
-                        data: id,
+                        data: {id: id},
                         success: function (data) {
-                            console.log('ok');
+                            if (data.success === 'false') {
+                                alert('không xóa được sản phẩm');
+                            }else {
+                                alert('xóa sản phẩm thành công');
+                                location.href = '/admin/listproducts';
+                            }
                         }
                     });
                 }
