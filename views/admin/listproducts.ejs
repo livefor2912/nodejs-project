@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <%- include('./_link.ejs') %>
     <title>List Product</title>
 </head>
 
@@ -83,7 +84,11 @@
                                                     <td><%= new Date(item.creationDate) %></td>
                                                     <td><%= item.amount %></td>
                                                     <td><%= item.category.name %></td>
-                                                    <td><%= item.zone.name %></td>
+                                                    <% if (item.zone) { %>
+                                                        <td><%= item.zone.name %></td>
+                                                    <% } else { %>
+                                                        <td></td>
+                                                    <% } %>
                                                     <td><a class="btn btn-primary" style="color: white" href="/admin/productdetail/<%= item._id %>">Detail</a></td>
                                                     <!-- <td><span class="badge-dot badge-brand mr-1"></span>InTransit </td> -->
                                                 </tr>
@@ -115,7 +120,6 @@
         <!-- ============================================================== -->
         <!-- end main wrapper  -->
         <!-- ============================================================== -->
-
 </body>
 
 </html>

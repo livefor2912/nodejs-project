@@ -63,20 +63,6 @@ router.get('/logout', (req, resp) => {
 });
 
 router.get("/listproducts", async (req, resp) => {
-    // MongoClient.connect(uri, (err, conn) => {
-    //     if(err) throw err;
-    //     var db = conn.db('project');
-    //     var query = {};
-    //     db.collection('products').find(query).toArray((err, result) => {
-    //         if(err) throw err;
-    //         if(result) {
-    //             resp.render('admin/home', {listProduct: result})
-    //         } else {
-    //             resp.render('admin/home');
-    //         }
-    //         conn.close();
-    //     });
-    // });
     var list = await ProductDAO.selectAll();
     resp.render('admin/listproducts', { listProduct: list });
 });
@@ -86,12 +72,15 @@ router.get("/addproduct", async (req, resp) => {
     var zones = await ZoneDAO.selectAll();
     resp.render('admin/addproduct', { categories: list, Zones: zones });
 });
+
 router.post("/addproduct", upload.single('image'), async (req, resp) => {
     var name = req.body.name;
     var price = req.body.price;
     var amount = req.body.amount;
     var category = await CategoryDAO.selectByID(req.body.category);
-    var zone = await ZoneDAO.selectByID(req.body.zone);
+    var zone = null;
+    if (req.body.zone)
+        zone = await ZoneDAO.selectByID(req.body.zone);
     var time = new Date().getTime();
     // var image = req.body.image;
     var image = req.file.buffer.toString('base64');
