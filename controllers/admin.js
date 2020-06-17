@@ -11,7 +11,7 @@ var upload = multer({});
 var MyUtil = require("../utils/MyUtil.js");
 var EmailUtil = require("../utils/EmailUtil.js");
 // daos
-//var pathDAO = "../daos/mongodb";
+// var pathDAO = "../daos/mongodb";
 var pathDAO = "../daos/mongodb";
 var AdminDAO = require(pathDAO + "/AdminDAO.js");
 var ZoneDAO = require(pathDAO + "/ZoneDAO.js");
@@ -62,29 +62,15 @@ router.get('/logout', (req, resp) => {
 });
 
 router.get("/listproducts", async (req, resp) => {
-    // MongoClient.connect(uri, (err, conn) => {
-    //     if(err) throw err;
-    //     var db = conn.db('project');
-    //     var query = {};
-    //     db.collection('products').find(query).toArray((err, result) => {
-    //         if(err) throw err;
-    //         if(result) {
-    //             resp.render('admin/home', {listProduct: result})
-    //         } else {
-    //             resp.render('admin/home');
-    //         }
-    //         conn.close();
-    //     });
-    // });
     var list = await ProductDAO.selectAll();
     resp.render('admin/listproducts', { listProduct: list });
-
 });
 
 router.get("/addproduct", async (req, resp) => {
     var list = await CategoryDAO.selectAll2();
     resp.render('admin/addproduct', { categories: list });
 });
+
 router.post("/addproduct", upload.single('image'), async (req, resp) => {
     var name = req.body.name;
     var price = req.body.price;
@@ -97,13 +83,81 @@ router.post("/addproduct", upload.single('image'), async (req, resp) => {
     var result = await ProductDAO.insert(products);
     if (result) {
         resp.redirect('/admin/listproducts');
-    }else {
+    } else {
         resp.redirect('/admin/addproduct');
     }
 });
 
+router.get('/listorders', async function (req, resp) {
+    if (req.session.admin) {
+        var orders = await OrderDAO.selectAll();
+        var _id = req.query.id; // /listorder?id=XXX
+        if (_id) {
+            var order = await OrderDAO.selectByID(_id);
+        }
+        resp.render('../views/admin/listorders.ejs', { orders: orders, order: order });
+    } else {
+        resp.redirect('login');
+    }
+});
+
+router.get('/updatestatus', async function (req, res) {
+    var _id = req.query.id; // /updatestatus?status=XXX&id=XXX
+    var newStatus = req.query.status;
+    await OrderDAO.update(_id, newStatus);
+    res.redirect('./listorders?id=' + _id);
+});
+
+router.get('/editproduct', async (req, resp) => {
+    var list = await CategoryDAO.selectAll2();
+    resp.render('admin/editproduct', await { categories: list });
+});
+
+router.get('/productdetail/:id', async (req, resp) => {
+    var product = await ProductDAO.selectByID(req.params.id);
+    resp.render('admin/productdetail', { product: product });
+});
+
+router.get('/listzones', async (req, resp) => {
+    var list = await ZoneDAO.selectAll();
+    resp.render('../views/admin/listzones.ejs', { zones: list });
+});
+
+router.post('/addzone', async (req, resp) => {
+    var name = req.body.name;
+    var zone = { name: name };
+    var result = await ZoneDAO.insert(zone);
+    if (result) {
+        MyUtil.showAlertAndRedirect(resp, 'Adding zone successfully!', './listzones');
+    } else {
+        MyUtil.showAlertAndRedirect(resp, 'Adding zone failed', './listzones');
+    }
+});
+
+router.post('/updatezone', async (req, resp) => {
+    var _id = req.body.id;
+    var name = req.body.nameZone;
+    var zone = { _id: _id, name: name };
+    var result = await ZoneDAO.update(zone);
+    if (result) {
+        MyUtil.showAlertAndRedirect(resp, 'Updating zone successfully!', './listzones');
+    } else {
+        MyUtil.showAlertAndRedirect(resp, 'Updating zone failed', './listzones');
+    }
+});
+
+router.post('/deletezone', async (req, resp) => {
+    var _id = req.body.txtID;
+    var result = await ZoneDAO.delete(_id);
+    if (result) {
+        MyUtil.showAlertAndRedirect(resp, 'Deleting zone successfully!', './listzones');
+    } else {
+        MyUtil.showAlertAndRedirect(resp, 'Deleting zone failed', './listzones');
+    }
+});
+
 router.get('/listzones', (req, resp) => {
-    
+
 });
 
 module.exports = router;

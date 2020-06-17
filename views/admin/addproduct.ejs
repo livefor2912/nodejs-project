@@ -2,6 +2,7 @@
 <html lang="en">
  
 <head>
+    <%- include('./_link.ejs') %>
     <title>Add Product</title>
 </head>
     
@@ -91,6 +92,18 @@
                                                             Please select a valid Category.
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-12 mb-12">
+                                                        <label for="country">Zones</label>
+                                                        <select class="custom-select d-block w-100" id="ca-ca-ca-te-goryyy" required="" name="category">
+                                                            <option value="">None</option>
+                                                            <% for (var item of categories) { %>
+                                                                <option value="<%= item. %>"><%= item.name %></option>
+                                                            <% } %>
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            Please select a valid Category.
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <hr class="mb-4">
                                                 <div class="custom-file">
@@ -111,17 +124,15 @@
                         </div>
                     </div>
                 </div>
-                <%- include('./_footer.ejs') %>
             </div>
             <!-- ============================================================== -->
             <!-- end wrapper  -->
             <!-- ============================================================== -->
+            <%- include('./_footer.ejs') %>
         </div>
     </div>
     <!-- ============================================================== -->
     <!-- end main wrapper  -->
     <!-- ============================================================== -->
 </body>
-
- 
 </html>
