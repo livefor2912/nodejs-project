@@ -34,7 +34,7 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
                                     <% if(typeof(zones) !== 'undefined') { for (var zone of zones) { %>
-                                        <a class="dropdown-item" href=""><%= zone.name %></a>
+                                        <a class="dropdown-item" href="./zone?zoneID=<%=zone._id%>"><%= zone.name %></a>
                                     <%  } } %>
                                 </div>
                             </li>

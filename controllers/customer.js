@@ -82,6 +82,16 @@ router.get('/myorders', async function (req, resp) {
     });
 });
 
+router.get('/zone', async (req, resp) => {
+    var categories = await CategoryDAO.selectAll();
+    var zones = await ZoneDAO.selectAll();
+    var zoneId = req.query.zoneID;
+    var list = await ProductDAO.selectByZoneID(zoneId);
+    var zone = await ZoneDAO.selectByID(zoneId);
+
+    resp.render('../views/customer/zone.ejs', { cats: categories, zones: zones, listProduct: list, zone: zone});
+});
+
 router.get('/myprofile', async function (req, resp) {
     var categories = await CategoryDAO.selectAll();
     var zones = await ZoneDAO.selectAll();
