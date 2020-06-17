@@ -38,26 +38,20 @@
                     <div class="product_list">
                         <div class="row">
                             <% for(var product of listProduct) { %>
-                            <div class="col-lg-4 col-sm-4">
+                            <div style="display: none;" class="col-lg-4 col-sm-4 product">
                                 <div class="single_product_item">
                                     <img src="<%=product.image%>" alt="#" class="img-fluid">
                                     <h3> <a href="details?id=<%=product._id%>"><%=product.name%></a> </h3>
-                                    <p><%=product.price%></p>
+                                    <p>$<%=product.price%></p>
                                 </div>
                             </div>
                             <% } %>
                         </div>
-                        
-                              <%  for (var index = 1; index <= noPages; index++) {
-                                    if (index == curPage) { %>
-                              | <b><%=index%></b> |
-                              <%    } else {  %>
-                              | <a href="./zone?page=<%=index%>"><%=index%></a> |
-                              <%    } } %>
-                           
+
                         <div class="load_more_btn text-center">
-                            <a href="#" class="btn_3">Load More</a>
+                            <a style="cursor: pointer;" id="loadMore" class="btn_3">Load More</a>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -70,5 +64,20 @@
     <%- include('./_footer.ejs') %>
     <!--::footer_part end::-->
 </body>
+
+<script>
+    $("div.product").slice(0, 6).show();
+
+    $("body").on('click', '#loadMore', function (e) {
+        e.preventDefault();
+        $("div.product:hidden").slice(0, 3).slideDown();
+        if ($("div.product:hidden").length == 0) {
+            $("#loadMore").fadeOut('slow');
+        }
+        $('html,body').animate({
+            scrollTop: $(this).offset().top
+        }, 1500);
+    });
+</script>
 
 </html>

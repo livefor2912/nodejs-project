@@ -75,15 +75,7 @@ router.get('/zone', async (req, resp) => {
     var list = await ProductDAO.selectByZoneID(zoneId);
     var zone = await ZoneDAO.selectByID(zoneId);
 
-    //pagination
-    var sizePage = 6;
-    var noPages = Math.ceil(list.length / sizePage);
-    var curPage = 1;
-    if (req.query.page) curPage = req.query.page;
-    var offset = (curPage - 1) * sizePage;
-    list = list.slice(offset, offset + sizePage);
-
-    resp.render('../views/customer/zone.ejs', { cats: categories, zones: zones, listProduct: list, zone: zone, noPages: noPages, curPage: curPage });
+    resp.render('../views/customer/zone.ejs', { cats: categories, zones: zones, listProduct: list, zone: zone});
 });
 
 router.get('/myprofile', async function (req, resp) {
