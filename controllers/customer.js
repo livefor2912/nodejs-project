@@ -37,35 +37,39 @@ router.get('/login', async (req, resp) => {
 });
 
 router.post('/login', async (req, resp) => {
-  var username = req.body.username;
-  var password = req.body.password;
-  // var pwdhashed = MyUtil.md5(password);
-  //var cus = await CustomerDAO.sele
-  var remember = req.body.remember;
-  var cus = await CustomerDAO.selectByUsernameAndPassword(username, password);
-  // var temp = CustomerDAO.test();
-  if (cus) {
-      req.session.customer = cus;
-      resp.redirect('/');
-  } else {
-      MyUtil.showAlertAndRedirect(resp, 'Invalid login!', './login');
-  }
+    var username = req.body.username;
+    var password = req.body.password;
+    // var pwdhashed = MyUtil.md5(password);
+    //var cus = await CustomerDAO.sele
+    var remember = req.body.remember;
+    var cus = await CustomerDAO.selectByUsernameAndPassword(username, password);
+    // var temp = CustomerDAO.test();
+    if (cus) {
+        req.session.customer = cus;
+        resp.redirect('/');
+    } else {
+        MyUtil.showAlertAndRedirect(resp, 'Invalid login!', './login');
+    }
 });
 
 router.get('/myorders', async function (req, resp) {
-    var cust = req.session.customer;
-    if (cust) { 
-      var orders = await OrderDAO.selectByCustID(cust._id);
-      var _id = req.query.id; // /myorders?id=XXX
-      if (_id) {
-        var order = await OrderDAO.selectByID(_id);
-      } 
-      resp.render('../views/customer/myorders.ejs', { orders: orders, order: order});
+    if (req.session.customer) {
+        var cust = req.session.customer;
+        if (cust) {
+            var orders = await OrderDAO.selectByCustID(cust._id);
+            var _id = req.query.id; // /myorders?id=XXX
+            if (_id) {
+                var order = await OrderDAO.selectByID(_id);
+            }
+            resp.render('../views/customer/myorders.ejs', { orders: orders, order: order });
+        } else {
+            resp.redirect('./');
+        }
     } else {
-      resp.redirect('./');
+        resp.redirect('/login');
     }
-  });
-  router.get("/listproducts", async (req, resp) => {
+});
+router.get("/listproducts", async (req, resp) => {
     var categories = await CategoryDAO.selectAll();
     var zones = await ZoneDAO.selectAll();
     var newproducts = await ProductDAO.selectTopNew(3);
@@ -89,13 +93,17 @@ router.get('/zone', async (req, resp) => {
     var list = await ProductDAO.selectByZoneID(zoneId);
     var zone = await ZoneDAO.selectByID(zoneId);
 
-    resp.render('../views/customer/zone.ejs', { cats: categories, zones: zones, listProduct: list, zone: zone});
+    resp.render('../views/customer/zone.ejs', { cats: categories, zones: zones, listProduct: list, zone: zone });
 });
 
 router.get('/myprofile', async function (req, resp) {
-    var categories = await CategoryDAO.selectAll();
-    var zones = await ZoneDAO.selectAll();
-    resp.render('../views/customer/myprofile.ejs', { cats: categories, zones: zones });
+    if (req.session.customer) {
+        var categories = await CategoryDAO.selectAll();
+        var zones = await ZoneDAO.selectAll();
+        resp.render('../views/customer/myprofile.ejs', { cats: categories, zones: zones });
+    } else {
+        resp.redirect('/login');
+    }
 });
 
 router.get("/details", async (req, resp) => {
@@ -134,4 +142,5 @@ router.post('/myprofile', async function (req, resp) {
         }
     } else MyUtil.showAlertAndRedirect(resp, 'SORRY!', './myprofile');
 });
+
 module.exports = router;
