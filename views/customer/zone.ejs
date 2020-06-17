@@ -40,7 +40,7 @@
                             <% for(var product of listProduct) { %>
                             <div style="display: none;" class="col-lg-4 col-sm-4 product">
                                 <div class="single_product_item">
-                                    <img src="<%=product.image%>" alt="#" class="img-fluid">
+                                    <img src="<%=product.image%>" alt="<%=product.name%>" height="360px">
                                     <h3> <a href="details?id=<%=product._id%>"><%=product.name%></a> </h3>
                                     <p>$<%=product.price%></p>
                                 </div>
