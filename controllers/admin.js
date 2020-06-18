@@ -97,7 +97,9 @@ router.post('/editproduct', upload.single('image'), async (req, resp) => {
     var price = req.body.price;
     var amount = req.body.amount;
     var category = await CategoryDAO.selectByID(req.body.category);
-    var zone = await ZoneDAO.selectByID(req.body.zone);
+    var zone= null;
+    if (req.body.zone)
+        zone = await ZoneDAO.selectByID(req.body.zone);
     var time = new Date().getTime();
     var image = (await ProductDAO.selectByID(req.session.productId)).image;
     if (req.file)
