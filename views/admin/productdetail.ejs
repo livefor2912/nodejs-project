@@ -1,5 +1,7 @@
 <!doctype html>
 <html lang="en">
+
+
 <head>
     <%- include('./_link.ejs') %>
     <title>Concept - Bootstrap 4 Admin Dashboard Template</title>
@@ -154,7 +156,11 @@
         <!-- ============================================================== -->
         <!-- end navbar -->
         <!-- left sidebar -->
+        <!-- ============================================================== -->
         <%- include('./_sidebar.ejs') %>
+        <!-- ============================================================== -->
+        <!-- end left sidebar -->
+        <!-- ============================================================== -->
         <!-- ============================================================== -->
         <!-- wrapper  -->
         <!-- ============================================================== -->
@@ -193,16 +199,15 @@
                                     <div class="product-slider">
                                         <div id="productslider-1" class="product-carousel carousel slide"
                                             data-ride="carousel">
-                                            <ol class="carousel-indicators">
-                                                <li data-target="#carouselExampleIndicators" data-slide-to="0"
-                                                    class="active"></li>
+                                            <!-- <ol class="carousel-indicators">
+                                                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                                                 <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                                                 <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                                            </ol>
+                                            </ol> -->
                                             <div class="carousel-inner">
                                                 <div class="carousel-item active">
                                                     <img class="d-block" src="<%= product.image %>" width="100%"
-                                                        alt="First slide"
+                                                        height="467.11px" alt="First slide"
                                                         style="background-repeat: no-repeat; background-position: center;">
                                                 </div>
                                                 <!-- <div class="carousel-item">
@@ -240,28 +245,32 @@
                                             <h3 class="mb-0 text-primary"><%= product.price %></h3>
                                         </div>
                                         <div class="product-colors border-bottom">
-                                            <h4>Select Colors</h4>
-                                            <input type="radio" class="radio" id="radio-1" name="group" />
-                                            <label for="radio-1"></label>
-                                            <input type="radio" class="radio" id="radio-2" name="group" />
-                                            <label for="radio-2"></label>
-                                            <input type="radio" class="radio" id="radio-3" name="group" />
-                                            <label for="radio-3"></label>
+                                            <h4>Category</h4>
+                                            <p> <%= product.category.name %> </p>
                                         </div>
                                         <div class="product-size border-bottom">
+                                            <h4>Zones</h4>
+                                            <div class="btn-group" role="group" aria-label="First group">
+                                                <% if (product.zone) { %>
+                                                    <p><%= product.zone.name %></p>
+                                                <% } %>
+                                            </div>
                                             <div class="product-qty">
-                                                <h4>Quantity </h4>
+                                                <h4>Quantity</h4>
                                                 <div class="quantity">
-                                                    <input type="number" min="1" max="9" step="1" value="1">
+                                                    <p><%= product.amount%></p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="product-description">
-                                            <h4 class="mb-1">Descriptions</h4>
-                                            <p>Praesent et cursus quam. Etiam vulputate est et metus pellentesque
-                                                iaculis. Suspendisse nec urna augue. Vestibulum ante ipsum primis in
-                                                faucibus orci luctus et ultrices posuere cubilia Curae;</p>
-                                            <a href="#" class="btn btn-primary btn-block btn-lg">Add to Cart</a>
+                                            <a href="/admin/editproduct/<%= product._id %>"
+                                                class="btn btn-primary btn-block btn-lg">Update</a>
+                                            <% if (canBeDelete) { %>
+                                            <a class="btn btn-primary btn-block btn-lg" style="color: white;" href="#"
+                                                id="btnDel">Delete</a>
+                                            <% } %>
+                                            <a class="btn btn-primary btn-block btn-lg" style="color: white;"
+                                                href="/">Detail in customer</a>
                                         </div>
                                     </div>
                                 </div>
@@ -356,7 +365,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 m-b-10">
                                     <h3> Related Products</h3>
                                 </div>
@@ -455,14 +464,30 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
                 <!-- ============================================================== -->
                 <!-- footer -->
                 <!-- ============================================================== -->
-                <%- include('./_footer.ejs') %>
+                <div class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                Copyright © 2018 Concept. All rights reserved. Dashboard by <a
+                                    href="https://colorlib.com/wp/">Colorlib</a>.
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="text-md-right footer-links d-none d-sm-block">
+                                    <a href="javascript: void(0);">About</a>
+                                    <a href="javascript: void(0);">Support</a>
+                                    <a href="javascript: void(0);">Contact Us</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- ============================================================== -->
                 <!-- end footer -->
                 <!-- ============================================================== -->
@@ -475,7 +500,15 @@
     <!-- ============================================================== -->
     <!-- end main wrapper  -->
     <!-- ============================================================== -->
-
+    <!-- Optional JavaScript -->
+    <!-- jquery 3.3.1 -->
+    <script src="/public/assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <!-- bootstap bundle js -->
+    <script src="/public/assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <!-- slimscroll js -->
+    <script src="/public/assets/vendor/slimscroll/jquery.slimscroll.js"></script>
+    <!-- main js -->
+    <script src="/public/assets/libs/js/main-js.js"></script>
     <script>
         jQuery('<div class="quantity-nav"><div class="quantity-button quantity-up">+</div><div class="quantity-button quantity-down">-</div></div>').insertAfter('.quantity input');
         jQuery('.quantity').each(function () {
@@ -513,7 +546,29 @@
     <script>
         $(document).ready(function () {
             $('.product-slider').css('padding', '0px');
+            $('#btnDel').click(function () {
+                const url = location.href;
+                const startIndex = url.toString().lastIndexOf('/productdetail/') + '/productdetail/'.length;
+                const endIndex = url.toString().length - 1;
+                const id = url.toString().substring(startIndex, endIndex);
+                if (confirm('bạn có chắc muốn xóa sản phẩm này không')) {
+                    $.ajax({
+                        url: '/admin/deleteproduct',
+                        type: 'get',
+                        data: {id: id},
+                        success: function (data) {
+                            if (data.success === 'false') {
+                                alert('không xóa được sản phẩm');
+                            }else {
+                                alert('xóa sản phẩm thành công');
+                                location.href = '/admin/listproducts';
+                            }
+                        }
+                    });
+                }
+            });
         });
     </script>
 </body>
+
 </html>
