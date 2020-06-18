@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <%- include('./_link.ejs') %>
+    <title>Fanwar - Admin Dashboard</title>
+    <style>
+        h1 {
+            font-family: 'Acme', sans-serif;
+            color: teal;
+            font-size: 40px;
+        }
+    </style>
+</head>
+<body>
+    <!-- ============================================================== -->
+    <!-- main wrapper -->
+    <!-- ============================================================== -->
+    <div class="dashboard-main-wrapper">
+        <!-- ============================================================== -->
+        <!-- navbar -->
+        <!-- left sidebar -->
+        <%- include('./_sidebar.ejs') %>
+        <!-- ============================================================== -->
+        <!-- wrapper  -->
+        <!-- ============================================================== -->
+        <div class="dashboard-wrapper">
+            <div class="dashboard-ecommerce">
+                <div class="container-fluid dashboard-content ">
+                    <!-- ============================================================== -->
+                    <!-- pageheader  -->
+                    <!-- ============================================================== -->
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="page-header">
+                                <h1>Order List</h1>
+                                <p class="pageheader-text">Nulla euismod urna eros, sit amet scelerisque torton lectus
+                                    vel mauris facilisis faucibus at enim quis massa lobortis rutrum.</p>
+                                <div class="page-breadcrumb">
+                                    <nav aria-label="breadcrumb">
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+                            <%  if (orders) { %>
+                            <div class="card">
+                                <h4 class="card-header">Orders</h4>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead class="bg-light">
+                                                <tr class="border-0">
+                                                    <th class="border-0">ID</th>
+                                                    <th class="border-0">Creation date</th>
+                                                    <th class="border-0">Cust_name</th>
+                                                    <th class="border-0">Cust_phone</th>
+                                                    <th class="border-0">Total</th>
+                                                    <th class="border-0">Status</th>
+                                                    <th class="border-0">Action</th>
+                                                </tr>
+                                                <%  for (var item of orders) { %>
+                                                <tr onclick="window.location='./listorders?id=<%=item._id%>'" style="cursor: pointer">
+                                                    <th><%=item._id%></th>
+                                                    <td><%=new Date(item.cdate).toLocaleString()%></td>
+                                                    <td><%=item.customer.name%></td>
+                                                    <td><%=item.customer.phone%></td>
+                                                    <td><%=item.total%></std>
+                                                    <td><%=item.status%></td>
+                                                    <td>
+                                                        <%  if (item.status == 'PENDING') {  %>
+                                                        <a
+                                                            href="./updatestatus?status=APPROVED&id=<%=item._id%>">APPROVE</a>
+                                                         ||
+                                                        <a
+                                                            href="./updatestatus?status=CANCELED&id=<%=item._id%>">CANCEL</a>
+                                                        <%  } %>
+                                                    </td>
+                                                </tr>
+                                                <%  } %>
+                                            </thead>
+                                            <tbody>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <%  } %>
+                        </div>
+                    </div>
+                   
+                    <div class="col-xl-11 col-lg-12 col-md-6 col-sm-12 col-12">
+                        <div class="card" style="margin-left: 100px ;">
+                         <%  if (order) { %>
+                            <h4 class="card-header">Order Detail</h4>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class="bg-light">
+                                            <tr class="border-0">
+                                                <th class="border-0">No.</th>
+                                                <th class="border-0">Prod.ID</th>
+                                                <th class="border-0">Product Name</th>
+                                                <th class="border-0">Image</th>
+                                                <th class="border-0">Price</th>
+                                                <th class="border-0">Quantity</th>
+                                                <th class="border-0">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%  for (var [i, item] of order.items.entries()) {  %>
+                                            <tr>
+                                                <td><%=(i+1)%></td>
+                                                <td><%=item.product._id%></td>
+                                                <td><%=item.product.name%></td>
+                                                <td><img src="data:image/png;base64,<%=item.product.image%>" width="70"
+                                                        height="70" /></td>
+                                                <td><%=item.product.price%></td>
+                                                <td><%=item.quantity%></td>
+                                                <td><%=item.product.price * item.quantity%></td>
+                                            </tr>
+                                            <%  } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                         <%  } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- end wrapper  -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- end main wrapper  -->
+    <!-- ============================================================== -->
+</body>
+
+</html>
