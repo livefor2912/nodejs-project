@@ -292,9 +292,10 @@
                                                         <select class="custom-select d-block w-100" id="ca-ca-ca-te-goryyy" required="" name="zone">
                                                             <option value="">Choose...</option>
                                                             <% for (var item of Zones) { %>
+                                                                <% if (item.zone) { %>
                                                                 <% if (item.name == product.zone.name) { %>
                                                                 <option value="<%= item._id %>" selected><%= item.name %></option>
-                                                                <% } else { %>
+                                                                <% } } else { %>
                                                                 <option value="<%= item._id %>"><%= item.name %></option>
                                                                 <% } %>
                                                             <% } %>
