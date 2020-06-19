@@ -184,7 +184,13 @@ router.get('/mycart', function (req, res) {
   });
 
   router.get('/checkoutconfirm', async function (req, res){
-    res.render('../views/customer/checkout.ejs');
+    if (req.session.customer) {
+    var total = MyUtil.getTotal(req.session.mycart);
+    res.render('../views/customer/checkout.ejs', {total: total});
+    }
+    else{
+      res.redirect('./login');
+    }
   });
   router.get('/checkout', async function (req, res) {
     if (req.session.customer) {
@@ -194,6 +200,7 @@ router.get('/mycart', function (req, res) {
       var result = await OrderDAO.insert(order);
       if (result) {
         delete req.session.mycart;
+        res.redirect('./');
         // MyUtil.showAlertAndRedirect(res, 'Place Order Successfully!', './');
       } else {
         MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae!', './mycart');

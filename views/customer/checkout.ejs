@@ -18,18 +18,23 @@
     <!-- Header part end-->
     <div class="align-center">
         <div class="col-lg-12">
+            <form action="checkout">
             <div class="order_box">
                 <h2>Your Order</h2>
                 <ul class="list">
                     <li>
+                        <!-- <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Total</th> -->
                         <a href="#">Product
                             <span>Total</span>
                         </a>
+                        <!-- <a>Quantity</a> -->
                     </li>
                     <%  for (var [i, item] of session.mycart.entries()) { %>
                     <li>
                         <a href="#"><%=item.product.name%>
-                            <span class="middle">x <%=item.quantity%></span><br/>
+                            <span class="middle">x<%=item.quantity%></span>
                             <span class="last"><%=item.product.price * item.quantity%></span>
                         </a>
                     </li>
@@ -38,7 +43,7 @@
                 <ul class="list list_2">
                     <li>
                         <a href="#">Subtotal
-                            <span>500</span>
+                            <span>$<%=total%></span>
                         </a>
                     </li>
                     <li>
@@ -48,7 +53,7 @@
                     </li>
                     <li>
                         <a href="#">Total
-                            <span>500</span>
+                            <span>$<%=total%></span>
                         </a>
                     </li>
                 </ul>
@@ -57,8 +62,10 @@
                     <label for="f-option4">I’ve read and accept the </label>
                     <a href="#">terms &amp; conditions*</a>
                 </div>
-                <a class="btn_3" href="checkout">Place Order</a>
+                <!-- <a class="btn_3" href="checkout">Place Order</a> -->
+                <input class="btn_3" type="submit" value="Place Order" style="padding-left: 250px; padding-right: 250px";/>
             </div>
+        </form>
         </div>
     </div>
     <%- include('./_footer.ejs') %>
