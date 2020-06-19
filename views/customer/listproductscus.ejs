@@ -55,7 +55,13 @@
                             <% } %>
                         </div>
                         <div class="load_more_btn text-center">
-                            <a href="#" class="btn_3">Load More</a>
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item"><a class="page-link" id="btnPre">Previous</a></li>
+                                <% for (var i = 1; i <= pageCount; i++) { %>
+                                    <li class="page-item"><a class="page-link" href="/admin/listproducts?page=<%= i %>"><%= i %></a></li>
+                                <% } %>
+                                <li class="page-item"><a class="page-link" href="javascript:void(0);" id="btnNext">Next</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 var MyConstants = {
-  DB_SERVER: 'cluster0-baxfc.mongodb.net',
+  DB_SERVER: 'cluster0.qow2v.mongodb.net',
   DB_USER: 'admin',
   DB_PASS: 'tYFofQJbk98w31OR',
   DB_DATABASE: 'project',
