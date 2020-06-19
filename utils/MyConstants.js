@@ -3,7 +3,7 @@ var MyConstants = {
   DB_USER: 'admin',
   DB_PASS: 'VuBBJTo5IPV6Rmjn',
   DB_DATABASE: 'project',
-  HOSTNAME: 'https://fan-war.herokuapp.com/',
+  HOSTNAME: 'www.fan-war.live',
   EMAIL_USER: 'fanwar2020@hotmail.com',
   EMAIL_PASS: 'Nodejs.Project12312345',
 };
