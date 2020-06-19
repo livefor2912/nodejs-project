@@ -1,5 +1,8 @@
 var express = require('express');
 var app = express();
+var api = express.Router();
+var expressValidator = require('express-validator');
+api.use(expressValidator());
 app.listen(process.env.PORT || 1234);
 // app.listen(1234);
 
