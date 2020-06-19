@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zxx">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>My Cart</title>
+    <%- include('./_link.ejs') %>
+</head>
+
+<body>
+    <!--::header part start::-->
+    <%- include('./_menu.ejs') %>
+    <!-- Header part end-->
+
+    <!-- cart area -->
+    <section class="cart_area section_padding">
+        <div class="container">
+            <div class="cart_inner">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Amount</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%  for (var [i, item] of session.mycart.entries()) { %>
+                            <tr>
+                                <td>
+                                    <div class="media">
+                                        <div class="d-flex">
+                                            <img src="<%=item.product.image%>" alt="" class="img-fluid">
+                                        </div>
+                                        <div class="media-body">
+                                            <p><%=item.product.name%></p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <h5><%=item.product.price%></h5>
+                                </td>
+                                <td>
+                                    <h5><%=item.quantity%></h5>
+                                </td>
+                                <td>
+                                    <h5><%=item.product.price * item.quantity%></h5>
+                                </td>
+                                <td>
+                                    <a href="remove2cart?id=<%=item.product._id%>" class="fas fa-trash"></a>
+                                </td>
+                            </tr>
+                            <%  } %>
+
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <h4>Total</h4>
+                                </td>
+                                <td>
+                                    <h4><%=total%></h4>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="checkout_btn_inner float-right">
+                        <!-- <a href="./checkout" onclick="return confirm('ARE YOU SURE?')">CHECKOUT</a> -->
+                        <a class="btn_1 checkout_btn_1" href="checkoutconfirm">Checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- end cart area -->
+    <%- include('./_footer.ejs') %>
+</body>
+
+</html>
