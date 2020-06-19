@@ -4,9 +4,10 @@ var objectId = require('mongodb').ObjectID;
 
 var MyUtil = require("../utils/MyUtil.js");
 var multer = require('multer');
+const { ObjectID, ObjectId } = require('mongodb');
 
 var pathDAO = "../daos/mongodb";
-// var pathDAO = "../daos/mongoose";
+//var pathDAO = "../daos/mongoose";
 var CategoryDAO = require(pathDAO + "/CategoryDAO.js");
 var ProductDAO = require(pathDAO + "/ProductDAO.js");
 var CustomerDAO = require(pathDAO + "/CustomerDAO.js");
@@ -51,6 +52,23 @@ router.post('/login', async (req, resp) => {
     }
 });
 
+router.get('/myorders', async function (req, resp) {
+    if (req.session.customer) {
+        var cust = req.session.customer;
+        if (cust) {
+            var orders = await OrderDAO.selectByCustID(cust._id);
+            var _id = req.query.id; // /myorders?id=XXX
+            if (_id) {
+                var order = await OrderDAO.selectByID(_id);
+            }
+            resp.render('../views/customer/myorders.ejs', { orders: orders, order: order });
+        } else {
+            resp.redirect('./');
+        }
+    } else {
+        resp.redirect('/login');
+    }
+});
 router.get("/listproducts", async (req, resp) => {
     var categories = await CategoryDAO.selectAll();
     var zones = await ZoneDAO.selectAll();
@@ -68,10 +86,24 @@ router.get("/listproducts", async (req, resp) => {
     });
 });
 
-router.get('/myprofile', async function (req, resp) {
+router.get('/zone', async (req, resp) => {
     var categories = await CategoryDAO.selectAll();
     var zones = await ZoneDAO.selectAll();
-    resp.render('../views/customer/myprofile.ejs', { cats: categories, zones: zones });
+    var zoneId = req.query.zoneID;
+    var list = await ProductDAO.selectByZoneID(zoneId);
+    var zone = await ZoneDAO.selectByID(zoneId);
+
+    resp.render('../views/customer/zone.ejs', { cats: categories, zones: zones, listProduct: list, zone: zone });
+});
+
+router.get('/myprofile', async function (req, resp) {
+    if (req.session.customer) {
+        var categories = await CategoryDAO.selectAll();
+        var zones = await ZoneDAO.selectAll();
+        resp.render('../views/customer/myprofile.ejs', { cats: categories, zones: zones });
+    } else {
+        resp.redirect('/login');
+    }
 });
 
 router.get("/details", async (req, resp) => {

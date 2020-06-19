@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zxx">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title><%=zone.name%></title>
+    <%- include('./_link.ejs') %>
+</head>
+
+<body>
+
+    <%- include('./_menu.ejs') %>
+
+    <!-- breadcrumb part start-->
+
+    <section class="breadcrumb_part" style="height: 500px; 
+    background: linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0, 0.3)),url(data:image/png;base64,<%=zone.image%>); 
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center center;">
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="breadcrumb_iner">
+                    <h2 style="color: white; text-transform: uppercase;"><%=zone.name%> zone</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- breadcrumb part end-->
+
+    <!-- product list part start-->
+    <section class="product_list section_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product_list">
+                        <div class="row">
+                            <% for(var product of listProduct) { %>
+                            <div style="display: none;" class="col-lg-4 col-sm-4 product">
+                                <div class="single_product_item">
+                                    <img src="<%=product.image%>" alt="<%=product.name%>" height="360px">
+                                    <h3> <a href="details?id=<%=product._id%>"><%=product.name%></a> </h3>
+                                    <p>$<%=product.price%></p>
+                                </div>
+                            </div>
+                            <% } %>
+                        </div>
+
+                        <div class="load_more_btn text-center">
+                            <a style="cursor: pointer;" id="loadMore" class="btn_3">Load More</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- product list part end-->
+
+
+    <!--::footer_part start::-->
+    <%- include('./_footer.ejs') %>
+    <!--::footer_part end::-->
+</body>
+
+<script>
+    $("div.product").slice(0, 6).show();
+
+    $("body").on('click', '#loadMore', function (e) {
+        e.preventDefault();
+        $("div.product:hidden").slice(0, 3).slideDown();
+        if ($("div.product:hidden").length == 0) {
+            $("#loadMore").fadeOut('slow');
+        }
+        $('html,body').animate({
+            scrollTop: $(this).offset().top
+        }, 1500);
+    });
+</script>
+
+</html>
