@@ -52,6 +52,8 @@ router.post('/login', async (req, resp) => {
   }
 });
 
+//============== Order ================
+
 router.get('/myorders', async function (req, resp) {
   if (req.session.customer) {
     var cust = req.session.customer;
@@ -69,6 +71,9 @@ router.get('/myorders', async function (req, resp) {
     resp.redirect('/login');
   }
 });
+
+//============== product ================
+
 router.get("/listproducts", async (req, resp) => {
   var categories = await CategoryDAO.selectAll();
   var zones = await ZoneDAO.selectAll();
@@ -80,31 +85,13 @@ router.get("/listproducts", async (req, resp) => {
   } else {
     list = await ProductDAO.selectAll();
   }
+
+
   resp.render('../views/customer/listproducts.ejs', {
-    cats: categories, newprods: newproducts, hotprods: hotproducts, zones: zones
-    , listProduct: list
+    cats: categories, newprods: newproducts, hotprods: hotproducts, zones: zones, listProduct: list
   });
 });
 
-router.get('/zone', async (req, resp) => {
-  var categories = await CategoryDAO.selectAll();
-  var zones = await ZoneDAO.selectAll();
-  var zoneId = req.query.zoneID;
-  var list = await ProductDAO.selectByZoneID(zoneId);
-  var zone = await ZoneDAO.selectByID(zoneId);
-
-  resp.render('../views/customer/zone.ejs', { cats: categories, zones: zones, listProduct: list, zone: zone });
-});
-
-router.get('/myprofile', async function (req, resp) {
-  if (req.session.customer) {
-    var categories = await CategoryDAO.selectAll();
-    var zones = await ZoneDAO.selectAll();
-    resp.render('../views/customer/myprofile.ejs', { cats: categories, zones: zones });
-  } else {
-    resp.redirect('/login');
-  }
-});
 
 router.get("/details", async (req, resp) => {
   var _id = req.query.id;
@@ -126,6 +113,31 @@ router.get("/searchproduct", async (req, resp) => {
   });
 });
 
+//============== zone ================
+
+router.get('/zone', async (req, resp) => {
+  var categories = await CategoryDAO.selectAll();
+  var zones = await ZoneDAO.selectAll();
+  var zoneId = req.query.zoneID;
+  var list = await ProductDAO.selectByZoneID(zoneId);
+  var zone = await ZoneDAO.selectByID(zoneId);
+
+  resp.render('../views/customer/zone.ejs', { cats: categories, zones: zones, listProduct: list, zone: zone });
+});
+
+//============== profile ================
+
+router.get('/myprofile', async function (req, resp) {
+  if (req.session.customer) {
+    var categories = await CategoryDAO.selectAll();
+    var zones = await ZoneDAO.selectAll();
+    resp.render('../views/customer/myprofile.ejs', { cats: categories, zones: zones });
+  } else {
+    resp.redirect('/login');
+  }
+});
+
+
 router.post('/myprofile', async function (req, resp) {
   var curCust = req.session.customer;
   if (curCust) {
@@ -142,6 +154,8 @@ router.post('/myprofile', async function (req, resp) {
     }
   } else MyUtil.showAlertAndRedirect(resp, 'SORRY!', './myprofile');
 });
+
+//============== cart ================
 
 router.get('/mycart', function (req, res) {
   if (req.session.mycart && req.session.mycart.length > 0) {

@@ -62,10 +62,20 @@ router.get('/logout', (req, resp) => {
     resp.redirect('login');
 });
 
+//============== product management ================
+
 router.get("/listproducts", async (req, resp) => {
     var list = await ProductDAO.selectAll();
     resp.render('admin/listproducts', { listProduct: list });
 });
+
+
+router.get('/productdetail/:id', async (req, resp) => {
+    var product = await ProductDAO.selectByID(req.params.id);
+    var isExisted = await isExistedInOrders(req.params.id);
+    resp.render('admin/productdetail', { product: product, canBeDelete: !isExisted });
+});
+
 
 router.get("/addproduct", async (req, resp) => {
     var list = await CategoryDAO.selectAll2();
@@ -92,6 +102,17 @@ router.post("/addproduct", upload.single('image'), async (req, resp) => {
         resp.redirect('/admin/addproduct');
     }
 });
+
+
+router.get('/editproduct/:id', async (req, resp) => {
+    var list = await CategoryDAO.selectAll2();
+    var zones = await ZoneDAO.selectAll();
+    var _id = req.params.id;
+    req.session.productId = _id;
+    var product = await ProductDAO.selectByID(_id);
+    resp.render('admin/editproduct', { product: product, categories: list, Zones: zones });
+});
+
 router.post('/editproduct', upload.single('image'), async (req, resp) => {
     var name = req.body.name;
     var price = req.body.price;
@@ -116,26 +137,20 @@ router.post('/editproduct', upload.single('image'), async (req, resp) => {
     }
 });
 
-router.get('/productdetail/:id', async (req, resp) => {
 
-    var product = await ProductDAO.selectByID(req.params.id);
-    var isExisted = await isExistedInOrders(req.params.id);
-    resp.render('admin/productdetail', { product: product, canBeDelete: !isExisted });
+router.get('/deleteproduct', async (req, res) => {
+    var id = req.query.id;
+    var result = await ProductDAO.delete(id);
+    res.send({ success: result.toString() });
 });
 
-router.get('/editproduct/:id', async (req, resp) => {
-    var list = await CategoryDAO.selectAll2();
-    var zones = await ZoneDAO.selectAll();
-    var _id = req.params.id;
-    req.session.productId = _id;
-    var product = await ProductDAO.selectByID(_id);
-    resp.render('admin/editproduct', { product: product, categories: list, Zones: zones });
-});
+//============== category management ================
 
 router.get('/listcate', async function (req, res) {
     var categories = await CategoryDAO.selectAll();
     res.render('../views/admin/listcate.ejs', { cats: categories });
 });
+
 router.post('/addcate', async function (req, res) {
     var name = req.body.name;
     var category = { name: name };
@@ -146,6 +161,7 @@ router.post('/addcate', async function (req, res) {
         MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae!', './listcate');
     }
 });
+
 router.post('/updatecate', async function (req, res) {
     var _id = req.body.id;
     var name = req.body.name;
@@ -157,6 +173,7 @@ router.post('/updatecate', async function (req, res) {
         MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae!', './listcate');
     }
 });
+
 router.post('/deletecate', async function (req, res) {
     var _id = req.body.id;
     var result = await CategoryDAO.delete(_id);
@@ -166,6 +183,8 @@ router.post('/deletecate', async function (req, res) {
         MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae!', './listcate');
     }
 });
+
+//============== zone management ================
 
 router.get('/listzones', async (req, resp) => {
     var list = await ZoneDAO.selectAll();
@@ -209,12 +228,6 @@ router.post('/deletezone', async (req, resp) => {
     } else {
         MyUtil.showAlertAndRedirect(resp, 'Deleting zone failed', './listzones');
     }
-});
-
-router.get('/deleteproduct', async (req, res) => {
-    var id = req.query.id;
-    var result = await ProductDAO.delete(id);
-    res.send({ success: result.toString() });
 });
 
 async function isExistedInOrders(id) {

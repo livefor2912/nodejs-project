@@ -7,6 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Products</title>
     <%- include('./_link.ejs') %>
+    <style>
+        .filterDiv {
+            display: none;
+        }
+
+        .btn.active {
+            color: #fff;
+            background: #B08EAD;
+            border: 1px solid transparent;
+        }
+
+        .show {
+            display: block;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -25,21 +41,17 @@
                         </div>
                         <div class="single_sedebar">
                             <div class="select_option">
-                                <div class="select_option_list">Category <i class="right fas fa-caret-down"></i> </div>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
+                                <div class="select_option_list">Filter <i style="cursor: pointer;" class="right fas fa-caret-down"></i> </div>
+                                <div id="myBtnContainer" class="select_option_dropdown text-center ">
+                                    <p>Category</p>
                                     <%  if (typeof(cats) !== 'undefined') { for (var cat of cats) { %>
-                                    <a class="dropdown-item"
-                                        href="./listproductscus?catID=<%=cat._id%>"><%=cat.name%></a>
+                                    <button class="genric-btn primary-border circle col-md-5 btn" id="<%=cat._id%>"
+                                        style="margin: 8px 10px;"><%=cat.name%></button>
                                     <%  } } %>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single_sedebar">
-                            <div class="select_option">
-                                <div class="select_option_list">Type <i class="right fas fa-caret-down"></i> </div>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
+                                    <p>Zone</p>
                                     <% if(typeof(zones) !== 'undefined') { for (var zone of zones) { %>
-                                    <a class="dropdown-item" href=""><%= zone.name %></a>
+                                    <button class="genric-btn primary-border circle col-md-6 btn" id="<%=zone._id%>"
+                                        style="margin: 8px 10px;"><%=zone.name%></button>
                                     <%  } } %>
                                 </div>
                             </div>
@@ -51,7 +63,8 @@
                         <div class="row">
                             <% if (hasOwnProperty('listProduct')) { %>
                             <% for (var item of listProduct) { %>
-                            <div class="col-lg-6 col-sm-6">
+                            <div
+                                class="col-lg-6 col-sm-6 filterDiv <% if(item.zone) { %><%=item.zone._id%><% } %> <%=item.category._id%>">
                                 <div class="single_product_item">
                                     <img src="<%= item.image %>" alt="#" class="img-fluid">
                                     <h3> <a href="./details?id=<%= item._id%>"><%= item.name %></a> </h3>
@@ -72,5 +85,73 @@
     <!-- product list part end-->
     <%- include('./_footer.ejs') %>
 </body>
+
+<script>
+    var filter = new Array();
+    filterSelection(filter);
+    function filterSelection(filter) {
+        var x, i;
+        x = document.getElementsByClassName("filterDiv");
+        if (filter.length < 1) {
+            for (i = 0; i < x.length; i++) {
+                if (x[i].className.indexOf("") > -1)
+                    w3AddClass(x[i], "show");
+            }
+        } else {
+            for (i = 0; i < x.length; i++) {
+                w3RemoveClass(x[i], "show");
+                filter.forEach(element => {
+                    if (x[i].className.indexOf(element) > -1)
+                        w3AddClass(x[i], "show");
+                });
+            }
+        }
+    }
+
+    function w3AddClass(element, name) {
+        var i, arr1, arr2;
+        arr1 = element.className.split(" ");
+        arr2 = name.split(" ");
+        for (i = 0; i < arr2.length; i++) {
+            if (arr1.indexOf(arr2[i]) == -1) { element.className += " " + arr2[i]; }
+        }
+    }
+
+    function w3RemoveClass(element, name) {
+        var i, arr1, arr2;
+        arr1 = element.className.split(" ");
+        arr2 = name.split(" ");
+        for (i = 0; i < arr2.length; i++) {
+            while (arr1.indexOf(arr2[i]) > -1) {
+                arr1.splice(arr1.indexOf(arr2[i]), 1);
+            }
+        }
+        element.className = arr1.join(" ");
+    }
+
+    // Add active class to the current button (highlight it)
+    var btnContainer = document.getElementById("myBtnContainer");
+    //get all filter condition
+    var btns = btnContainer.getElementsByClassName("btn");
+    //get all products
+    var allProducts = document.getElementsByClassName("filterDiv");
+
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            var conditionFilter = this.id.toString();
+            if (this.classList.contains("active")) {
+                this.classList.remove("active");
+                var index = filter.indexOf(conditionFilter);
+                if (index > -1) {
+                    filter.splice(index, 1);
+                }
+            } else {
+                this.className += " active";
+                filter.push(conditionFilter);
+            }
+            filterSelection(filter);
+        });
+    }
+</script>
 
 </html>
