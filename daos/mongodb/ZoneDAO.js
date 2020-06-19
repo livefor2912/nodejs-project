@@ -34,6 +34,12 @@ var ZoneDAO = {
   async delete(_id) {
     var query = { _id: ObjectId(_id) };
     var db = await client.getDB();
+
+    var queryProducts = { 'zone._id': ObjectId(_id) };
+    var unsetZone = { $unset: { zone: 1 } };
+    var result1 = await db.collection("products").updateMany(queryProducts, unsetZone);
+    console.log(result1.result.nModified);
+
     var result = await db.collection("zones").deleteOne(query);
     return result.result.n > 0 ? true : false;
   }
