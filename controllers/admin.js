@@ -132,6 +132,41 @@ router.get('/editproduct/:id', async (req, resp) => {
     resp.render('admin/editproduct', { product: product, categories: list, Zones: zones });
 });
 
+router.get('/listcate', async function (req, res) {
+    var categories = await CategoryDAO.selectAll();
+    res.render('../views/admin/listcate.ejs', { cats: categories });
+});
+router.post('/addcate', async function (req, res) {
+    var name = req.body.name;
+    var category = { name: name };
+    var result = await CategoryDAO.insert(category);
+    if (result) {
+        MyUtil.showAlertAndRedirect(res, 'Successfully!!', './listcate');
+    } else {
+        MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae!', './listcate');
+    }
+});
+router.post('/updatecate', async function (req, res) {
+    var _id = req.body.id;
+    var name = req.body.name;
+    var category = { _id: _id, name: name };
+    var result = await CategoryDAO.update(category);
+    if (result) {
+        MyUtil.showAlertAndRedirect(res, 'Successfully!!', './listcate');
+    } else {
+        MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae!', './listcate');
+    }
+});
+router.post('/deletecate', async function (req, res) {
+    var _id = req.body.id;
+    var result = await CategoryDAO.delete(_id);
+    if (result) {
+        MyUtil.showAlertAndRedirect(res, 'Successfully!!', './listcate');
+    } else {
+        MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae!', './listcate');
+    }
+});
+
 router.get('/listzones', async (req, resp) => {
     var list = await ZoneDAO.selectAll();
     resp.render('../views/admin/listzones.ejs', { zones: list });
