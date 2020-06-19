@@ -236,6 +236,7 @@
                                 <div class="col-md-12">
                                     <div class="card">
                                         <div class="card-header">
+<<<<<<< HEAD
                                             <h4 class="mb-0">Edit Product</h4>
                                         </div>
                                         <div class="card-body">
@@ -244,6 +245,16 @@
                                                     <div class="col-md-12 mb-3">
                                                         <label for="firstName">Name</label> 
                                                         <input type="text" class="form-control" id="firstName" name="name" placeholder="" value="<%= product.name %>" required="">
+=======
+                                            <h4 class="mb-0">Edit product</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <form class="needs-validation" novalidate="" action="/admin/addproduct" method="POST" enctype="multipart/form-data">
+                                                <div class="row">
+                                                    <div class="col-md-12 mb-3">
+                                                        <label for="firstName">Name</label> 
+                                                        <input type="text" class="form-control" id="firstName" name="name" placeholder="" value="" required="">
+>>>>>>> 24c9268b8e60c6cb76d54900271411ae938c267f
                                                         <div class="invalid-feedback">
                                                             Valid name is required.
                                                         </div>
@@ -255,7 +266,11 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">$</span>
                                                         </div>
+<<<<<<< HEAD
                                                         <input type="text" class="form-control" id="username" name="price" placeholder="99.9" value="<%= product.price %>" required="">
+=======
+                                                        <input type="text" class="form-control" id="username" name="price" placeholder="99.9" required="">
+>>>>>>> 24c9268b8e60c6cb76d54900271411ae938c267f
                                                         <div class="invalid-feedback" style="width: 100%;">
                                                             Your price is required.
                                                         </div>
@@ -263,29 +278,41 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="email">Amount <span class="text-muted">(Unlimit)</span></label>
+<<<<<<< HEAD
                                                     <input type="email" class="form-control" id="email" name="amount" value="<%= product.amount %>" placeholder="infinity 99+">
+=======
+                                                    <input type="email" class="form-control" id="email" name="amount"  placeholder="infinity 99+">
+>>>>>>> 24c9268b8e60c6cb76d54900271411ae938c267f
                                                     <div class="invalid-feedback">
                                                         Please enter a valid Amount.
                                                     </div>
                                                 </div>
+<<<<<<< HEAD
                                                 </p>
+=======
+>>>>>>> 24c9268b8e60c6cb76d54900271411ae938c267f
                                                 <div class="row">
                                                     <div class="col-md-12 mb-12">
                                                         <label for="country">Category</label>
                                                         <select class="custom-select d-block w-100" id="ca-ca-ca-te-goryyy" required="" name="category">
                                                             <option value="">Choose...</option>
                                                             <% for (var item of categories) { %>
+<<<<<<< HEAD
                                                                 <% if (item.name == product.category.name) { %>
                                                                 <option value="<%= item._id %>" selected><%= item.name %></option>
                                                                 <% } else { %>
                                                                 <option value="<%= item._id %>"><%= item.name %></option>
                                                                 <% } %>
+=======
+                                                                <option value="<%= item.name %>"><%= item.name %></option>
+>>>>>>> 24c9268b8e60c6cb76d54900271411ae938c267f
                                                             <% } %>
                                                         </select>
                                                         <div class="invalid-feedback">
                                                             Please select a valid Category.
                                                         </div>
                                                     </div>
+<<<<<<< HEAD
                                                     <p></p>
                                                     <div class="col-md-12 mb-12">
                                                         <label for="country">Zones</label>
@@ -307,20 +334,29 @@
                                                             Please select a valid Zones.
                                                         </div>
                                                     </div>
+=======
+>>>>>>> 24c9268b8e60c6cb76d54900271411ae938c267f
                                                 </div>
                                                 <hr class="mb-4">
                                                 <div class="custom-file">
                                                     <input type="file" class="custom-file-input" id="customFile" name="image" >
                                                     <label class="custom-file-label" for="customFile">Click on textbox Choose file</label>
                                                 </div>
+<<<<<<< HEAD
                                                 <div style="text-align: center;">
                                                     <img src="<%= product.image %>" alt="error!" width="750px"/>
                                                 </div>
+=======
+>>>>>>> 24c9268b8e60c6cb76d54900271411ae938c267f
                                                 <div class="invalid-feedback">
                                                     Please Choose image!
                                                 </div>
                                                 <hr class="mb-4">
+<<<<<<< HEAD
                                                 <button class="btn btn-primary btn-lg btn-block" type="submit">Update</button>
+=======
+                                                <button class="btn btn-primary btn-lg btn-block" type="submit">Add</button>
+>>>>>>> 24c9268b8e60c6cb76d54900271411ae938c267f
                                                 <button class="btn btn-primary btn-lg btn-block" type="submit">Cancel</button>
                                             </form>
                                         </div>
@@ -330,7 +366,32 @@
                         </div>
                     </div>
                 </div>
+<<<<<<< HEAD
                 <%- include('./_footer.ejs') %>
+=======
+                <!-- ============================================================== -->
+                <!-- footer -->
+                <!-- ============================================================== -->
+                <div class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                Copyright © 2018 Concept. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>.
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="text-md-right footer-links d-none d-sm-block">
+                                    <a href="javascript: void(0);">About</a>
+                                    <a href="javascript: void(0);">Support</a>
+                                    <a href="javascript: void(0);">Contact Us</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end footer -->
+                <!-- ============================================================== -->
+>>>>>>> 24c9268b8e60c6cb76d54900271411ae938c267f
             </div>
             <!-- ============================================================== -->
             <!-- end wrapper  -->

@@ -38,10 +38,10 @@ router.get('/login', async (req, resp) => {
 router.post('/login', async (req, resp) => {
     var username = req.body.username;
     var password = req.body.password;
-    // var pwdhashed = MyUtil.md5(password);
+    var pwdhashed = MyUtil.md5(password);
     //var cus = await CustomerDAO.sele
     var remember = req.body.remember;
-    var cus = await CustomerDAO.selectByUsernameAndPassword(username, password);
+    var cus = await CustomerDAO.selectByUsernameAndPassword(username, pwdhashed);
     // var temp = CustomerDAO.test();
     if (cus) {
         req.session.customer = cus;
@@ -67,6 +67,9 @@ router.get("/listproducts", async (req, resp) => {
         , listProduct: list
     });
 });
+router.get('/myprofile', function (req, resp) {
+    resp.render('../views/customer/myprofile.ejs');
+  });
 
 router.get('/myprofile', async function (req, resp) {
     var categories = await CategoryDAO.selectAll();
@@ -93,6 +96,23 @@ router.get("/searchproduct", async (req, resp) => {
         cats: categories, zones: zones, listProduct: result
     });
 });
+  router.post('/myprofile', async function (req, resp) {
+    var curCust = req.session.customer;
+    if (curCust) {
+      var username = req.body.txtUsername;
+      var password = req.body.txtPassword;
+      var name = req.body.txtName;
+      var phone = req.body.txtPhone;
+      var email = req.body.txtEmail;
+      var newCust = { _id: curCust._id, username: username, password: password, name: name, phone: phone, email: email, active: curCust.active, token: curCust.token };
+      var result = await CustomerDAO.update(newCust);
+      if (result) {
+        req.session.customer = newCust;
+        MyUtil.showAlertAndRedirect(resp, 'Update successful!', './home');
+      }
+    }
+    MyUtil.showAlertAndRedirect(resp, 'SORRY!', './myprofile');
+  });
 
 router.post('/myprofile', async function (req, resp) {
     var curCust = req.session.customer;
