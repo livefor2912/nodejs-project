@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zxx">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Products</title>
+    <%- include('./_link.ejs') %>
+</head>
+<body>
+    <%- include('./_menu.ejs') %>
+    <!-- product list part start-->
+    <section class="product_list section_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="product_sidebar">
+                        <div class="single_sedebar">
+                            <form action="#">
+                                <input type="text" name="#" placeholder="Search keyword">
+                                <i class="ti-search"></i>
+                            </form>
+                        </div>
+                        <div class="single_sedebar">
+                            <div class="select_option">
+                                <div class="select_option_list">Category <i class="right fas fa-caret-down"></i> </div>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
+                                    <%  if (typeof(cats) !== 'undefined') { for (var cat of cats) { %>
+                                    <a class="dropdown-item"
+                                        href="./listproductscus?catID=<%=cat._id%>"><%=cat.name%></a>
+                                    <%  } } %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="single_sedebar">
+                            <div class="select_option">
+                                <div class="select_option_list">Type <i class="right fas fa-caret-down"></i> </div>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
+                                    <% if(typeof(zones) !== 'undefined') { for (var zone of zones) { %>
+                                    <a class="dropdown-item" href=""><%= zone.name %></a>
+                                    <%  } } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="product_list">
+                        <div class="row">
+                            <% if (hasOwnProperty('listProduct')) { %>
+                                <% for (var item of listProduct) { %>
+                            <div class="col-lg-6 col-sm-6">
+                                <div class="single_product_item">
+                                    <img src="<%= item.image %>" alt="#" class="img-fluid">
+                                    <h3> <a href="./details?id=<%= item._id%>"><%= item.name %></a> </h3>
+                                    <p><%= item.price %></p>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% } %>
+                        </div>
+                        <div class="load_more_btn text-center">
+                            <a href="#" class="btn_3">Load More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- product list part end-->
+    <%- include('./_footer.ejs') %>
+</body>
+</html>
