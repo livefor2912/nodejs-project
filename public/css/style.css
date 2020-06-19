@@ -265,10 +265,19 @@ button:focus,
   -webkit-transition: 1s;
   transition: 1s;
 }
+.notification {
+  background-color: transparent;
+  color: white;
+  text-decoration: none;
+  padding: 5px 6px;
+  position: relative;
+  display: inline-block;
+  border-radius: 100%;
+}
 .notification .badge {
   position: absolute;
-  top: 22px;
-  right: 173px;
+  top: -1px;
+  right: -10px;
   padding: 4px 7px;
   border-radius: 50%;
   background:rgb(227, 116, 241);

@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="zxx">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -7,6 +8,7 @@
     <title>Products</title>
     <%- include('./_link.ejs') %>
 </head>
+
 <body>
     <%- include('./_menu.ejs') %>
     <!-- product list part start-->
@@ -48,7 +50,7 @@
                     <div class="product_list">
                         <div class="row">
                             <% if (hasOwnProperty('listProduct')) { %>
-                                <% for (var item of listProduct) { %>
+                            <% for (var item of listProduct) { %>
                             <div class="col-lg-6 col-sm-6">
                                 <div class="single_product_item">
                                     <img src="<%= item.image %>" alt="#" class="img-fluid">
@@ -70,4 +72,5 @@
     <!-- product list part end-->
     <%- include('./_footer.ejs') %>
 </body>
+
 </html>

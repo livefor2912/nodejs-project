@@ -50,26 +50,28 @@
                         <!-- <p>
                 Seamlessly empower fully researched growth strategies and interoperable internal or “organic” sources. Credibly innovate granular internal or “organic” sources whereas high standards in web-readiness. Credibly innovate granular internal or organic sources whereas high standards in web-readiness. Energistically scale future-proof core competencies vis-a-vis impactful experiences. Dramatically synthesize integrated schemas. with optimal networks.
             </p> -->
-            <form action="./add2cart" method="POST">
-                <div class="card_area">
-                    <div class="product_count_area">
-                        <p>Amount</p>
-                        <div class="product_count d-inline-block">
-                            <span class="product_count_item inumber-decrement"> <i class="ti-minus"></i></span>
-                            <input class="product_count_item input-number" name="txtQuantity" type="number" value="1" min="1"
-                                max="<%= product.amount%>" required />
-                            <span class="product_count_item number-increment"> <i class="ti-plus"></i></span>
-                        </div>
-                        <p>$<%= product.price %></p>
-                    </div>
-                    <div class="add_to_cart">
-                        <input type="hidden" name="txtID" value="<%=product._id%>" />
-                        <input class="btn_3" type="submit" value="ADD TO CART" />
-                        <!-- <a href="#" class="btn_3">add to cart</a> -->
-                    </div>
-                </div>
-            </form>
-                        
+                        <form action="./add2cart" method="POST">
+                            <div class="card_area">
+                                <div class="product_count_area">
+                                    <p>Amount</p>
+                                    <div class="product_count d-inline-block">
+                                        <span class="product_count_item inumber-decrement"> <i
+                                                class="ti-minus"></i></span>
+                                        <input class="product_count_item input-number" name="txtQuantity" type="number"
+                                            value="1" min="1" max="<%= product.amount%>" required />
+                                        <span class="product_count_item number-increment"> <i
+                                                class="ti-plus"></i></span>
+                                    </div>
+                                    <p>$<%= product.price %></p>
+                                </div>
+                                <div class="add_to_cart">
+                                    <input type="hidden" name="txtID" value="<%=product._id%>" />
+                                    <input class="btn_3" type="submit" value="ADD TO CART" />
+                                    <!-- <a href="#" class="btn_3">add to cart</a> -->
+                                </div>
+                            </div>
+                        </form>
+
                     </div>
                 </div>
             </div>

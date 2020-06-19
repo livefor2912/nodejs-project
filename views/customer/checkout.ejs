@@ -7,9 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>My Cart</title>
     <%- include('./_link.ejs') %>
-    <!-- <script>
-        var x = document.getElementById("myCheck").required;
-    </script> -->
 </head>
 
 <body>
@@ -19,53 +16,50 @@
     <div class="align-center">
         <div class="col-lg-12">
             <form action="checkout">
-            <div class="order_box">
-                <h2>Your Order</h2>
-                <ul class="list">
-                    <li>
-                        <!-- <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Total</th> -->
-                        <a href="#">Product
-                            <span>Total</span>
-                        </a>
-                        <!-- <a>Quantity</a> -->
-                    </li>
-                    <%  for (var [i, item] of session.mycart.entries()) { %>
-                    <li>
-                        <a href="#"><%=item.product.name%>
-                            <span class="middle">x<%=item.quantity%></span>
-                            <span class="last"><%=item.product.price * item.quantity%></span>
-                        </a>
-                    </li>
-                    <%  } %>
-                </ul>
-                <ul class="list list_2">
-                    <li>
-                        <a href="#">Subtotal
-                            <span>$<%=total%></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">Shipping
-                            <span>Free Shipping</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">Total
-                            <span>$<%=total%></span>
-                        </a>
-                    </li>
-                </ul>
-                <div class="creat_account" >
-                    <input type="checkbox" id="myCheck" name="selector" required>
-                    <label for="f-option4">I’ve read and accept the </label>
-                    <a href="#">terms &amp; conditions*</a>
+                <div class="order_box">
+                    <h2>Your Order</h2>
+                    <ul class="list">
+                        <li>
+                            <a href="#">Product
+                                <span>Total</span>
+                            </a>
+                        </li>
+                        <%  for (var [i, item] of session.mycart.entries()) { %>
+                        <li>
+                            <a href="./details?id=<%= item.product._id%>"><%=item.product.name%>
+                                <span class="middle">x<%=item.quantity%></span>
+                                <span class="last"><%=item.product.price * item.quantity%></span>
+                            </a>
+                        </li>
+                        <%  } %>
+                    </ul>
+                    <ul class="list list_2">
+                        <li>
+                            <a href="#">Subtotal
+                                <span>$<%=total%></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">Shipping
+                                <span>Free Shipping</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">Total
+                                <span>$<%=total%></span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="creat_account">
+                        <input type="checkbox" id="myCheck" name="selector" required>
+                        <label for="f-option4">I’ve read and accept the </label>
+                        <a href="#">terms &amp; conditions*</a>
+                    </div>
+                    <!-- <a class="btn_3" href="checkout">Place Order</a> -->
+                    <input class="btn_3" type="submit" value="Place Order"
+                        style="padding-left: 250px; padding-right: 250px" ; />
                 </div>
-                <!-- <a class="btn_3" href="checkout">Place Order</a> -->
-                <input class="btn_3" type="submit" value="Place Order" style="padding-left: 250px; padding-right: 250px";/>
-            </div>
-        </form>
+            </form>
         </div>
     </div>
     <%- include('./_footer.ejs') %>
