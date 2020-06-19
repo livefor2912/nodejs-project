@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var objectId = require('mongodb').ObjectID;
 
 // var MongoClient = require('mongodb').MongoClient;
 // var uri = 'mongodb+srv://admin:tYFofQJbk98w31OR@cluster0-baxfc.mongodb.net/project';
@@ -62,38 +63,28 @@ router.get('/logout', (req, resp) => {
 });
 
 router.get("/listproducts", async (req, resp) => {
-    // MongoClient.connect(uri, (err, conn) => {
-    //     if(err) throw err;
-    //     var db = conn.db('project');
-    //     var query = {};
-    //     db.collection('products').find(query).toArray((err, result) => {
-    //         if(err) throw err;
-    //         if(result) {
-    //             resp.render('admin/home', {listProduct: result})
-    //         } else {
-    //             resp.render('admin/home');
-    //         }
-    //         conn.close();
-    //     });
-    // });
     var list = await ProductDAO.selectAll();
     resp.render('admin/listproducts', { listProduct: list });
-
 });
 
 router.get("/addproduct", async (req, resp) => {
     var list = await CategoryDAO.selectAll2();
-    resp.render('admin/addproduct', { categories: list });
+    var zones = await ZoneDAO.selectAll();
+    resp.render('admin/addproduct', { categories: list, Zones: zones });
 });
+
 router.post("/addproduct", upload.single('image'), async (req, resp) => {
     var name = req.body.name;
     var price = req.body.price;
     var amount = req.body.amount;
-    var category = req.body.category;
+    var category = await CategoryDAO.selectByID(req.body.category);
+    var zone = null;
+    if (req.body.zone)
+        zone = await ZoneDAO.selectByID(req.body.zone);
     var time = new Date().getTime();
     // var image = req.body.image;
     var image = req.file.buffer.toString('base64');
-    var products = { name: name, price: price, amount: amount, category: category, image: 'data:image/png;base64,' + image, creationDate: time };
+    var products = { name: name, price: price, amount: amount, category: category, image: 'data:image/png;base64,' + image, creationDate: time, zone: zone };
     var result = await ProductDAO.insert(products);
     if (result) {
         resp.redirect('/admin/listproducts');
@@ -101,14 +92,79 @@ router.post("/addproduct", upload.single('image'), async (req, resp) => {
         resp.redirect('/admin/addproduct');
     }
 });
-router.get('/editproduct', async (req, resp) => {
-    var list = await CategoryDAO.selectAll2();
-    resp.render('admin/editproduct', await { categories: list });
+router.post('/editproduct', upload.single('image'), async (req, resp) => {
+    var name = req.body.name;
+    var price = req.body.price;
+    var amount = req.body.amount;
+    var category = await CategoryDAO.selectByID(req.body.category);
+    var zone= null;
+    if (req.body.zone)
+        zone = await ZoneDAO.selectByID(req.body.zone);
+    var time = new Date().getTime();
+    var image = (await ProductDAO.selectByID(req.session.productId)).image;
+    if (req.file)
+        image = req.file.buffer.toString('base64');
+    if (!image.toString().startsWith('data:image/png;base64,'))
+        image = 'data:image/png;base64,' + image;
+    var products = { _id: req.session.productId, name: name, price: price, amount: amount, category: category, image: image, creationDate: time, zone: zone };
+    var result = await ProductDAO.update(products);
+    if (result) {
+        resp.redirect('/admin/listproducts');
+        delete req.session.productId;
+    } else {
+        resp.redirect(`/admin/editproduct/${req.session.productId}`);
+    }
 });
 
 router.get('/productdetail/:id', async (req, resp) => {
+
     var product = await ProductDAO.selectByID(req.params.id);
-    resp.render('admin/productdetail', { product: product });
+    var isExisted = await isExistedInOrders(req.params.id);
+    resp.render('admin/productdetail', { product: product, canBeDelete: !isExisted });
+});
+
+router.get('/editproduct/:id', async (req, resp) => {
+    var list = await CategoryDAO.selectAll2();
+    var zones = await ZoneDAO.selectAll();
+    var _id = req.params.id;
+    req.session.productId = _id;
+    var product = await ProductDAO.selectByID(_id);
+    resp.render('admin/editproduct', { product: product, categories: list, Zones: zones });
+});
+
+router.get('/listcate', async function (req, res) {
+    var categories = await CategoryDAO.selectAll();
+    res.render('../views/admin/listcate.ejs', { cats: categories });
+});
+router.post('/addcate', async function (req, res) {
+    var name = req.body.name;
+    var category = { name: name };
+    var result = await CategoryDAO.insert(category);
+    if (result) {
+        MyUtil.showAlertAndRedirect(res, 'Successfully!!', './listcate');
+    } else {
+        MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae!', './listcate');
+    }
+});
+router.post('/updatecate', async function (req, res) {
+    var _id = req.body.id;
+    var name = req.body.name;
+    var category = { _id: _id, name: name };
+    var result = await CategoryDAO.update(category);
+    if (result) {
+        MyUtil.showAlertAndRedirect(res, 'Successfully!!', './listcate');
+    } else {
+        MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae!', './listcate');
+    }
+});
+router.post('/deletecate', async function (req, res) {
+    var _id = req.body.id;
+    var result = await CategoryDAO.delete(_id);
+    if (result) {
+        MyUtil.showAlertAndRedirect(res, 'Successfully!!', './listcate');
+    } else {
+        MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae!', './listcate');
+    }
 });
 
 router.get('/listzones', async (req, resp) => {
@@ -116,37 +172,55 @@ router.get('/listzones', async (req, resp) => {
     resp.render('../views/admin/listzones.ejs', { zones: list });
 });
 
-router.post('/addzone', async (req, resp) => {
+router.post('/addzone', upload.single('fileImage'), async (req, resp) => {
     var name = req.body.name;
-    var zone = { name: name };
-    var result = await ZoneDAO.insert(zone);
-    if (result) {
-        MyUtil.showAlertAndRedirect(resp, 'Adding zone successfully!', './listzones');
-      } else {
-        MyUtil.showAlertAndRedirect(resp, 'Adding zone failed', './listzones');
-      }
+    if(req.file) {
+        var image = req.file.buffer.toString('base64');
+        var zone = { name: name, image: image };
+        var result = await ZoneDAO.insert(zone);
+        if (result)
+            MyUtil.showAlertAndRedirect(resp, 'Adding zone successfully!', './listzones');
+    }
+    else MyUtil.showAlertAndRedirect(resp, 'Adding zone failed', './listzones');
 });
 
-router.post('/updatezone', async (req, resp) => {
+router.post('/updatezone', upload.single('fileImage'), async (req, resp) => {
     var _id = req.body.id;
     var name = req.body.nameZone;
-    var zone = { _id: _id, name: name };
-    var result = await ZoneDAO.update(zone);
-    if (result) {
-      MyUtil.showAlertAndRedirect(resp, 'Updating zone successfully!', './listzones');
+    if(req.file) {
+        var image = req.file.buffer.toString('base64');
     } else {
-      MyUtil.showAlertAndRedirect(resp, 'Updating zone failed', './listzones');
-    } 
+        var dbZone = await ZoneDAO.selectByID(_id);
+        var image = dbZone.image;
+    }
+    var zone = { _id: _id, name: name, image: image };
+    var result = await ZoneDAO.update(zone);
+    if (result)
+        MyUtil.showAlertAndRedirect(resp, 'Updating zone successfully!', './listzones');
+    else
+        MyUtil.showAlertAndRedirect(resp, 'Updating zone failed', './listzones');
 });
 
-router.post('/deletezone', async(req, resp) => {
+router.post('/deletezone', async (req, resp) => {
     var _id = req.body.txtID;
     var result = await ZoneDAO.delete(_id);
     if (result) {
-      MyUtil.showAlertAndRedirect(resp, 'Deleting zone successfully!', './listzones');
+        MyUtil.showAlertAndRedirect(resp, 'Deleting zone successfully!', './listzones');
     } else {
-      MyUtil.showAlertAndRedirect(resp, 'Deleting zone failed', './listzones');
+        MyUtil.showAlertAndRedirect(resp, 'Deleting zone failed', './listzones');
     }
 });
+
+router.get('/deleteproduct', async (req, res) => {
+    var id = req.query.id;
+    var result = await ProductDAO.delete(id);
+    res.send({ success: result.toString() });
+});
+
+async function isExistedInOrders(id) {
+    var result = await OrderDAO.selectByProdID(id);
+
+    return result.length !== 0;
+}
 
 module.exports = router;

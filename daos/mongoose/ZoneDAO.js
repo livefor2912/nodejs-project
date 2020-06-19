@@ -13,11 +13,11 @@ var ZoneDAO = {
   async insert(zone) {
     var mongoose = require('mongoose');
     zone._id = new mongoose.Types.ObjectId();
-    var result = await Models.Zone.create(category);
+    var result = await Models.Zone.create(zone);
     return result ? true : false;
   },
   async update(zone) {
-    var newvalues = { name: zone.name }
+    var newvalues = { name: zone.name, image: zone.image }
     var result = await Models.Zone.findByIdAndUpdate(zone._id, newvalues);
     return result ? true : false;
   },

@@ -265,7 +265,29 @@ button:focus,
   -webkit-transition: 1s;
   transition: 1s;
 }
-
+.notification {
+  background-color: transparent;
+  color: white;
+  text-decoration: none;
+  padding: 5px 6px;
+  position: relative;
+  display: inline-block;
+  border-radius: 100%;
+}
+.notification .badge {
+  position: absolute;
+  top: -1px;
+  right: -10px;
+  padding: 4px 7px;
+  border-radius: 50%;
+  background:rgb(227, 116, 241);
+  color: white;
+}
+.align-center {
+  width: fit-content;
+  margin: 0px auto;
+  /* border: 1px solid black; */
+}
 /* line 175, /Applications/MAMP/htdocs/old/palash/cl/shop_html/sass/_common.scss */
 .section_tittle {
   margin-bottom: 80px;

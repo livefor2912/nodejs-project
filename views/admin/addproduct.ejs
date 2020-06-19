@@ -2,6 +2,7 @@
 <html lang="en">
  
 <head>
+    <%- include('./_link.ejs') %>
     <title>Add Product</title>
 </head>
     
@@ -84,23 +85,24 @@
                                                         <select class="custom-select d-block w-100" id="ca-ca-ca-te-goryyy" required="" name="category">
                                                             <option value="">Choose...</option>
                                                             <% for (var item of categories) { %>
-                                                                <option value="<%= item.name %>"><%= item.name %></option>
+                                                                <option value="<%= item._id %>"><%= item.name %></option>
                                                             <% } %>
                                                         </select>
                                                         <div class="invalid-feedback">
                                                             Please select a valid Category.
                                                         </div>
                                                     </div>
+                                                    <p></p>
                                                     <div class="col-md-12 mb-12">
                                                         <label for="country">Zones</label>
-                                                        <select class="custom-select d-block w-100" id="ca-ca-ca-te-goryyy" required="" name="category">
-                                                            <option value="">None</option>
-                                                            <% for (var item of categories) { %>
-                                                                <option value="<%= item. %>"><%= item.name %></option>
+                                                        <select class="custom-select d-block w-100" id="ca-ca-ca-te-goryyy" required name="zone">
+                                                            <option value="">Choose...</option>
+                                                            <% for (var item of Zones) { %>
+                                                                <option value="<%= item._id %>"><%= item.name %></option>
                                                             <% } %>
                                                         </select>
                                                         <div class="invalid-feedback">
-                                                            Please select a valid Category.
+                                                            Please select a valid Zones.
                                                         </div>
                                                     </div>
                                                 </div>
@@ -123,17 +125,15 @@
                         </div>
                     </div>
                 </div>
-                <%- include('./_footer.ejs') %>
             </div>
             <!-- ============================================================== -->
             <!-- end wrapper  -->
             <!-- ============================================================== -->
+            <%- include('./_footer.ejs') %>
         </div>
     </div>
     <!-- ============================================================== -->
     <!-- end main wrapper  -->
     <!-- ============================================================== -->
 </body>
-
- 
 </html>
