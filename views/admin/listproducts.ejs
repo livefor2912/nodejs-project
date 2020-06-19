@@ -85,11 +85,12 @@
                                                     <td><%= item.amount %></td>
                                                     <td><%= item.category.name %></td>
                                                     <% if (item.zone) { %>
-                                                        <td><%= item.zone.name %></td>
+                                                    <td><%= item.zone.name %></td>
                                                     <% } else { %>
-                                                        <td></td>
+                                                    <td></td>
                                                     <% } %>
-                                                    <td><a class="btn btn-primary" style="color: white" href="/admin/productdetail/<%= item._id %>">Detail</a></td>
+                                                    <td><a class="btn btn-primary" style="color: white"
+                                                            href="/admin/productdetail/<%= item._id %>">Detail</a></td>
                                                     <!-- <td><span class="badge-dot badge-brand mr-1"></span>InTransit </td> -->
                                                 </tr>
                                                 <!-- <tr>
@@ -107,7 +108,8 @@
                     <ul class="pagination justify-content-end">
                         <li class="page-item"><a class="page-link" id="btnPre">Previous</a></li>
                         <% for (var i = 1; i <= pageCount; i++) { %>
-                            <li class="page-item"><a class="page-link" href="/admin/listproducts?page=<%= i %>"><%= i %></a></li>
+                        <li class="page-item"><a class="page-link" href="/admin/listproducts?page=<%= i %>"><%= i %></a>
+                        </li>
                         <% } %>
                         <li class="page-item"><a class="page-link" href="javascript:void(0);" id="btnNext">Next</a></li>
                     </ul>
@@ -133,10 +135,16 @@
                 var currPage = parseInt(url.substring(url.indexOf('=') + 1));
                 console.log(currPage);
                 $('#btnNext').click(function () {
-                    location.href = '/admin/listproducts?page=' + (currPage + 1);
+                    if (Number.isNaN(currPage))
+                        location.href = '/admin/listproducts?page=' + 2;
+                    else
+                        location.href = '/admin/listproducts?page=' + (currPage + 1);
                 });
                 $('#btnPre').click(function () {
-                    location.href = '/admin/listproducts?page=' + (currPage - 1);
+                    if (Number.isNaN(currPage))
+                        location.href = '/admin/listproducts?page=' + 2;
+                    else
+                        location.href = '/admin/listproducts?page=' + (currPage - 1);
                 });
             });
         </script>
