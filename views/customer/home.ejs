@@ -12,7 +12,7 @@
 <body>
 
     <%- include('./_menu.ejs') %>
-    
+
     <!-- banner part start-->
     <section class="banner_part">
         <div class="container">
@@ -44,17 +44,15 @@
                         <div class="row align-items-center justify-content-between">
                             <div class="col-lg-6 col-sm-6">
                                 <div class="single_product_img">
-                                    <img src="/img/single_product_1.png" class="img-fluid" alt="#">
+                                    <img src="<%=newprods[0].image%>" class="img-fluid" alt="#">
                                     <img src="/img/product_overlay.png" alt="#" class="product_overlay img-fluid">
                                 </div>
                             </div>
                             <div class="col-lg-5 col-sm-6">
                                 <div class="single_product_content">
-                                    <h5>Started from $10</h5>
-                                    <h2> <a href="single-product.html">Printed memory foam 
-                                        brief modern throw 
-                                        pillow case</a> </h2>
-                                    <a href="product_list.html" class="btn_3">Explore Now</a>
+                                    <h5>Only $<%=newprods[0].price%></h5>
+                                    <h2> <a href="./details?id=<%=newprods[0]._id%>"><%=newprods[0].name%></a> </h2>
+                                    <a href="listproducts" class="btn_3">Explore Now</a>
                                 </div>
                             </div>
                         </div>
@@ -63,17 +61,15 @@
                         <div class="row align-items-center justify-content-between">
                             <div class="col-lg-6 col-sm-6">
                                 <div class="single_product_img">
-                                    <img src="/img/single_product_2.png" class="img-fluid" alt="#">
+                                    <img src="<%=newprods[1].image%>" class="img-fluid" alt="image-product">
                                     <img src="/img/product_overlay.png" alt="#" class="product_overlay img-fluid">
                                 </div>
                             </div>
                             <div class="col-lg-5 col-sm-6">
                                 <div class="single_product_content">
-                                    <h5>Started from $10</h5>
-                                    <h2> <a href="single-product.html">Printed memory foam 
-                                        brief modern throw 
-                                        pillow case</a> </h2>
-                                    <a href="product_list.html" class="btn_3">Explore Now</a>
+                                    <h5>$<%=newprods[1].price%></h5>
+                                    <h2> <a href="details?id=<%=newprods[1]._id%>"><%=newprods[1].name%></a> </h2>
+                                    <a href="listproducts" class="btn_3">Explore Now</a>
                                 </div>
                             </div>
                         </div>
@@ -82,17 +78,15 @@
                         <div class="row align-items-center justify-content-between">
                             <div class="col-lg-6 col-sm-6">
                                 <div class="single_product_img">
-                                    <img src="/img/single_product_3.png" class="img-fluid" alt="#">
+                                    <img src="<%=newprods[2].image%>" class="img-fluid" alt="#">
                                     <img src="/img/product_overlay.png" alt="#" class="product_overlay img-fluid">
                                 </div>
                             </div>
                             <div class="col-lg-5 col-sm-6">
                                 <div class="single_product_content">
-                                    <h5>Started from $10</h5>
-                                    <h2> <a href="single-product.html">Printed memory foam 
-                                            brief modern throw 
-                                            pillow case</a> </h2>
-                                    <a href="product_list.html" class="btn_3">Explore Now</a>
+                                    <h5>$<%=newprods[2].price%></h5>
+                                    <h2> <a href="details?id=<%=newprods[2]._id%>"><%=newprods[2].name%></a> </h2>
+                                    <a href="listproducts" class="btn_3">Explore Now</a>
                                 </div>
                             </div>
                         </div>
@@ -103,7 +97,7 @@
     </section>
     <!-- product list end-->
 
-
+    <% if(hotprods.length > 0) { %>
     <!-- trending item start-->
     <section class="trending_items">
         <div class="container">
@@ -115,57 +109,24 @@
                 </div>
             </div>
             <div class="row">
+                <% if (hasOwnProperty('hotprods')) { %>
+                <% for (var item of hotprods) { %>
                 <div class="col-lg-4 col-sm-6">
                     <div class="single_product_item">
                         <div class="single_product_item_thumb">
-                            <img src="/img/tranding_item/tranding_item_1.png" alt="#" class="img-fluid">
+                            <img src="<%=item.image%>" alt="#" class="img-fluid">
                         </div>
-                        <h3> <a href="single-product.html">Cervical pillow for airplane
-                        car office nap pillow</a> </h3>
-                        <p>From $5</p>
+                        <h3> <a href="single-product.html"><%=item.name%>></a> </h3>
+                        <p>%<%=item.price%></p>
                     </div>
                 </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single_product_item">
-                        <img src="/img/tranding_item/tranding_item_2.png" alt="#" class="img-fluid">
-                        <h3> <a href="single-product.html">Foam filling cotton slow rebound pillows</a> </h3>
-                        <p>From $5</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single_product_item">
-                        <img src="/img/tranding_item/tranding_item_3.png" alt="#" class="img-fluid">
-                        <h3> <a href="single-product.html">Memory foam filling cotton Slow rebound pillows</a> </h3>
-                        <p>From $5</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single_product_item">
-                        <img src="/img/tranding_item/tranding_item_4.png" alt="#" class="img-fluid">
-                        <h3> <a href="single-product.html">Cervical pillow for airplane
-                        car office nap pillow</a> </h3>
-                        <p>From $5</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single_product_item">
-                        <img src="/img/tranding_item/tranding_item_5.png" alt="#" class="img-fluid">
-                        <h3> <a href="single-product.html">Foam filling cotton slow rebound pillows</a> </h3>
-                        <p>From $5</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single_product_item">
-                        <img src="/img/tranding_item/tranding_item_6.png" alt="#" class="img-fluid">
-                        <h3> <a href="single-product.html">Memory foam filling cotton Slow rebound pillows</a> </h3>
-                        <p>From $5</p>
-                    </div>
-                </div>
+                <% } %>
+                <% } %>
             </div>
         </div>
     </section>
     <!-- trending item end-->
-
+    <% } %>
     <%- include('./_footer.ejs') %>
 </body>
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <%- include('./_link.ejs') %>
-    <title>Fanwar - Admin Dashboard</title>
+    <title>List orders</title>
     <style>
         h1 {
             font-family: 'Acme', sans-serif;
@@ -54,8 +54,8 @@
                                                 <tr class="border-0">
                                                     <th class="border-0">ID</th>
                                                     <th class="border-0">Creation date</th>
-                                                    <th class="border-0">Cust_name</th>
-                                                    <th class="border-0">Cust_phone</th>
+                                                    <th class="border-0">Customer name</th>
+                                                    <th class="border-0">Customer phone</th>
                                                     <th class="border-0">Total</th>
                                                     <th class="border-0">Status</th>
                                                     <th class="border-0">Action</th>
@@ -131,6 +131,7 @@
                     </div>
                 </div>
             </div>
+            <%- include('./_footer.ejs') %>
         </div>
         <!-- ============================================================== -->
         <!-- end wrapper  -->

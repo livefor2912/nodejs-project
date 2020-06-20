@@ -73,7 +73,7 @@
                                             <tbody>
                                                 <% if (hasOwnProperty('listProduct')) { %>
                                                 <% for (var item of listProduct) { %>
-                                                <tr onclick="javascript:location.href = '/'">
+                                                <tr>
                                                     <td><%= item._id %></td>
                                                     <td>
                                                         <div class="m-r-10"><img src="<%= item.image%>" alt="user"
@@ -89,12 +89,8 @@
                                                     <% } else { %>
                                                         <td></td>
                                                     <% } %>
-                                                    <td><a class="btn btn-primary" style="color: white" href="/admin/productdetail/<%= item._id %>">Detail</a></td>
-                                                    <!-- <td><span class="badge-dot badge-brand mr-1"></span>InTransit </td> -->
+                                                    <td><a class="btn btn-primary" style="color: white" href="/admin/productdetail?id=<%= item._id %>">Detail</a></td>
                                                 </tr>
-                                                <!-- <tr>
-                                                            <td colspan="9"><a href="#" class="btn btn-outline-light float-right">View Details</a></td>
-                                                        </tr> -->
                                                 <% } %>
                                                 <% } %>
                                             </tbody>

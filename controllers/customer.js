@@ -7,9 +7,6 @@ var EmailUtil = require("../utils/EmailUtil.js");
 var expressValidator = require('express-validator');
 router.use(expressValidator());
 
-//var MongoClient = require('mongodb').MongoClient;
-//var uri = 'mongodb+srv://admin:tYFofQJbk98w31OR@cluster0-baxfc.mongodb.net/project';
-
 var objectId = require('mongodb').ObjectID;
 
 
@@ -36,6 +33,7 @@ router.get('/', async (req, resp) => {
 router.get('/register', (req, res) => {
   res.render('../views/customer/register.ejs');
 });
+
 
 router.get('/logout', (req, res) => {
   delete req.session.customer;
@@ -69,7 +67,6 @@ router.post('/register',async(req, res) => {
         MyUtil.showAlertAndRedirect(res,'Insert Failure','./register');
       }
     }
-});
 
 router.get('/login', async (req, resp) => {
   if (req.session.customer) {
@@ -142,8 +139,6 @@ router.get("/listproducts", async (req, resp) => {
   } else {
     list = await ProductDAO.selectAll();
   }
-
-
   resp.render('../views/customer/listproducts.ejs', {
     cats: categories, newprods: newproducts, hotprods: hotproducts, zones: zones, listProduct: list
   });
@@ -207,9 +202,9 @@ router.post('/myprofile', async function (req, resp) {
     var result = await CustomerDAO.update(newCust);
     if (result) {
       req.session.customer = newCust;
-      MyUtil.showAlertAndRedirect(resp, 'Update successful!', './');
+      MyUtil.showAlertAndRedirect(resp, 'Update profile successfully!', './');
     }
-  } else MyUtil.showAlertAndRedirect(resp, 'SORRY!', './myprofile');
+  } else MyUtil.showAlertAndRedirect(resp, 'Update profile failed. Please check again', './myprofile');
 });
 
 //============== cart ================
@@ -274,11 +269,23 @@ router.get('/checkout', async function (req, res) {
       res.redirect('./');
       // MyUtil.showAlertAndRedirect(res, 'Place Order Successfully!', './');
     } else {
-      MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae!', './mycart');
+      MyUtil.showAlertAndRedirect(res, 'Something wrong, please check again', './mycart');
     }
   } else {
     res.redirect('./login');
   }
+});
+
+router.get('/about', async (req, resp) => {
+  var categories = await CategoryDAO.selectAll();
+  var zones = await ZoneDAO.selectAll();
+  resp.render('../views/customer/about.ejs', { cats: categories, zones: zones });
+});
+
+router.get('/partner', async (req, resp) => {
+  var categories = await CategoryDAO.selectAll();
+  var zones = await ZoneDAO.selectAll();
+  resp.render('../views/customer/partner.ejs', { cats: categories, zones: zones });
 });
 
 module.exports = router;

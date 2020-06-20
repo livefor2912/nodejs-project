@@ -10,8 +10,6 @@ app.listen(process.env.PORT || 1234);
 const cors = require("cors");
 const morgan = require("morgan");
 
-
-
 //middleware
 app.use(express.static('public')); //say that all file in public is static, dont compile
 app.use('/public', express.static('public'));

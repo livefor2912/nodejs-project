@@ -18,10 +18,15 @@
             border: 1px solid transparent;
         }
 
+        .btn2.active {
+            color: #fff;
+            background: #B08EAD;
+            border: 1px solid transparent;
+        }
+
         .show {
             display: block;
         }
-
     </style>
 </head>
 
@@ -34,14 +39,15 @@
                 <div class="col-md-4">
                     <div class="product_sidebar">
                         <div class="single_sedebar">
-                            <form action="#">
-                                <input type="text" name="#" placeholder="Search keyword">
+                            <form action="/searchproduct" method="get">
+                                <input type="text" name="keyword" placeholder="Search keyword">
                                 <i class="ti-search"></i>
                             </form>
                         </div>
                         <div class="single_sedebar">
                             <div class="select_option">
-                                <div class="select_option_list">Filter <i style="cursor: pointer;" class="right fas fa-caret-down"></i> </div>
+                                <div class="select_option_list">Filter <i style="cursor: pointer;"
+                                        class="right fas fa-caret-down"></i> </div>
                                 <div id="myBtnContainer" class="select_option_dropdown text-center ">
                                     <p>Category</p>
                                     <%  if (typeof(cats) !== 'undefined') { for (var cat of cats) { %>
@@ -50,7 +56,7 @@
                                     <%  } } %>
                                     <p>Zone</p>
                                     <% if(typeof(zones) !== 'undefined') { for (var zone of zones) { %>
-                                    <button class="genric-btn primary-border circle col-md-6 btn" id="<%=zone._id%>"
+                                    <button class="genric-btn primary-border circle col-md-6 btn2" id="<%=zone._id%>"
                                         style="margin: 8px 10px;"><%=zone.name%></button>
                                     <%  } } %>
                                 </div>
@@ -87,23 +93,59 @@
 </body>
 
 <script>
-    var filter = new Array();
-    filterSelection(filter);
-    function filterSelection(filter) {
+    var filterCate = new Array();
+    var filterZone = new Array();
+    notFilterYet();
+
+    function notFilterYet() {
+        var x = document.getElementsByClassName("filterDiv");
+        for (i = 0; i < x.length; i++) {
+            if (x[i].className.indexOf("") > -1)
+                w3AddClass(x[i], "show");
+        }
+    }
+
+    function filterSelection(filterCate, filterZone) {
         var x, i;
         x = document.getElementsByClassName("filterDiv");
-        if (filter.length < 1) {
-            for (i = 0; i < x.length; i++) {
-                if (x[i].className.indexOf("") > -1)
-                    w3AddClass(x[i], "show");
-            }
+        // filter = filterCate.filter(x => filterZone.includes(x));
+
+        if (filterCate.length < 1 && filterZone < 1) {
+            notFilterYet();
         } else {
+            var result = new Array();
+            var resultCate = new Array();
+            var resultZone = new Array();
+
             for (i = 0; i < x.length; i++) {
                 w3RemoveClass(x[i], "show");
-                filter.forEach(element => {
-                    if (x[i].className.indexOf(element) > -1)
-                        w3AddClass(x[i], "show");
-                });
+
+                for (let index = 0; index < filterCate.length; index++) {
+                    if ((x[i].className.indexOf(filterCate[index]) > -1)) {
+                        resultCate.push(x[i]);
+                    }
+                }
+
+                for (let index = 0; index < filterZone.length; index++) {
+                    if ((x[i].className.indexOf(filterZone[index]) > -1)) {
+                        resultZone.push(x[i]);
+                    }
+                }
+            }
+
+            if (filterCate.length > 0 && filterZone.length > 0) {
+                result = resultCate.filter(x => resultZone.includes(x));
+                for (let index = 0; index < result.length; index++) {
+                    w3AddClass(result[index], "show");
+                }
+            } else if (filterCate.length < 1) {
+                for (let index = 0; index < resultZone.length; index++) {
+                    w3AddClass(resultZone[index], "show");
+                }
+            } else if (filterZone.length < 1) {
+                for (let index = 0; index < resultCate.length; index++) {
+                    w3AddClass(resultCate[index], "show");
+                }
             }
         }
     }
@@ -131,25 +173,45 @@
 
     // Add active class to the current button (highlight it)
     var btnContainer = document.getElementById("myBtnContainer");
-    //get all filter condition
+    //get all filter condition category
     var btns = btnContainer.getElementsByClassName("btn");
     //get all products
     var allProducts = document.getElementsByClassName("filterDiv");
+
+    //get all filter condiftion zone
+    var btnsZone = btnContainer.getElementsByClassName("btn2");
 
     for (var i = 0; i < btns.length; i++) {
         btns[i].addEventListener("click", function () {
             var conditionFilter = this.id.toString();
             if (this.classList.contains("active")) {
                 this.classList.remove("active");
-                var index = filter.indexOf(conditionFilter);
+                var index = filterCate.indexOf(conditionFilter);
                 if (index > -1) {
-                    filter.splice(index, 1);
+                    filterCate.splice(index, 1);
                 }
             } else {
                 this.className += " active";
-                filter.push(conditionFilter);
+                filterCate.push(conditionFilter);
             }
-            filterSelection(filter);
+            filterSelection(filterCate, filterZone);
+        });
+    }
+
+    for (var i = 0; i < btnsZone.length; i++) {
+        btnsZone[i].addEventListener("click", function () {
+            var conditionFilter = this.id.toString();
+            if (this.classList.contains("active")) {
+                this.classList.remove("active");
+                var index = filterZone.indexOf(conditionFilter);
+                if (index > -1) {
+                    filterZone.splice(index, 1);
+                }
+            } else {
+                this.className += " active";
+                filterZone.push(conditionFilter);
+            }
+            filterSelection(filterCate, filterZone);
         });
     }
 </script>
