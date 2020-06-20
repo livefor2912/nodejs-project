@@ -6,6 +6,12 @@ api.use(expressValidator());
 app.listen(process.env.PORT || 1234);
 // app.listen(1234);
 
+//use cors and morgan
+const cors = require("cors");
+const morgan = require("morgan");
+const _CONST_ = require('./config/constant')
+
+
 //middleware
 app.use(express.static('public')); //say that all file in public is static, dont compile
 app.use('/public', express.static('public'));
