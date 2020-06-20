@@ -236,4 +236,61 @@ async function isExistedInOrders(id) {
     return result.length !== 0;
 }
 
+//============== customer management ================
+router.get('/listcustomers', async function (req, res) {
+    var customers = await CustomerDAO.selectAll();
+    var _cid = req.query.cid; // /listcustomer?cid=XXX
+    if (_cid) {
+      var orders = await OrderDAO.selectByCustID(_cid);
+      var _oid = req.query.oid; // /listcustomer?cid=XXX&oid=XXX
+      if (_oid) {
+        var order = await OrderDAO.selectByID(_oid);
+      }
+    }
+    res.render('../views/admin/listcustomers.ejs', { custs: customers, orders: orders, order: order, custID: _cid });
+  });
+
+  router.get('/sendmail', async function (req, res) {
+    var _id = req.query.id; // /sendmail?id=XXX
+    var cust = await CustomerDAO.selectByID(_id);
+    if (cust) {
+      var result = await EmailUtil.send(cust.email, cust._id, cust.token);
+      if (result) {
+        MyUtil.showAlertAndRedirect(res, 'Email sent successfully!', './listcustomers');
+      } else {
+        MyUtil.showAlertAndRedirect(res, 'Failed Email Attempt....', './listcustomers');
+      }
+    } else {
+      res.redirect('./listcustomers');
+    }
+  });
+  router.get('/deactive', async function (req, res) {
+    var _id = req.query.id; // /deactive?id=XXX&token=XXX
+    var token = req.query.token;
+    var result = await CustomerDAO.active(_id, token, 0);
+    if (result) {
+      MyUtil.showAlertAndRedirect(res, 'Deactivated Successfully!', './listcustomers');
+    } else {
+      MyUtil.showAlertAndRedirect(res, 'Unsucessful Deactivation...', './listcustomers');
+    }
+  });
+
+
+// order
+router.get('/listorders', async function (req, res) {
+    var orders = await OrderDAO.selectAll();
+    var _id = req.query.id; // /listorder?id=XXX
+    if (_id) {
+      var order = await OrderDAO.selectByID(_id);
+    }
+    res.render('../views/admin/listorders.ejs', { orders: orders, order: order });
+  });
+  router.get('/updatestatus', async function (req, res) {
+    var _id = req.query.id; // /updatestatus?status=XXX&id=XXX
+    var newStatus = req.query.status;
+    await OrderDAO.update(_id, newStatus);
+    res.redirect('./listorders?id=' + _id);
+  });
+
+
 module.exports = router;

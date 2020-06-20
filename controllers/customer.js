@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var EmailUtil = require("../utils/EmailUtil.js");
 
 //var app = express();
 //var api = express.Router();
@@ -36,21 +37,38 @@ router.get('/register', (req, res) => {
   res.render('../views/customer/register.ejs');
 });
 
-router.post('/register',(req, res) => {
-    const Username = req.body.username;
-    const Password = req.body.password;
-    const Password2 = req.body.Password2;
-    const Name = req.body.Name;
-    const phone = req.body.phone;
-    const email = req.body.email;
+router.get('/logout', (req, res) => {
+  delete req.session.customer;
+  res.redirect('login');
+});
 
-    req.checkBody('Username','Username is required.').notEmpty();
-    req.checkBody('Password','Password is required.').notEmpty();
-    req.checkBody('Password2', 'Passwords do not match').equals(Password);
-    req.checkBody('Name','Name is required.').notEmpty();
-    req.checkBody('Email','Email is required.').notEmpty();
-    req.checkBody('Email','Email is not valid.').isEmail();
-    req.checkBody('Phone','Phone is required.').notEmpty();
+
+router.post('/register',async(req, res) => {
+    const username = req.body.txtUsername;
+    const password = req.body.txtPassword;
+    const name = req.body.txtName;
+    const phone = req.body.txtPhone;
+    const email = req.body.txtEmail;
+
+    var dbCust = await CustomerDAO.selectByUsernameOrEmail(username,email);
+    if (dbCust){
+      MyUtil.showAlertAndRedirect(res,'Username or Email existed!','./register');
+    } else{
+      var now = new Date().getTime();
+      var token = MyUtil.md5(now.toString());
+      var newCust = {username:username,password:password,name:name,phone:phone, email:email,active:0, token:token};
+      var newID = await CustomerDAO.insert(newCust);
+      if(newID){
+        var result = await EmailUtil.send(email, newID, token);
+        if(result){
+          MyUtil.showAlertAndRedirect(res,'Check Email!','./login');
+        } else {
+          MyUtil.showAlertAndRedirect(res,'Email failure!','./register');
+        }
+      }else{
+        MyUtil.showAlertAndRedirect(res,'Insert Failure','./register');
+      }
+    }
 });
 
 router.get('/login', async (req, resp) => {
@@ -63,7 +81,7 @@ router.get('/login', async (req, resp) => {
   }
 });
 
-router.post('/login', async (req, resp) => {
+router.post('/login', async(req, resp) => {
   var username = req.body.username;
   var password = req.body.password;
   // var pwdhashed = MyUtil.md5(password);
@@ -71,11 +89,22 @@ router.post('/login', async (req, resp) => {
   var remember = req.body.remember;
   var cus = await CustomerDAO.selectByUsernameAndPassword(username, password);
   // var temp = CustomerDAO.test();
-  if (cus) {
+  if (cus && cus.active == 1) {
     req.session.customer = cus;
     resp.redirect('/');
   } else {
     MyUtil.showAlertAndRedirect(resp, 'Invalid login!', './login');
+  }
+});
+
+router.get('/verify', async function (req, res) {
+  var _id = req.query.id; // /verify?id=XXX&token=XXX
+  var token = req.query.token;
+  var result = await CustomerDAO.active(_id, token, 1);
+  if (result) {
+    MyUtil.showAlertAndRedirect(res, 'Account Is Verified Successfully!', './login');
+  } else {
+    MyUtil.showAlertAndRedirect(res, 'Invalid Verification!', './signup');
   }
 });
 
