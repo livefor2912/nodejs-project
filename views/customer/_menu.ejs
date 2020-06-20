@@ -29,7 +29,7 @@
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdown_1" role="button"
-                                     aria-haspopup="true" aria-expanded="false" href="listzones">
+                                     aria-haspopup="true" aria-expanded="false" href="#">
                                     Zone
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
@@ -39,20 +39,19 @@
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Contact</a>
+                                <a class="nav-link" href="partner">Partner</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="#">About</a>
+                                <a class="nav-link" href="about">About</a>
                             </li>
                         </ul>
                     </div>
                     <form class="hearer_icon d-flex align-items-center">
                         <a id="search_1" href="javascript:void(0)"><i class="ti-search"></i></a>
-                        <a href="./mycart" class="notification">                      
+                        <a href="mycart" class="notification">                      
                             <i class="flaticon-shopping-cart-black-shape"></i>
-                            <span class="badge"><%= (session.mycart) ? session.mycart.length : 0 %></span>
-                            
+                            <span style="background-color: #B08EAD; font-weight: 200;" class="badge"><%= (session.mycart) ? session.mycart.length : 0 %></span>
                         </a>
                     </form>
                     <nav class="navbar navbar-expand-lg navbar-light">
@@ -66,7 +65,7 @@
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
                                         <a class="dropdown-item" href="myprofile">Profile</a>
-                                        <a class="dropdown-item" href="#">My orders</a>
+                                        <a class="dropdown-item" href="myorders">My orders</a>
                                         <a class="dropdown-item" href="#">Log out</a>
                                     </div>
                                 </li>

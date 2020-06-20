@@ -6,9 +6,6 @@ var router = express.Router();
 var expressValidator = require('express-validator');
 router.use(expressValidator());
 
-//var MongoClient = require('mongodb').MongoClient;
-//var uri = 'mongodb+srv://admin:tYFofQJbk98w31OR@cluster0-baxfc.mongodb.net/project';
-
 var objectId = require('mongodb').ObjectID;
 
 
@@ -36,21 +33,21 @@ router.get('/register', (req, res) => {
   res.render('../views/customer/register.ejs');
 });
 
-router.post('/register',(req, res) => {
-    const Username = req.body.username;
-    const Password = req.body.password;
-    const Password2 = req.body.Password2;
-    const Name = req.body.Name;
-    const phone = req.body.phone;
-    const email = req.body.email;
+router.post('/register', (req, res) => {
+  const Username = req.body.username;
+  const Password = req.body.password;
+  const Password2 = req.body.Password2;
+  const Name = req.body.Name;
+  const phone = req.body.phone;
+  const email = req.body.email;
 
-    req.checkBody('Username','Username is required.').notEmpty();
-    req.checkBody('Password','Password is required.').notEmpty();
-    req.checkBody('Password2', 'Passwords do not match').equals(Password);
-    req.checkBody('Name','Name is required.').notEmpty();
-    req.checkBody('Email','Email is required.').notEmpty();
-    req.checkBody('Email','Email is not valid.').isEmail();
-    req.checkBody('Phone','Phone is required.').notEmpty();
+  req.checkBody('Username', 'Username is required.').notEmpty();
+  req.checkBody('Password', 'Password is required.').notEmpty();
+  req.checkBody('Password2', 'Passwords do not match').equals(Password);
+  req.checkBody('Name', 'Name is required.').notEmpty();
+  req.checkBody('Email', 'Email is required.').notEmpty();
+  req.checkBody('Email', 'Email is not valid.').isEmail();
+  req.checkBody('Phone', 'Phone is required.').notEmpty();
 });
 
 router.get('/login', async (req, resp) => {
@@ -113,8 +110,6 @@ router.get("/listproducts", async (req, resp) => {
   } else {
     list = await ProductDAO.selectAll();
   }
-
-
   resp.render('../views/customer/listproducts.ejs', {
     cats: categories, newprods: newproducts, hotprods: hotproducts, zones: zones, listProduct: list
   });
@@ -178,9 +173,9 @@ router.post('/myprofile', async function (req, resp) {
     var result = await CustomerDAO.update(newCust);
     if (result) {
       req.session.customer = newCust;
-      MyUtil.showAlertAndRedirect(resp, 'Update successful!', './');
+      MyUtil.showAlertAndRedirect(resp, 'Update profile successfully!', './');
     }
-  } else MyUtil.showAlertAndRedirect(resp, 'SORRY!', './myprofile');
+  } else MyUtil.showAlertAndRedirect(resp, 'Update profile failed. Please check again', './myprofile');
 });
 
 //============== cart ================
@@ -245,11 +240,23 @@ router.get('/checkout', async function (req, res) {
       res.redirect('./');
       // MyUtil.showAlertAndRedirect(res, 'Place Order Successfully!', './');
     } else {
-      MyUtil.showAlertAndRedirect(res, 'Oh no sorry bae!', './mycart');
+      MyUtil.showAlertAndRedirect(res, 'Something wrong, please check again', './mycart');
     }
   } else {
     res.redirect('./login');
   }
+});
+
+router.get('/about', async (req, resp) => {
+  var categories = await CategoryDAO.selectAll();
+  var zones = await ZoneDAO.selectAll();
+  resp.render('../views/customer/about.ejs', { cats: categories, zones: zones });
+});
+
+router.get('/partner', async (req, resp) => {
+  var categories = await CategoryDAO.selectAll();
+  var zones = await ZoneDAO.selectAll();
+  resp.render('../views/customer/partner.ejs', { cats: categories, zones: zones });
 });
 
 module.exports = router;
