@@ -1,6 +1,16 @@
 var express = require('express');
 var router = express.Router();
+
+//var app = express();
+//var api = express.Router();
+var expressValidator = require('express-validator');
+router.use(expressValidator());
+
+//var MongoClient = require('mongodb').MongoClient;
+//var uri = 'mongodb+srv://admin:tYFofQJbk98w31OR@cluster0-baxfc.mongodb.net/project';
+
 var objectId = require('mongodb').ObjectID;
+
 
 var MyUtil = require("../utils/MyUtil.js");
 var multer = require('multer');
@@ -24,6 +34,23 @@ router.get('/', async (req, resp) => {
 
 router.get('/register', (req, res) => {
   res.render('../views/customer/register.ejs');
+});
+
+router.post('/register',(req, res) => {
+    const Username = req.body.username;
+    const Password = req.body.password;
+    const Password2 = req.body.Password2;
+    const Name = req.body.Name;
+    const phone = req.body.phone;
+    const email = req.body.email;
+
+    req.checkBody('Username','Username is required.').notEmpty();
+    req.checkBody('Password','Password is required.').notEmpty();
+    req.checkBody('Password2', 'Passwords do not match').equals(Password);
+    req.checkBody('Name','Name is required.').notEmpty();
+    req.checkBody('Email','Email is required.').notEmpty();
+    req.checkBody('Email','Email is not valid.').isEmail();
+    req.checkBody('Phone','Phone is required.').notEmpty();
 });
 
 router.get('/login', async (req, resp) => {
@@ -51,6 +78,7 @@ router.post('/login', async (req, resp) => {
     MyUtil.showAlertAndRedirect(resp, 'Invalid login!', './login');
   }
 });
+
 
 //============== Order ================
 

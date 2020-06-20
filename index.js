@@ -1,7 +1,16 @@
 var express = require('express');
 var app = express();
+var api = express.Router();
+var expressValidator = require('express-validator');
+api.use(expressValidator());
 app.listen(process.env.PORT || 1234);
 // app.listen(1234);
+
+//use cors and morgan
+const cors = require("cors");
+const morgan = require("morgan");
+const _CONST_ = require('./config/constant')
+
 
 //middleware
 app.use(express.static('public')); //say that all file in public is static, dont compile
