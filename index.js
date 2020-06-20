@@ -9,7 +9,7 @@ app.listen(process.env.PORT || 1234);
 //use cors and morgan
 const cors = require("cors");
 const morgan = require("morgan");
-const _CONST_ = require('./config/constant')
+const _CONST_ = require('./config/constant.js');
 
 
 //middleware
