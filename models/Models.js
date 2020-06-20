@@ -9,7 +9,8 @@ var AdminSchema = mongoose.Schema({
 
 var ZoneSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
-  name: String
+  name: String,
+  image: String
 }, { versionKey: false });
 
 var CategorySchema = mongoose.Schema({

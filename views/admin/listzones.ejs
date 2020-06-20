@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Zone</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link href="../assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/libs/css/style.css">
+    <link rel="stylesheet" href="../assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
+
+    <script>
+        function details(id, name, image) {
+            var zoneDetails = document.getElementById('zone-detail');
+            zoneDetails.style.display = "block";
+            document.getElementById("txtID").value = id;
+            document.getElementById("txtName").value = name;
+            var source = "data:image/jpg;base64,"+image;
+            document.getElementById("imgProduct1").src = source;
+        }
+
+        function previewImage(input) {
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                document.getElementById("imgProduct").src = evt.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+
+        function previewImage1(input) {
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                document.getElementById("imgProduct1").src = evt.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    </script>
+</head>
+
+<body>
+    <!-- ============================================================== -->
+    <!-- main wrapper -->
+    <!-- ============================================================== -->
+    <div class="dashboard-main-wrapper">
+        <!-- ============================================================== -->
+        <!-- navbar -->
+        <%- include('./_sidebar.ejs') %>
+        <!-- end left sidebar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- wrapper  -->
+        <!-- ============================================================== -->
+        <div class="dashboard-wrapper">
+            <div class="container-fluid  dashboard-content">
+                <!-- ============================================================== -->
+                <!-- pageheader -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-header">
+                            <h2 class="pageheader-title">List zones</h2>
+                            <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce
+                                sit amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
+                            <div class="page-breadcrumb">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Zone</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">List zones</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end pageheader -->
+                <!-- ============================================================== -->
+
+                <div class="row">
+                    <!-- ============================================================== -->
+                    <!-- striped table -->
+                    <!-- ============================================================== -->
+                    <div class="col-xl-8 col-lg-6 col-md-12 col-sm-12 col-12">
+                        <div class="card">
+                            <h5 class="card-header">List zones</h5>
+                            <div class="card-body">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col" ></th>
+                                            <th scope="col">Name</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%  for (var item of zones) {  %>
+                                        <tr>
+                                            <th scope="row"><%=item._id%></th>
+                                            <td>
+                                                <img id="prod-img" src="data:image/jpg;base64,<%=item.image%>" width="150" />
+                                            </td>
+                                            <td onclick="details('<%=item._id%>', `<%=item.name%>`, `<%=item.image%>`)"
+                                                style="cursor: pointer;">
+                                                <%=item.name%>
+                                            </td>
+                                            <td>
+                                                <form action="deletezone" method="POST">
+                                                    <input type="hidden" name="txtID" value="<%=item._id%>" />
+                                                    <button type="submit"
+                                                        onclick="return confirm('Are you sure you want to delete this?')"
+                                                        style="background-color: transparent; border: transparent;">
+                                                        <i class="fas fa-trash" style="cursor: pointer;"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        <%  } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+                        <div class="card">
+                            <h5 class="card-header">Add zone</h5>
+                            <div class="card-body">
+                                <form class="form-group" action="addzone" method="POST" enctype="multipart/form-data">
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" name="name">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-primary">Add</button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <input class="form-control" type="file" name="fileImage" accept="image/jpeg, image/png, image/gif"
+                                            onchange="previewImage(this)" />
+                                    </div>
+                                </form>
+                                <img id="imgProduct" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="card" id="zone-detail" style="display: none;">
+                            <h5 class="card-header">Details</h5>
+                            <div class="card-body">
+                                <form class="form-group" action="updatezone" method="POST" enctype="multipart/form-data">
+                                    <div class="input-group mb-3">
+                                        <input id="txtID" type="text" class="form-control" name="id" readonly>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <input id="txtName" type="text" class="form-control" name="nameZone">
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                        <input id="img-file" class="form-control" type="file" name="fileImage" accept="image/jpeg, image/png, image/gif"
+                                            onchange="previewImage1(this)" />
+                                    </div>
+
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                    <br />
+                                    <img id="imgProduct1" class="form-control"/>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- end striped table -->
+                    <!-- ============================================================== -->
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <%- include('./_footer.ejs') %>
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+    </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end main wrapper -->
+    <!-- ============================================================== -->
+</body>
+
+</html>

@@ -1,31 +1,10 @@
-<head>
-    <link rel="icon" href="/img/favicon.png">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <!-- animate CSS -->
-    <link rel="stylesheet" href="/css/animate.css">
-    <!-- owl carousel CSS -->
-    <link rel="stylesheet" href="/css/owl.carousel.min.css">
-    <!-- font awesome CSS -->
-    <link rel="stylesheet" href="/css/all.css">
-    <!-- flaticon CSS -->
-    <link rel="stylesheet" href="/css/flaticon.css">
-    <link rel="stylesheet" href="/css/themify-icons.css">
-    <!-- font awesome CSS -->
-    <link rel="stylesheet" href="/css/magnific-popup.css">
-    <!-- swiper CSS -->
-    <link rel="stylesheet" href="/css/slick.css">
-    <!-- style CSS -->
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-
 <!--::header part start::-->
 <header class="main_menu home_menu">
     <div class="container">
         <div class="row align-items-center justify-content-center">
             <div class="col-lg-12">
                 <nav class="navbar navbar-expand-lg navbar-light">
-                    <a class="navbar-brand" href="#"> <img src="img/logo.png" alt="logo"> </a>
+                    <a class="navbar-brand" href="/"> <img src="/public/img/logo.png" alt="logo"> </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -38,24 +17,24 @@
                                 <a class="nav-link" href="/">Home</a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown_1" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="listproduct">
+                                <a href="listproducts" class="nav-link dropdown-toggle" id="navbarDropdown_1" role="button"
+                                   aria-haspopup="true" aria-expanded="false">
                                     product
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
                                     <%  if (typeof(cats) !== 'undefined') { for (var cat of cats) { %>
-                                        <a class="dropdown-item" href="./listproduct?catID=<%=cat._id%>"><%=cat.name%></a>
+                                        <a class="dropdown-item" href="./listproducts?catID=<%=cat._id%>"><%=cat.name%></a>
                                     <%  } } %>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown_1" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdown_1" role="button"
+                                     aria-haspopup="true" aria-expanded="false" href="listzones">
                                     Zone
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
                                     <% if(typeof(zones) !== 'undefined') { for (var zone of zones) { %>
-                                        <a class="dropdown-item" href=""><%= zone.name %></a>
+                                        <a class="dropdown-item" href="./zone?zoneID=<%=zone._id%>"><%= zone.name %></a>
                                     <%  } } %>
                                 </div>
                             </li>
@@ -70,8 +49,10 @@
                     </div>
                     <form class="hearer_icon d-flex align-items-center">
                         <a id="search_1" href="javascript:void(0)"><i class="ti-search"></i></a>
-                        <a href="#">
+                        <a href="./mycart" class="notification">                      
                             <i class="flaticon-shopping-cart-black-shape"></i>
+                            <span class="badge"><%= (session.mycart) ? session.mycart.length : 0 %></span>
+                            
                         </a>
                     </form>
                     <nav class="navbar navbar-expand-lg navbar-light">
@@ -81,10 +62,10 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown_3" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <%= session.customer.username %> askhdkjasfjas
+                                        <%= session.customer.name %>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
-                                        <a class="dropdown-item" href="#">Profile</a>
+                                        <a class="dropdown-item" href="myprofile">Profile</a>
                                         <a class="dropdown-item" href="#">My orders</a>
                                         <a class="dropdown-item" href="#">Log out</a>
                                     </div>
@@ -107,8 +88,8 @@
     </div>
     <div class="search_input" id="search_input_box">
         <div class="container ">
-            <form class="d-flex justify-content-between search-inner">
-                <input type="text" class="form-control" id="search_input" placeholder="Search Here">
+            <form class="d-flex justify-content-between search-inner"  action="/searchproduct" method="get">
+                <input type="text" class="form-control" id="search_input" placeholder="Search Here" name="keyword">
                 <button type="submit" class="btn"></button>
                 <span class="ti-close" id="close_search" title="Close Search"></span>
             </form>

@@ -24,13 +24,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //var sessionStore = new MemoryStore();
 
 var session = require('express-session');
-app.use(session({ 
+app.use(session({
     secret: '123456',
     //name: cookie_name,
     //store: sessionStore,
-    proxy:true,
+    proxy: true,
     resave: true,
-    saveUninitialized: true 
+    saveUninitialized: true
 }));
 app.use((req, resp, next) => {
     resp.locals.session = req.session;
