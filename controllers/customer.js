@@ -88,7 +88,9 @@ router.get('/myorders', async function (req, resp) {
       if (_id) {
         var order = await OrderDAO.selectByID(_id);
       }
-      resp.render('../views/customer/myorders.ejs', { orders: orders, order: order });
+      var categories = await CategoryDAO.selectAll();
+      var zones = await ZoneDAO.selectAll();
+      resp.render('../views/customer/myorders.ejs', { orders: orders, order: order, cats: categories, zones: zones });
     } else {
       resp.redirect('./');
     }
@@ -180,10 +182,12 @@ router.post('/myprofile', async function (req, resp) {
 
 //============== cart ================
 
-router.get('/mycart', function (req, res) {
+router.get('/mycart', async function (req, res) {
   if (req.session.mycart && req.session.mycart.length > 0) {
     var total = MyUtil.getTotal(req.session.mycart);
-    res.render('../views/customer/mycart.ejs', { total: total });
+    var categories = await CategoryDAO.selectAll();
+    var zones = await ZoneDAO.selectAll();
+    res.render('../views/customer/mycart.ejs', { total: total, cats: categories, zones: zones });
   } else {
     res.redirect('./');
   }
@@ -204,7 +208,7 @@ router.post('/add2cart', async function (req, res) {
     mycart[index].quantity += quantity;
   }
   req.session.mycart = mycart; // put mycart back into the session
-  res.redirect('./');
+  res.redirect('/mycart');
 });
 
 router.get('/remove2cart', function (req, res) {

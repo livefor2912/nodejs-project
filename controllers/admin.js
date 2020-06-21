@@ -53,8 +53,16 @@ router.post('/login', async (req, resp) => {
 });
 
 
-router.get('/home', (req, resp) => {
-    resp.render('admin/home');
+router.get('/home', async (req, resp) => {
+    var categories = await CategoryDAO.selectAll();
+    var data = new Array();
+    var labels = new Array();
+    for (let i = 0; i < categories.length; i++) {
+        var products = await ProductDAO.selectByCatID(categories[i]._id);
+        labels.push(categories[i].name);
+        data.push(products.length);
+    }
+    resp.render('admin/home', { labels: labels, data: data });
 });
 
 router.get('/logout', (req, resp) => {

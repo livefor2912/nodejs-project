@@ -4,6 +4,15 @@
 <head>
     <%- include('./_link.ejs') %>
     <title>Update product</title>
+    <script>
+        function previewImage(input) {
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                document.getElementById("imgProduct").src = evt.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    </script>
 </head>
     
 <body>
@@ -119,11 +128,11 @@
                                                 </div>
                                                 <hr class="mb-4">
                                                 <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="customFile" name="image" >
+                                                    <input onchange="previewImage(this)" type="file" class="custom-file-input" id="customFile" name="image" >
                                                     <label class="custom-file-label" for="customFile">Click on textbox Choose file</label>
                                                 </div>
                                                 <div style="text-align: center;">
-                                                    <img src="<%= product.image %>" alt="error!" width="750px"/>
+                                                    <img id="imgProduct" src="<%= product.image %>" alt="error!" width="750px"/>
                                                 </div>
                                                 <div class="invalid-feedback">
                                                     Please Choose image!
