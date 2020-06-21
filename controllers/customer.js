@@ -67,7 +67,7 @@ router.post('/register',async(req, res) => {
         MyUtil.showAlertAndRedirect(res,'Insert Failure','./register');
       }
     }
-
+}); 
 router.get('/login', async (req, resp) => {
   if (req.session.customer) {
     resp.redirect('/');
