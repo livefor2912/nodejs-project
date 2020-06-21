@@ -59,12 +59,12 @@ router.post('/register',async(req, res) => {
       if(newID){
         var result = await EmailUtil.send(email, newID, token);
         if(result){
-          MyUtil.showAlertAndRedirect(res,'Check Email!','./login');
+          MyUtil.showAlertAndRedirect(res,'An email has been sent. Please check your Mailbox!','./login');
         } else {
-          MyUtil.showAlertAndRedirect(res,'Email failure!','./register');
+          MyUtil.showAlertAndRedirect(res,'Email sending failed!','./register');
         }
       }else{
-        MyUtil.showAlertAndRedirect(res,'Insert Failure','./register');
+        MyUtil.showAlertAndRedirect(res,'Registration failed..','./register');
       }
     }
 }); 

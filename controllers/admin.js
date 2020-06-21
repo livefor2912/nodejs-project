@@ -280,7 +280,7 @@ router.get('/listcustomers', async function (req, res) {
       if (result) {
         MyUtil.showAlertAndRedirect(res, 'Email sent successfully!', './listcustomers');
       } else {
-        MyUtil.showAlertAndRedirect(res, 'Failed Email Attempt....', './listcustomers');
+        MyUtil.showAlertAndRedirect(res, 'Failed email attempt....', './listcustomers');
       }
     } else {
       res.redirect('./listcustomers');
@@ -291,9 +291,9 @@ router.get('/listcustomers', async function (req, res) {
     var token = req.query.token;
     var result = await CustomerDAO.active(_id, token, 0);
     if (result) {
-      MyUtil.showAlertAndRedirect(res, 'Deactivated Successfully!', './listcustomers');
+      MyUtil.showAlertAndRedirect(res, 'Deactivated successfully!', './listcustomers');
     } else {
-      MyUtil.showAlertAndRedirect(res, 'Unsucessful Deactivation...', './listcustomers');
+      MyUtil.showAlertAndRedirect(res, 'Unsucessful deactivation...', './listcustomers');
     }
   });
 
