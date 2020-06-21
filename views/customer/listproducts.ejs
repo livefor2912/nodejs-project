@@ -70,7 +70,7 @@
                             <% if (hasOwnProperty('listProduct')) { %>
                             <% for (var item of listProduct) { %>
                             <div
-                                class="col-lg-6 col-sm-6 filterDiv <% if(item.zone) { %><%=item.zone._id%><% } %> <%=item.category._id%>">
+                                class="product col-lg-6 col-sm-6 filterDiv <% if(item.zone) { %><%=item.zone._id%><% } %> <%=item.category._id%>">
                                 <div class="single_product_item">
                                     <img src="<%= item.image %>" alt="#" class="img-fluid">
                                     <h3> <a href="./details?id=<%= item._id%>"><%= item.name %></a> </h3>
@@ -79,9 +79,6 @@
                             </div>
                             <% } %>
                             <% } %>
-                        </div>
-                        <div class="load_more_btn text-center">
-                            <a href="#" class="btn_3">Load More</a>
                         </div>
                     </div>
                 </div>
@@ -93,6 +90,7 @@
 </body>
 
 <script>
+
     var filterCate = new Array();
     var filterZone = new Array();
     notFilterYet();
