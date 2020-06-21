@@ -101,7 +101,7 @@ router.get('/verify', async function (req, res) {
   if (result) {
     MyUtil.showAlertAndRedirect(res, 'Account Is Verified Successfully!', './login');
   } else {
-    MyUtil.showAlertAndRedirect(res, 'Invalid Verification!', './signup');
+    MyUtil.showAlertAndRedirect(res, 'Invalid Verification!', './register');
   }
 });
 
