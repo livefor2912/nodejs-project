@@ -1,0 +1,156 @@
+<html>
+
+<head>
+  <link href="/css/styles.css" type="text/css" rel="stylesheet" />
+  <%- include('./_link.ejs') %>
+    <title>Fanwar - Admin Dashboard</title>
+    <style>
+        h1 {
+            font-family: 'Acme', sans-serif;
+            color: teal;
+            font-size: 40px;
+        }
+    </style>
+</head>
+
+<body class="admin">
+  <%- include('./_sidebar.ejs')  %>
+  <%  if (custs) { %>
+    <div class="page-header">
+        <h1>Order List</h1>
+        <p class="pageheader-text">Nulla euismod urna eros, sit amet scelerisque torton lectus
+            vel mauris facilisis faucibus at enim quis massa lobortis rutrum.</p>
+        <div class="page-breadcrumb">
+            <nav aria-label="breadcrumb">
+            </nav>
+        </div>
+    </div>
+    <div class="dashboard-wrapper">
+        <div class="dashboard-ecommerce">
+            <div class="container-fluid dashboard-content ">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-header">
+                            <h1 class="">Customer List</h1>
+                                </div>
+                                <div class ="card">
+                                <table class="table">
+                                    <thead class = "bg-light">
+                                        <h4 class="card-header">Customers</h4>
+                                        <tr class="datatable">
+                                            <th>ID</th>
+                                            <th>Username</th>
+                                            <th>Password</th>
+                                            <th>Name</th>
+                                            <th>Phone</th>
+                                            <th>Email</th>
+                                            <th>Active</th>
+                                            <th>Action</th>
+                                        </tr>
+
+                                        <%  for (var item of custs) { %>
+                                        <tr class="datatable" onclick="window.location='./listcustomers?cid=<%=item._id%>'">
+                                            <th><%=item._id%></th>
+                                            <td><%=item.username%></td>
+                                            <td><%=item.password%></td>
+                                            <td><%=item.name%></td>
+                                            <td><%=item.phone%></td>
+                                            <td><%=item.email%></td>
+                                            <td><%=item.active%></td>
+                                            <td>
+                                            <% if (item.active == 0) { %>
+                                            <a href="./sendmail?id=<%=item._id%>">EMAIL</a>
+                                            <% } else if (item.active == 1) { %>
+                                            <a href="./deactive?id=<%=item._id%>&token=<%=item.token%>" onclick="return confirm('Deactivate this account?')">DEACTIVE</a>
+                                            <% } %>
+                                            </td>
+                                        </tr>
+                                    <%  } %>
+                                    </table>
+                                </thead>
+                            </div>
+                        <div class="dashboard-wrapper"> 
+                        <div class="container-fluid dashboard-content ">
+                            <div class="row">
+                                    <%  } %>
+                                            <%  if (orders) { %>
+                                        <div class="align-center">
+                                            <h3 class="pageheader-text">Order List By Customer</h3>
+                                            </div>
+                                            <div class ="card">
+                                                <table class="table">
+                                                
+                                                <table class="table">
+                                                    <thead class = "bg-light">
+                                                        <h4 class="card-header">Orders</h4>
+                                                <tr class="datatable">
+                                                    <th>ID</th>
+                                                    <th>Creation date</th>
+                                                    <th>Cust.name</th>
+                                                    <th>Cust.phone</th>
+                                                    <th>Total</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                                <%  for (var item of orders) { %>
+                                                <tr class="datatable" onclick="window.location='./listcustomers?cid=<%=custID%>&oid=<%=item._id%>'">
+                                                    <th><%=item._id%></th>
+                                                    <td><%=new Date(item.cdate).toLocaleString()%></td>
+                                                    <td><%=item.customer.name%></td>
+                                                    <td><%=item.customer.phone%></td>
+                                                    <td><%=item.total%></td>
+                                                    <td><%=item.status%></td>
+                                                </tr>
+                                            <%  } %>
+               
+                                    </table>                             
+                                    </div>
+                                        <%  } %>
+                                        <%  if (order) { %>
+                                            <div class="align-center">
+                                            <h3 class="pageheader-text">Order Details</h3>
+                                                <h4 class="card-header">Details</h4>
+                                                <table class="table">
+                                                <thead class = "bg-light">
+                                                <tr class="datatable">
+                                                <th>No.</th>
+                                                <th>Prod.ID</th>
+                                                <th>Prod.name</th>
+                                                <th>Image</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                            <%  for (var [i, item] of order.items.entries()) {  %>
+                                                <div class="table-responsive">
+                                                <tr class="datatable">
+                                                <td><%=(i+1)%></td>
+                                                <td><%=item.product._id%></td>
+                                                <td><%=item.product.name%></td>
+                                                <td> <div class="m-r-10"><img src="<%= item.product.image%>" alt="img"
+                                                    class="rounded" width="45"></div>
+                                                
+                                                </td>
+                                                <td><%=item.product.price%></td>
+                                                <td><%=item.quantity%></td>
+                                                <td><%=item.product.price * item.quantity%></td>
+                                            </tr>
+                                            <%  } %>
+                                            </table>
+                                            </div>
+                                        <%  } %>
+                                            </thead>
+                                            </div>      
+                                        </div>
+                                    </div>       
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <%- include('./_footer.ejs') %> 
+                </div>   
+            </div>  
+        </div>   
+    </div>             
+</body>
+
+</html>
