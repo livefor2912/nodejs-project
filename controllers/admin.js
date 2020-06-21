@@ -143,7 +143,13 @@ router.post('/updateproduct', upload.single('image'), async (req, resp) => {
 router.get('/deleteproduct', async (req, res) => {
     var id = req.query.id;
     var result = await ProductDAO.delete(id);
-    res.send({ success: result.toString() });
+    if (result) {
+        // resp.redirect('/admin/listproducts');
+        MyUtil.showAlertAndRedirect(res, "Delete product successfully", '/admin/listproducts');
+    } else {
+        MyUtil.showAlertAndRedirect(res, 'Delete product failed', '/admin/listproducts/');
+        // resp.redirect(`/admin/updateproduct/${req.session.productId}`);
+    }
 });
 
 //============== category management ================
