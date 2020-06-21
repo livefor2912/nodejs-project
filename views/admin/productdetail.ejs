@@ -35,7 +35,7 @@
                                             <li class="breadcrumb-item">
                                                 <a href="listproducts?page=1" class="breadcrumb-link">Product</a>
                                             </li>
-                                            <li class="breadcrumb-item active" aria-current="page">Product Detail</li>
+                                            <li class="breadcrumb-item active" aria-current="page"><%=product.name%></li>
                                         </ol>
                                     </nav>
                                 </div>
@@ -83,7 +83,7 @@
                                                 id="btnDel">Delete</a>
                                                 <p style="display: none;" id="temp"><%= product._id %></p>
                                             <% } %>
-                                            <a class="btn btn-primary btn-block btn-lg" style="color: white;"
+                                            <a class="btn btn-primary btn-block btn-lg" style="color: white; margin-top: .5rem;"
                                                 href="/details?id=<%=product._id%>">Detail in customer</a>
                                         </div>
                                     </div>
@@ -146,7 +146,7 @@
             $('.product-slider').css('padding', '0px');
             $('#btnDel').click(function () {
                 var id = $('#temp').html();
-                if (confirm('bạn có chắc muốn xóa sản phẩm này không')) {
+                if (confirm('Are you sure you want to delete this?')) {
                     location.href = '/admin/deleteproduct?id=' + id;
                 }
             });

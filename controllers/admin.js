@@ -49,7 +49,7 @@ router.post('/login', async (req, resp) => {
     var admin = await AdminDAO.selectByUsernameAndPassword(username, pwdhashed);
     if (admin) {
         req.session.admin = admin;
-        resp.redirect('home');
+        resp.redirect('listcate');
     } else {
         MyUtil.showAlertAndRedirect(resp, 'Invalid login!', './login');
     }
@@ -146,7 +146,6 @@ router.post("/addproduct", upload.single('image'), async (req, resp) => {
     if (req.body.zone)
         zone = await ZoneDAO.selectByID(req.body.zone);
     var time = new Date().getTime();
-    // var image = req.body.image;
     var image = req.file.buffer.toString('base64');
     var products = { name: name, price: price, amount: amount, category: category, image: 'data:image/png;base64,' + image, creationDate: time, zone: zone };
     var result = await ProductDAO.insert(products);
@@ -156,7 +155,6 @@ router.post("/addproduct", upload.single('image'), async (req, resp) => {
         resp.redirect('/admin/addproduct');
     }
 });
-
 
 router.get('/updateproduct', async (req, resp) => {
     var list = await CategoryDAO.selectAll2();
@@ -193,7 +191,6 @@ router.post('/updateproduct', upload.single('image'), async (req, resp) => {
     }
 });
 
-
 router.get('/deleteproduct', async (req, res) => {
     var id = req.query.id;
     var result = await ProductDAO.delete(id);
@@ -206,11 +203,20 @@ router.get('/deleteproduct', async (req, res) => {
     }
 });
 
+async function isExistedInOrders(id) {
+    var result = await OrderDAO.selectByProdID(id);
+    return result.length !== 0;
+}
+
 //============== category management ================
 
 router.get('/listcate', async function (req, res) {
     var categories = await CategoryDAO.selectAll();
-    res.render('../views/admin/listcate.ejs', { cats: categories });
+    if(req.query.id) {
+        var isProductCategory = await isProductCate(req.query.id);
+        var details = await CategoryDAO.selectByID(req.query.id);
+    }
+    res.render('../views/admin/listcate.ejs', { cats: categories, isProductCategory: isProductCategory, details: details});
 });
 
 router.post('/addcate', async function (req, res) {
@@ -245,6 +251,12 @@ router.post('/deletecate', async function (req, res) {
         MyUtil.showAlertAndRedirect(res, 'Delete category failed', './listcate');
     }
 });
+
+//check if category has any product
+async function isProductCate(id) {
+    var result = await ProductDAO.selectByCatID(id);
+    return result.length == 0;
+}
 
 //============== zone management ================
 
@@ -312,11 +324,6 @@ router.get('/updatestatus', async function (req, res) {
     res.redirect('./listorders?id=' + _id);
   });
 
-async function isExistedInOrders(id) {
-    var result = await OrderDAO.selectByProdID(id);
-
-    return result.length !== 0;
-}
 
 //============== customer management ================
 router.get('/listcustomers', async function (req, res) {
@@ -346,6 +353,7 @@ router.get('/listcustomers', async function (req, res) {
       res.redirect('./listcustomers');
     }
   });
+
   router.get('/deactive', async function (req, res) {
     var _id = req.query.id; // /deactive?id=XXX&token=XXX
     var token = req.query.token;
@@ -358,7 +366,7 @@ router.get('/listcustomers', async function (req, res) {
   });
 
 
-// order
+//=========order============
 router.get('/listorders', async function (req, res) {
     var orders = await OrderDAO.selectAll();
     var _id = req.query.id; // /listorder?id=XXX
@@ -367,12 +375,12 @@ router.get('/listorders', async function (req, res) {
     }
     res.render('../views/admin/listorders.ejs', { orders: orders, order: order });
   });
+
   router.get('/updatestatus', async function (req, res) {
     var _id = req.query.id; // /updatestatus?status=XXX&id=XXX
     var newStatus = req.query.status;
     await OrderDAO.update(_id, newStatus);
     res.redirect('./listorders?id=' + _id);
   });
-
 
 module.exports = router;
