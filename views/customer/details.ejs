@@ -7,6 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><%= product.name %></title>
     <%- include('./_link.ejs') %>
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -55,12 +62,14 @@
                                 <div class="product_count_area">
                                     <p>Amount</p>
                                     <div class="product_count d-inline-block">
-                                        <span class="product_count_item inumber-decrement"> <i
-                                                class="ti-minus"></i></span>
-                                        <input class="product_count_item input-number" name="txtQuantity" type="number"
+                                        <span style="cursor: pointer;" class="product_count_item inumber-decrement">
+                                            <i class="ti-minus"></i>
+                                        </span>
+                                        <input class="product_count_item input-number" readonly name="txtQuantity" type="number"
                                             value="1" min="1" max="<%= product.amount%>" required />
-                                        <span class="product_count_item number-increment"> <i
-                                                class="ti-plus"></i></span>
+                                        <span style="cursor: pointer;" class="product_count_item number-increment">
+                                            <i class="ti-plus"></i>
+                                        </span>
                                     </div>
                                     <p>$<%= product.price %></p>
                                 </div>

@@ -22,11 +22,19 @@ var CustomerDAO = require(pathDAO + "/CustomerDAO.js");
 var OrderDAO = require(pathDAO + "/OrderDAO.js");
 var ZoneDAO = require(pathDAO + "/ZoneDAO.js");
 
+//==============routes==================
+
 router.get('/', async (req, resp) => {
   var categories = await CategoryDAO.selectAll();
   var newproducts = await ProductDAO.selectTopNew(3);
   var hotproducts = await ProductDAO.selectTopHot(3);
   var zones = await ZoneDAO.selectAll();
+  for (let index = 0; index < zones.length; index++) {
+    var temp = await ProductDAO.selectByZoneID(zones[index]._id);
+    if(temp.length < 1) {
+      zones.splice(index, 1);
+    }
+  }
   resp.render('../views/customer/home.ejs', { cats: categories, newprods: newproducts, hotprods: hotproducts, zones: zones });
 });
 
@@ -119,6 +127,12 @@ router.get('/myorders', async function (req, resp) {
       }
       var categories = await CategoryDAO.selectAll();
       var zones = await ZoneDAO.selectAll();
+      for (let index = 0; index < zones.length; index++) {
+        var temp = await ProductDAO.selectByZoneID(zones[index]._id);
+        if(temp.length < 1) {
+          zones.splice(index, 1);
+        }
+      }
       resp.render('../views/customer/myorders.ejs', { orders: orders, order: order, cats: categories, zones: zones });
     } else {
       resp.redirect('./');
@@ -133,6 +147,12 @@ router.get('/myorders', async function (req, resp) {
 router.get("/listproducts", async (req, resp) => {
   var categories = await CategoryDAO.selectAll();
   var zones = await ZoneDAO.selectAll();
+  for (let index = 0; index < zones.length; index++) {
+    var temp = await ProductDAO.selectByZoneID(zones[index]._id);
+    if(temp.length < 1) {
+      zones.splice(index, 1);
+    }
+  }
   var newproducts = await ProductDAO.selectTopNew(3);
   var hotproducts = await ProductDAO.selectTopHot(3);
   var list = null;
@@ -154,12 +174,24 @@ router.get("/details", async (req, resp) => {
   product.category = await CategoryDAO.selectByID(objectId(product.idcategory).valueOf());
   var categories = await CategoryDAO.selectAll();
   var zones = await ZoneDAO.selectAll();
+  for (let index = 0; index < zones.length; index++) {
+    var temp = await ProductDAO.selectByZoneID(zones[index]._id);
+    if(temp.length < 1) {
+      zones.splice(index, 1);
+    }
+  }
   resp.render('../views/customer/details.ejs', { product: product, cats: categories, zones: zones });
 });
 
 router.get("/searchproduct", async (req, resp) => {
   var categories = await CategoryDAO.selectAll();
   var zones = await ZoneDAO.selectAll();
+  for (let index = 0; index < zones.length; index++) {
+    var temp = await ProductDAO.selectByZoneID(zones[index]._id);
+    if(temp.length < 1) {
+      zones.splice(index, 1);
+    }
+  }
   var keyword = req.query.keyword;
   var result = await ProductDAO.selectByKeyword(keyword);
   resp.render('../views/customer/listproducts.ejs', {
@@ -175,7 +207,12 @@ router.get('/zone', async (req, resp) => {
   var zoneId = req.query.zoneID;
   var list = await ProductDAO.selectByZoneID(zoneId);
   var zone = await ZoneDAO.selectByID(zoneId);
-
+  for (let index = 0; index < zones.length; index++) {
+    var temp = await ProductDAO.selectByZoneID(zones[index]._id);
+    if(temp.length < 1) {
+      zones.splice(index, 1);
+    }
+  }
   resp.render('../views/customer/zone.ejs', { cats: categories, zones: zones, listProduct: list, zone: zone });
 });
 
@@ -185,6 +222,12 @@ router.get('/myprofile', async function (req, resp) {
   if (req.session.customer) {
     var categories = await CategoryDAO.selectAll();
     var zones = await ZoneDAO.selectAll();
+    for (let index = 0; index < zones.length; index++) {
+      var temp = await ProductDAO.selectByZoneID(zones[index]._id);
+      if(temp.length < 1) {
+        zones.splice(index, 1);
+      }
+    }
     resp.render('../views/customer/myprofile.ejs', { cats: categories, zones: zones });
   } else {
     resp.redirect('/login');
@@ -216,6 +259,12 @@ router.get('/mycart', async function (req, res) {
     var total = MyUtil.getTotal(req.session.mycart);
     var categories = await CategoryDAO.selectAll();
     var zones = await ZoneDAO.selectAll();
+    for (let index = 0; index < zones.length; index++) {
+      var temp = await ProductDAO.selectByZoneID(zones[index]._id);
+      if(temp.length < 1) {
+        zones.splice(index, 1);
+      }
+    }
     res.render('../views/customer/mycart.ejs', { total: total, cats: categories, zones: zones });
   } else {
     res.redirect('./');
@@ -256,12 +305,21 @@ router.get('/remove2cart', function (req, res) {
 router.get('/checkoutconfirm', async function (req, res) {
   if (req.session.customer) {
     var total = MyUtil.getTotal(req.session.mycart);
-    res.render('../views/customer/checkout.ejs', { total: total });
+    var categories = await CategoryDAO.selectAll();
+    var zones = await ZoneDAO.selectAll();
+    for (let index = 0; index < zones.length; index++) {
+      var temp = await ProductDAO.selectByZoneID(zones[index]._id);
+      if(temp.length < 1) {
+        zones.splice(index, 1);
+      }
+    }
+    res.render('../views/customer/checkout.ejs', { total: total, cats: categories, zones: zones });
   }
   else {
     res.redirect('./login');
   }
 });
+
 router.get('/checkout', async function (req, res) {
   if (req.session.customer) {
     var now = new Date().getTime(); // milliseconds
@@ -283,12 +341,24 @@ router.get('/checkout', async function (req, res) {
 router.get('/about', async (req, resp) => {
   var categories = await CategoryDAO.selectAll();
   var zones = await ZoneDAO.selectAll();
+  for (let index = 0; index < zones.length; index++) {
+    var temp = await ProductDAO.selectByZoneID(zones[index]._id);
+    if(temp.length < 1) {
+      zones.splice(index, 1);
+    }
+  }
   resp.render('../views/customer/about.ejs', { cats: categories, zones: zones });
 });
 
 router.get('/partner', async (req, resp) => {
   var categories = await CategoryDAO.selectAll();
   var zones = await ZoneDAO.selectAll();
+  for (let index = 0; index < zones.length; index++) {
+    var temp = await ProductDAO.selectByZoneID(zones[index]._id);
+    if(temp.length < 1) {
+      zones.splice(index, 1);
+    }
+  }
   resp.render('../views/customer/partner.ejs', { cats: categories, zones: zones });
 });
 
