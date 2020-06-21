@@ -11,6 +11,8 @@ var upload = multer({});
 // utils
 var MyUtil = require("../utils/MyUtil.js");
 var EmailUtil = require("../utils/EmailUtil.js");
+const session = require('express-session');
+const { active } = require('../daos/mongodb/CustomerDAO.js');
 // daos
 // var pathDAO = "../daos/mongodb";
 var pathDAO = "../daos/mongodb";
@@ -24,8 +26,7 @@ var CustomerDAO = require(pathDAO + "/CustomerDAO.js");
 router.use((req, res, next) => {
     if (!req.session.admin && !req.originalUrl.endsWith('/login')) {
         res.redirect('/admin/login');
-    }
-    else {
+    } else {
         next();
     }
 });
@@ -36,7 +37,9 @@ router.use((req, res, next) => {
 // });
 
 router.get('/login', (req, resp) => {
-    resp.render('admin/login');
+    if(req.session.admin) {
+        resp.redirect('home');
+    } else resp.render('admin/login');
 });
 
 router.post('/login', async (req, resp) => {
@@ -62,7 +65,45 @@ router.get('/home', async (req, resp) => {
         labels.push(categories[i].name);
         data.push(products.length);
     }
-    resp.render('admin/home', { labels: labels, data: data });
+
+    var customers = await CustomerDAO.selectAll();
+    var activeCust = 0;
+    var deactiveCust = 0;
+    for (const iterator of customers) {
+        if(iterator.active == 1) {
+            activeCust += 1;
+        } else {
+            deactiveCust += 1;
+        }
+    }
+
+    var allProducts = await ProductDAO.selectAll();
+    var quantityProds = allProducts.length;
+
+    var allOrders = await OrderDAO.selectAll();
+    var quantityOrders = allOrders.length;
+
+    var sales = 0;
+    var pendingOrder = 0;
+    for (const iterator of allOrders) {
+        sales += iterator.total;
+        if(iterator.status == 'PENDING') {
+            pendingOrder += 1;
+        }
+    }
+
+    var labelZone = new Array();
+    var dataZone = new Array();
+    var zones = await ZoneDAO.selectAll();
+    for (let j = 0; j < zones.length; j++) {
+        var prods = await ProductDAO.selectByZoneID(zones[j]._id);
+        labelZone.push(zones[j].name);
+        dataZone.push(prods.length);
+    }
+
+    resp.render('admin/home', { labels: labels, data: data, activeCust: activeCust, deactiveCust: deactiveCust, 
+        quantityProds: quantityProds, quantityOrders: quantityOrders, sales: sales, pendingOrder: pendingOrder,
+        labelZone: labelZone, dataZone: dataZone });
 });
 
 router.get('/logout', (req, resp) => {
