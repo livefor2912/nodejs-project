@@ -115,7 +115,12 @@ router.get('/logout', (req, resp) => {
 
 router.get("/listproducts", async (req, resp) => {
     var list = await ProductDAO.selectAll();
-    resp.render('../views/admin/listproducts', { listProduct: list });
+    var pageCount = Math.ceil(list.length / 4);
+    var page = req.query.page || 1;
+    page = parseInt(page.toString());
+    var offset = (page - 1) * 4;
+    var end = (page * 4) <= list.length ? (page * 4) : list.length;
+    resp.render('admin/listproducts', { listProduct: list.slice(offset, end), pageCount });
 });
 
 

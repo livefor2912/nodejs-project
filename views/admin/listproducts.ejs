@@ -100,6 +100,15 @@
                             </div>
                         </div>
                     </div>
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item"><a class="page-link" id="btnPre">Previous</a></li>
+                        <% for (var i = 1; i <= pageCount; i++) { %>
+                        <li class="page-item"><a class="page-link" href="/admin/listproducts?page=<%= i %>"><%= i %></a>
+                        </li>
+                        <% } %>
+                        <li class="page-item"><a class="page-link" href="javascript:void(0);" id="btnNext">Next</a></li>
+                    </ul>
+                    <input type="hidden" id="countPages" value="<%=pageCount%>"/>
                     <!-- ============================================================== -->
                     <!-- footer -->
                     <!-- ============================================================== -->
@@ -116,6 +125,31 @@
         <!-- ============================================================== -->
         <!-- end main wrapper  -->
         <!-- ============================================================== -->
+        <script>
+            $(document).ready(function () {
+                var url = location.href.toString();
+                var currPage = parseInt(url.substring(url.indexOf('=') + 1));
+                console.log(currPage);
+                var countPages = (document.getElementById('countPages').value);
+                $('#btnNext').click(function () {
+                    if (Number.isNaN(currPage))
+                        location.href = '/admin/listproducts?page=2';
+                    else {
+                        if(currPage < countPages) {
+                            location.href = '/admin/listproducts?page=' + (currPage + 1);
+                        } else {
+                            location.href = '/admin/listproducts?page=' + currPage;
+                        }
+                    }
+                });
+                $('#btnPre').click(function () {
+                    if (Number.isNaN(currPage))
+                        location.href = '/admin/listproducts';
+                    else
+                        location.href = '/admin/listproducts?page=' + (currPage - 1);
+                });
+            });
+        </script>
 </body>
 
 </html>
