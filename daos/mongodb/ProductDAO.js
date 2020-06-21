@@ -33,7 +33,7 @@ var ProductDAO = {
   },
   async selectTopNew(top) {
     var query = {};
-    var mysort = { cdate: -1 }; // descending
+    var mysort = { creationDate: -1 }; // descending
     var db = await client.getDB();
     var products = await db.collection("products").find(query).sort(mysort).limit(top).toArray();
     return products;
