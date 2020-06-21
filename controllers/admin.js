@@ -49,7 +49,7 @@ router.post('/login', async (req, resp) => {
     var admin = await AdminDAO.selectByUsernameAndPassword(username, pwdhashed);
     if (admin) {
         req.session.admin = admin;
-        resp.redirect('listcate');
+        resp.redirect('home');
     } else {
         MyUtil.showAlertAndRedirect(resp, 'Invalid login!', './login');
     }
