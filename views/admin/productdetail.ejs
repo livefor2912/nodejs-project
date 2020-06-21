@@ -81,6 +81,7 @@
                                             <% if (canBeDelete) { %>
                                             <a class="btn btn-primary btn-block btn-lg" style="color: white;" href="#"
                                                 id="btnDel">Delete</a>
+                                                <p style="display: none;" id="temp"><%= product._id %></p>
                                             <% } %>
                                             <a class="btn btn-primary btn-block btn-lg" style="color: white;"
                                                 href="/details?id=<%=product._id%>">Detail in customer</a>
@@ -144,24 +145,9 @@
         $(document).ready(function () {
             $('.product-slider').css('padding', '0px');
             $('#btnDel').click(function () {
-                const url = location.href;
-                const startIndex = url.toString().lastIndexOf('/productdetail/') + '/productdetail/'.length;
-                const endIndex = url.toString().length - 1;
-                const id = url.toString().substring(startIndex, endIndex);
+                var id = $('#temp').html();
                 if (confirm('bạn có chắc muốn xóa sản phẩm này không')) {
-                    $.ajax({
-                        url: '/admin/deleteproduct',
-                        type: 'get',
-                        data: {id: id},
-                        success: function (data) {
-                            if (data.success === 'false') {
-                                alert('không xóa được sản phẩm');
-                            }else {
-                                alert('xóa sản phẩm thành công');
-                                location.href = '/admin/listproducts';
-                            }
-                        }
-                    });
+                    location.href = '/admin/deleteproduct?id=' + id;
                 }
             });
         });
