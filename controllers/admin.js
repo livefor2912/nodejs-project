@@ -182,12 +182,10 @@ router.post('/updateproduct', upload.single('image'), async (req, resp) => {
     var products = { _id: req.session.productId, name: name, price: price, amount: amount, category: category, image: image, creationDate: time, zone: zone };
     var result = await ProductDAO.update(products);
     if (result) {
-        // resp.redirect('/admin/listproducts');
         MyUtil.showAlertAndRedirect(resp, "Update product successfully", '/admin/listproducts');
         delete req.session.productId;
     } else {
-        MyUtil.showAlertAndRedirect(resp, 'Update product failed', `/admin/updateproduct/${req.session.productId}`);
-        // resp.redirect(`/admin/updateproduct/${req.session.productId}`);
+        MyUtil.showAlertAndRedirect(resp, 'Update product failed', `/admin/updateproduct?id=${req.session.productId}`);
     }
 });
 
