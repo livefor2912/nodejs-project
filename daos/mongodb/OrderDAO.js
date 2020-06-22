@@ -16,8 +16,9 @@ var OrderDAO = {
   },
   async selectByCustID(_cid) {
     var query = { 'customer._id': ObjectId(_cid) };
+    var mysort = { cdate: -1 };
     var db = await client.getDB();
-    var orders = await db.collection("orders").find(query).toArray();
+    var orders = await db.collection("orders").find(query).sort(mysort).toArray();
     return orders;
   },
   async selectByProdID(_pid) {
